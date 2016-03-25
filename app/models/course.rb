@@ -1,7 +1,8 @@
 # == Schema Information 
 # 
 #  Table Name: courses 
-# 
+#  
+#  id					 :integer					 not null, PRIMARY KEY 
 #  term 			 :string 					 not null/blank, 4 characters 
 #  subject 		 :string 				   not null/blank, 2 or more characters 
 #  number			 :integer 				 not null/blank, 1000..9999 range 
@@ -10,6 +11,7 @@
 
 class Course < ActiveRecord::Base
 
+	
 	validates :term, presence: true, length: { minimum: 4, maximum: 4 }
 	validates :subject, presence: true, length: { minimum: 2 }
 	validates :number, presence: true, numericality: { greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999 }
