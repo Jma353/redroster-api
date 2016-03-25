@@ -11,7 +11,7 @@
 
 class Course < ActiveRecord::Base
 
-	
+
 	validates :term, presence: true, length: { minimum: 4, maximum: 4 }
 	validates :subject, presence: true, length: { minimum: 2 }
 	validates :number, presence: true, numericality: { greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999 }
@@ -20,6 +20,10 @@ class Course < ActiveRecord::Base
 
 	def unique_class 
 		errors.add(number: "This course exists already") unless Course.find_by(term: self.term, subject: self.subject, number: self.number).blank?
+	end 
+
+	def sections 
+		Section.where(course_id: self.id)
 	end 
 
 end
