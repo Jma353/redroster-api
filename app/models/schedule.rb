@@ -19,4 +19,9 @@ class Schedule < ActiveRecord::Base
 	end 
 
 
+	def schedule_elements 
+		ScheduleElement.where(schedule_id: self.id)
+	end 
+
+
 end

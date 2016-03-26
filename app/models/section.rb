@@ -10,10 +10,11 @@
 
 class Section < ActiveRecord::Base
 
-	validates :section_num, presence: true 
+	validates :section_num, presence: true, uniqueness: true 
 	validates :course_id, presence: true 
 	validates :type, presence: true, length: { minimum: 3, maximum: 4 }
 	validate :course_exists, :on => :create 
+
 
 	# Theoretically, if we were to add a section for a course that we have not yet saved, 
 	# we would save the course FIRST, then the section 
@@ -21,5 +22,8 @@ class Section < ActiveRecord::Base
 		errors.add(:course_id, "This course does not exist") unless !Course.find_by_id(self.course_id).blank? 
 	end 
 
+
+	
+	
 
 end

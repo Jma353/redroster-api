@@ -10,5 +10,11 @@
 class User < ActiveRecord::Base
 
 
+	# Get this user's session 
+	def session 
+		Session.find_by_user_id(self.id)
+	end 
+
+
 
 end
