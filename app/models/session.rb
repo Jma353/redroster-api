@@ -12,7 +12,7 @@
 
 class Session < ActiveRecord::Base
 
-	validates :user_id, presence: true 
+	validates :user_id, presence: true, uniqueness: true 
 	validates :google_token, presence: true 
 	validate :user_exists, :on => :create 
 
@@ -24,10 +24,18 @@ class Session < ActiveRecord::Base
 	end 
 
 
+
 	def activate_session 
 		self.is_active = true 
+		# For the sake of testing workflows on the bus, going to make the 
+		# Google token a base-64 string 
+		self.google_token = SecureRandom.urlsafe_base64
+
 	end 
 
+	def character 
+		User.find_by_id(self.user_id)
+	end 
 
 
 
