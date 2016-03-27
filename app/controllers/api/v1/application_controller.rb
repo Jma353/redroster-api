@@ -28,10 +28,13 @@ class Api::V1::ApplicationController < ActionController::Base
     @user = @session.character
   end
 
+
+
   # Checks the request to see if it's coming from the proper frontend 
   def check_api_key 
     head(401) and return false if params[:api_key].blank? 
     provided_api_key = params[:api_key]
+    p ENV["API_KEY"]
     if provided_api_key != ENV["API_KEY"]
       render json: { success: false, error: "Unauthorized services cannot use this backend"}, status: :unauthorized
       return false 
