@@ -6,8 +6,11 @@ Rails.application.routes.draw do
 
       post "sign_in" => "users#google_sign_in"
 
+      get "courses/" => "courses#list_of_terms"
+
       get "courses/:term" => "courses#subjects_by_term"
 
+      
 
     end 
   end 

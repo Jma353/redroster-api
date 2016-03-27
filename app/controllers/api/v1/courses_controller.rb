@@ -11,6 +11,16 @@
 
 class Api::V1::CoursesController < Api::V1::ApplicationController
 
+	def list_of_terms
+		uri = URI("https://classes.cornell.edu/api/2.0/config/rosters.json")
+		res_json = JSON.parse(Net::HTTP.get(uri))
+		if res_json["status"] != "error"
+			terms = res_json["data"]["rosters"].map { |t| t["slug"] }
+			render json: { success: true, terms: terms }
+		else 
+			render json: { success: false }
+		end 
+	end 
 
 
 	# List of subjects for a given term 
@@ -19,7 +29,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		uri = URI("https://classes.cornell.edu/api/2.0/config/subjects.json?roster=#{term}")
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
-			p res_json
 			render json: { success: true, subjects: res_json["data"]["subjects"] }
 		else 
 			render json: { success: false }

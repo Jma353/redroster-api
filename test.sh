@@ -9,5 +9,5 @@ curl -H "Accept: application/json" \
 -H "Content-type: application/json" \
 -X GET \
 -d "$data" \
--v http://localhost:3000/api/v1/courses/$2
+-v http://localhost:3000/api/v1/courses/
 
