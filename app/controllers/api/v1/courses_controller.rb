@@ -12,6 +12,8 @@
 include CoursesHelper 
 class Api::V1::CoursesController < Api::V1::ApplicationController
 
+	##### GET ENDPOINTS BASED ON THE CORNELL COURSE API ##### 
+
 
 	# List of terms 
 	def list_of_terms
@@ -26,8 +28,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 	end 
 
 
-
-
 	# List of subjects for a given term 
 	def subjects_by_term 
 		term = params[:term]
@@ -39,7 +39,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 			render json: { success: false }
 		end 
 	end 
-
 
 
 	# List of courses, given a subject and a term 
@@ -67,8 +66,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 	end 
 
 
-
-
 	# Specific course information, given a subject, a course, and a course_id # 
 	def course_info 
 		term = params[:term]
@@ -85,14 +82,18 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 			course_json = format_course(res_json["data"]["classes"][0])
 			course_json[:class_sections] = res_json["data"]["classes"][0]["enrollGroups"][0]["classSections"]
 			result_json[:data] = course_json
-			
+
 			render json: result_json
 		else 
 			render json: { success: false }
 		end 
 
-
 	end 
+
+
+	
+
+
 
 
 
@@ -100,3 +101,10 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 
 
 end
+
+
+
+
+
+
+

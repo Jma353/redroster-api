@@ -52,4 +52,13 @@ class Api::V1::ApplicationController < ActionController::Base
   end 
 
 
+
+  # BUILT FOR THE PURPOSES OF TESTING ENDPOINTS FOR SCHEDULE CREATION AND SUCH 
+  def grab_test_user 
+    google_id = params[:id_token]
+    @user = User.find_by_google_id(google_id)
+  end 
+
+  
+
 end

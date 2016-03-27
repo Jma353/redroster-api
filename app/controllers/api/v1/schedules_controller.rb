@@ -8,4 +8,15 @@
 #  updated_at  				:datetime 				 	not null 
 
 class Api::V1::SchedulesController < Api::V1::ApplicationController
+
+	# To get a test user to associate this schedule with 
+	before_action :grab_test_user 
+
+	# Schedule creation endpoint 
+	def create
+		s = Schedule.create(user_id: @user.id)
+		render json: { success: s.valid? }
+	end 
+
+
 end

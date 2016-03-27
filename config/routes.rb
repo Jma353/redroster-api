@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
 
+
+
       post "sign_in" => "users#google_sign_in"
+
+      post "schedules/create" => "schedules#create"
 
       get "courses/" => "courses#list_of_terms"
 
@@ -13,6 +17,10 @@ Rails.application.routes.draw do
       get "courses/:term/:subject" => "courses#courses_by_subject"
 
       get "courses/:term/:subject/:number" => "courses#course_info"
+
+
+
+
     end 
   end 
 

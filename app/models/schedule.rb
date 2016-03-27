@@ -15,9 +15,8 @@ class Schedule < ActiveRecord::Base
 
 
 	def user_exists 
-		errors.add(:user_id, "This user does not exist") unless !User.find_by_id(self.user_id)
+		errors.add(:user_id, "This user does not exist") unless !User.find_by_id(self.user_id).blank? 
 	end 
-
 
 	def schedule_elements 
 		ScheduleElement.where(schedule_id: self.id)
