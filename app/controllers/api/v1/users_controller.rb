@@ -9,15 +9,21 @@
 
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :google_auth
+
+	before_action :google_auth, only: [:google_sign_in]
+
 
 	def google_sign_in 	
-		@user = User.find_by_google_id(@google_id)
+		# @user passed by google_auth() method if the method succeeds 
 		if @user.blank? 
 			User.create(google_id: @google_id)
 		end 
-		render json: { "new_user" => !@user.blank? }
+		render json: { "new_user" => @user.blank? }
 	end 
+
+
+	
+
 
 
 end

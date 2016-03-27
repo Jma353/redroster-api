@@ -1,9 +1,10 @@
 # Generic application controller 
 
-require 'net/http'
-require 'json'
-
 class Api::V1::ApplicationController < ActionController::Base
+  # So this/every subclass has these two modules 
+  require 'net/http'
+  require 'json'
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
@@ -13,13 +14,14 @@ class Api::V1::ApplicationController < ActionController::Base
 
 	# HTTP Request Body includes: 
   # { api_key: API_KEY,
-  #   google_code: ABC,
+  #   id_token: ABC,
   #   // Everything else 
   # }
 
 
   # Checks the request to see if it's coming from the proper frontend 
   def check_api_key 
+    p ENV["API_KEY"]
     head(401) and return false if params[:api_key].blank? 
     provided_api_key = params[:api_key]
     p ENV["API_KEY"]
@@ -46,8 +48,8 @@ class Api::V1::ApplicationController < ActionController::Base
                           (res_json["error_description"].blank? && res_json["aud"].include?(google_app_id))
 
     # Pass this along to see what's going on w/the User 
-    @google_id = res_json["sud"]
-
+    google_id = res_json["sud"]
+    @user = User.find_by_google_id(google_id)
   end 
 
 

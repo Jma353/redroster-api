@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
 
-      # Endpoint to obtain 
       post "sign_in" => "users#google_sign_in"
+
+      get "courses/:term" => "courses#subjects_by_term"
+
 
     end 
   end 
