@@ -9,6 +9,8 @@
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
+require 'net/http' 
+
 class Api::V1::SessionsController < Api::V1::ApplicationController
 
 	def google_id
@@ -16,6 +18,10 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 		id_token = params[:id_token]
 		# Get the google app id for later validation of the response from Google endpoint 
 		google_app_id = ENV["REDROSTER_GOOGLE_APP_ID"] # Use ZSH as local env 
+
+		uri = URI("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{id_token}")
+		result = Net::HTTP.get(uri)
+		p result 
 		# Render this json to test initial interaction w/iOS app 
 		render json: { success: true }
 	end 
