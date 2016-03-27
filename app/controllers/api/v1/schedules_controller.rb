@@ -18,5 +18,13 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 		render json: { success: s.valid? }
 	end 
 
+	def destroy
+		s = Schedule.where(user_id: @user.id).find_by_id(params[:schedule_id])
+		unless s.blank? 
+			s.delete 
+		end 
+		render json: { success: !s.blank? }
+	end 
+
 
 end

@@ -1,6 +1,5 @@
 #!/bin/bash 
 
-# $1 - :token_id 
 data='{ "api_key": "'"$1"'", "id_token": "'"$2"'"}'
 
 echo $data
