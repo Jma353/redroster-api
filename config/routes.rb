@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do 
 
       # Endpoint to obtain 
-      post "sessions/google_auth" => "sessions#google_auth"
+      post "sign_in" => "users#google_sign_in"
 
     end 
   end 

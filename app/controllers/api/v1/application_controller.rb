@@ -1,5 +1,8 @@
 # Generic application controller 
 
+require 'net/http'
+require 'json'
+
 class Api::V1::ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -15,21 +18,6 @@ class Api::V1::ApplicationController < ActionController::Base
   # }
 
 
-  # Authorization based upon Google code; this function isn't 
-  # validating the Google code, but rather ensuring that a Session has been created 
-  # on THIS backend storing a Google code corresponding to a User 
-  def authorize
-    head(401) and return false if params[:google_code].blank?
-    @session = Session.find_by_session_code(params[:google_code])
-    if @session.blank?
-      render json: { success: false, error: 'Unauthorized' }, status: :unauthorized
-      return false
-    end
-    @user = @session.character
-  end
-
-
-
   # Checks the request to see if it's coming from the proper frontend 
   def check_api_key 
     head(401) and return false if params[:api_key].blank? 
@@ -39,6 +27,27 @@ class Api::V1::ApplicationController < ActionController::Base
       render json: { success: false, error: "Unauthorized services cannot use this backend"}, status: :unauthorized
       return false 
     end 
+  end 
+
+
+  # Maintains google auth state 
+  def google_auth
+    # Get the ID token 
+    id_token = params[:id_token]
+    # Get the google app id for later validation of the response from Google endpoint 
+    google_app_id = ENV["REDROSTER_GOOGLE_APP_ID"] # Use ZSH as local env 
+    # To obtain proper sub-idToken from google for account access 
+    uri = URI("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{id_token}")
+
+    res = Net::HTTP.get(uri)
+    res_json = JSON.parse(res)
+    p res_json
+    render json: { success: false, error: "An error occurred.  Please try logging in again." } unless 
+                          (res_json["error_description"].blank? && res_json["aud"].include?(google_app_id))
+
+    # Pass this along to see what's going on w/the User 
+    @google_id = res_json["sud"]
+
   end 
 
 
