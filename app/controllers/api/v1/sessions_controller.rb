@@ -22,8 +22,9 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 
 		uri = URI("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{id_token}")
 		res = Net::HTTP.get(uri)
-		p res
-		if res.is_a?(Net::HTTPSuccess)
+		res_json = JSON.parse(res)
+		p res_json["error_description"]
+		if res_json["error_description"].blank? 
 			res_json = JSON.parse(res)
 			# Render this json to test initial interaction w/iOS app 
 			render json: { success: true, key: res_json["sub"] }
