@@ -49,7 +49,8 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}") 
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
-			result_json = { success: true, 
+			result_json = { 
+											success: true, 
 											data: {
 												courses: []
 											}
@@ -68,10 +69,7 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 
 
 
-
-
 	# Specific course information, given a subject, a course, and a course_id # 
-
 	def course_info 
 		term = params[:term]
 		subject = params[:subject]
@@ -79,6 +77,12 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{number}")
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
+			result_json = { 
+											success: true, 
+											data: {
+												
+											}
+										}
 			render json: { success: true }
 		else 
 			render json: { success: false }
@@ -86,13 +90,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 
 
 	end 
-
-
-
-
-
-
-
 
 
 
