@@ -17,6 +17,5 @@ module CoursesHelper
 		course_json
 	end 
 
-	
 
 end

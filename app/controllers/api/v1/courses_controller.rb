@@ -79,11 +79,14 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		if res_json["status"] != "error"
 			result_json = { 
 											success: true, 
-											data: {
-												
-											}
+											# Data is to go here 
 										}
-			render json: { success: true }
+			# Format the course JSON; index 0 b/c only one result 
+			course_json = format_course(res_json["data"]["classes"][0])
+			course_json[:class_sections] = res_json["data"]["classes"][0]["enrollGroups"][0]["classSections"]
+			result_json[:data] = course_json
+			
+			render json: result_json
 		else 
 			render json: { success: false }
 		end 

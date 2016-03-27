@@ -21,7 +21,6 @@ class Api::V1::ApplicationController < ActionController::Base
 
   # Checks the request to see if it's coming from the proper frontend 
   def check_api_key 
-    p ENV["API_KEY"]
     head(401) and return false if params[:api_key].blank? 
     provided_api_key = params[:api_key]
     p ENV["API_KEY"]
