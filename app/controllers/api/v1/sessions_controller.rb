@@ -25,7 +25,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 
 		res = Net::HTTP.get(uri)
 		res_json = JSON.parse(res)
-
+		p res_json
 		if res_json["error_description"].blank? && res_json["aud"].include?(google_app_id)
 			render json: { success: true, key: res_json["sub"] }
 		else 
