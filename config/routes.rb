@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
 
-      get "sessions/google_id" => "sessions#google_id"
+      post "sessions/google_id" => "sessions#google_id"
 
-      
+
       
     end 
   end 

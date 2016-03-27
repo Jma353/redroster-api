@@ -19,7 +19,6 @@ class API::V1::SessionsController < API::V1::ApplicationController
 		# Render this json to test initial interaction w/iOS app 
 		render json: { success: true }
 	end 
-
 	
 
 end
