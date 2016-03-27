@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
       get "courses/:term" => "courses#subjects_by_term"
 
-      
+      get "courses/:term/:subject" => "courses#courses_by_subject"
 
     end 
   end 

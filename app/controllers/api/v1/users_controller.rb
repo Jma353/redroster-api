@@ -18,12 +18,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		if @user.blank? 
 			User.create(google_id: @google_id)
 		end 
-		render json: { "new_user" => @user.blank? }
+		render json: { sucess: true, data: { new_user: @user.blank? } }
 	end 
-
-
-	
-
 
 
 end
