@@ -6,5 +6,5 @@
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 			 	 	not null 
 
-class API::V1::UsersController < API::V1::ApplicationController
+class Api::V1::UsersController < Api::V1::ApplicationController
 end

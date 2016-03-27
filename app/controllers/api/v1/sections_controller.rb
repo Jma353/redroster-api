@@ -8,5 +8,5 @@
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
-class API::V1::SectionsController < API::V1::ApplicationController
+class Api::V1::SectionsController < Api::V1::ApplicationController
 end

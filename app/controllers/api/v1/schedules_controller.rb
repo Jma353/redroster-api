@@ -7,5 +7,5 @@
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
-class API::V1::SchedulesController < API::V1::ApplicationController
+class Api::V1::SchedulesController < Api::V1::ApplicationController
 end
