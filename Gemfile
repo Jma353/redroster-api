@@ -29,11 +29,12 @@ gem 'oauth2'
 gem 'figaro'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
 # Use Unicorn as the app server
 gem 'unicorn'
 # For basic JSON parsing 
 gem 'json'
+# Puma as webserver 
+gem 'puma'
 
 
 # Use Capistrano for deployment
