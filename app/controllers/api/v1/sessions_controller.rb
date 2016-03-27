@@ -15,7 +15,7 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
 		# Get the ID token 
 		id_token = params[:id_token]
 		# Get the google app id for later validation of the response from Google endpoint 
-		google_app_id = ENV["GOOGLE_APP_ID"]
+		google_app_id = ENV["REDROSTER_GOOGLE_APP_ID"] # Use ZSH as local env 
 		# Render this json to test initial interaction w/iOS app 
 		render json: { success: true }
 	end 
