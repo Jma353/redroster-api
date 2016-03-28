@@ -11,7 +11,7 @@ module CoursesHelper
 										credits_minimum: c["enrollGroups"][0]["unitsMinimum"], # minimum units of this course 
 										credits_maximum: c["enrollGroups"][0]["unitsMaximum"], # maximum units of this course 
 										required_sections: c["enrollGroups"][0]["componentsRequired"], # components required (e.g. LEC, DIS, etc.)
-										begin_data: c["enrollGroups"][0]["sessionBeginDt"], # begin date 
+										begin_date: c["enrollGroups"][0]["sessionBeginDt"], # begin date 
 										end_date: c["enrollGroups"][0]["sessionEndDt"], # end data 
 									 }
 		course_json
