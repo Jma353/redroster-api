@@ -16,6 +16,7 @@ module CoursesHelper
 										required_sections: c["enrollGroups"][0]["componentsRequired"], # components required (e.g. LEC, DIS, etc.)
 										begin_date: c["enrollGroups"][0]["sessionBeginDt"], # begin date 
 										end_date: c["enrollGroups"][0]["sessionEndDt"], # end data 
+										grading_basis: c["enrollGroups"][0]["gradingBasis"] # OPT or SUS
 									 }
 	end 
 
