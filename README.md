@@ -14,6 +14,11 @@ POST `/api/v1/schedules/create` (not ready for production use)
 
 	{ api_key: "XYZ", id_token: "ABC" } 
 	
+GET `api/v1/schedules/show/:schedule_id` (not ready for production use) : Returns a formatted schedule ready for easy parsing.  
+
+	{ api_key: "XYZ", id_token: "ABC", schedule_id: 1} 
+
+	
 DELETE `/api/v1/schedules/delete` (not ready for production use)
 
 	{ api_key: "XYZ", id_token: "ABC", schedule_id: 1 } 

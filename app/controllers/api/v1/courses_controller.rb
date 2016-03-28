@@ -91,7 +91,7 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 	end 
 
 
-
+	# Search subjects based on term 
 	def search_subjects 
 		term = params[:term]
 		query = params[:query]

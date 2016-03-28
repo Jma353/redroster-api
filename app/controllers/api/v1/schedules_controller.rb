@@ -7,15 +7,38 @@
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
+include SchedulesHelper
 class Api::V1::SchedulesController < Api::V1::ApplicationController
 
 	# To get a test user to associate this schedule with 
 	before_action :grab_test_user 
+	before_action :schedule_belongs_to_user, only: [:show] # in ApplicationController 
+
+
 
 	# Schedule creation endpoint 
 	def create
 		s = Schedule.create(user_id: @user.id)
 		render json: { success: s.valid? }
+	end 
+
+
+
+	# Endpoint to show a full schedule JSON to be parsed on iOS frontend for viewing schedules
+	def show 
+		# have @schedule I care about 
+		result = []
+		@schedule_elements = ScheduleElement.where(schedule_id: @schedule.id)
+		section_nums = @schedule_elements.map { |se| se.section_num }
+		@sections = section_nums.map { |n| Section.find_by_section_num(n) }
+
+		@sections.each do |s| 
+			sec = schedule_section(s)
+			result.push(sec)
+		end 
+		
+		render json: { success: true, data: { schedule: result } } 
+
 	end 
 
 

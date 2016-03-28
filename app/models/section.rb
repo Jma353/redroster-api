@@ -19,5 +19,22 @@ class Section < ActiveRecord::Base
 		errors.add(:course_id, "This course does not exist.") unless !Course.find_by_course_id(self.course_id).blank? 
 	end 	
 
+	# For accessing Course info 
+
+	def course 
+		Course.find_by_course_id(self.course_id)
+	end
+
+	def course_term
+		course.term
+	end 
+
+	def course_subject
+		course.subject
+	end 
+	
+	def course_num
+		course.number 
+	end 
 
 end

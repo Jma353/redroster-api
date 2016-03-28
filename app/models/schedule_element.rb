@@ -39,7 +39,7 @@ class ScheduleElement < ActiveRecord::Base
 		schedule_peers.each do |se| 	
 			peer_section = Section.find_by_section_num(se.section_num)
 			if (peer_section.course_id == section.course_id) && (peer_section.section_type == section.section_type) 
-				errors.add(:section_num, "Another section exists that is of the same type and course as this one") unless section.section_type == "DIS"
+				errors.add(:section_num, ": Another section exists that is of the same type and course as this one") unless section.section_type == "DIS"
 			end 
 		end 
 	end 

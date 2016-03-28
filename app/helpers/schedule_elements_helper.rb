@@ -11,6 +11,5 @@ module ScheduleElementsHelper
 		return nil
 	end 
 
-	
 
 end

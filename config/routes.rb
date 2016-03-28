@@ -8,15 +8,21 @@ Rails.application.routes.draw do
 
       post "sign_in" => "users#google_sign_in"
 
+      # Schedules
+
       post "schedules/create" => "schedules#create"
 
+      get "schedules/show/:schedule_id" => "schedules#show"
+
       delete "schedules/delete" => "schedules#destroy"
+
+      # Schedule Elements 
 
       post "schedule_elements/create" => "schedule_elements#create"
 
       delete "schedule_elements/delete" => "schedule_elements#destroy"
 
-      # All search stuff 
+      # All search stuff/fetching of terms, subjects, and courses 
 
       get "search/:term/:query" => "courses#search_courses"
 

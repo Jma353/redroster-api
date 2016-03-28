@@ -16,17 +16,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 	before_action :grab_test_user 
 	before_action :schedule_belongs_to_user 
 
-	# Check to see if the schedule exists/belongs to the user 
-	def schedule_belongs_to_user
-		@schedule = Schedule.where(user_id: @user.id).find_by_id(params[:schedule_id])
-		if @schedule.blank? 
-			render json: { success: false, data: { errors: "This schedule either doesn't exist or doesn't belong to you" } }
-		else 
-			@schedule
-		end 
-	end 
-
-
 
 
 	# EXTREMELY FAT CREATE METHOD (logic is somewhat complex for a reason.. this is how we're going to load the database w/info)
@@ -63,9 +52,9 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 				# If the section does not exist w/in the specified Course 
 				section_type = section_type(sections, section_num)
 				if section_type.blank? 
-					result = false
+					render json: { success: false, data: { error: "This section does not exist with within this term and course."}} and return false 
 				end 
-
+				
 				@section = Section.create(section_num: section_num, course_id: @course.course_id, section_type: section_type)	
 
 			else 
