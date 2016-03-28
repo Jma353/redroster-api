@@ -39,6 +39,7 @@ DELETE `api/v1/schedule_elements/delete` (not ready for production use)
 	  id_token: "ABC",
 	  schedule_id: 1,
 	  section: { section_num: 11828 } 
+	 }
 	
 GET `/api/v1/courses` : List of terms that offer courses 
 
