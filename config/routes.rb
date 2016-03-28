@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
       delete "schedule_elements/delete" => "schedule_elements#destroy"
 
+      # All search stuff 
+
       get "courses/search/:term/:query" => "courses#search_courses"
 
       get "courses/" => "courses#list_of_terms"
