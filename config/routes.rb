@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
       delete "schedules/delete" => "schedules#destroy"
 
+      post "schedule_elements/create" => "schedule_elements#create"
+
       get "courses/" => "courses#list_of_terms"
 
       get "courses/:term" => "courses#subjects_by_term"

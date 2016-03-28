@@ -1,5 +1,6 @@
 #!/bin/bash 
 
+
 data='{ "api_key": "'"$1"'", "id_token": "'"$2"'"}'
 
 echo $data
