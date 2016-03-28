@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
       get "search/:term/:query" => "courses#search_courses"
 
+      get "search_by_subject/:term/:query" => "courses#search_subjects"
+
       get "courses/" => "courses#list_of_terms"
 
       get "courses/:term" => "courses#subjects_by_term"

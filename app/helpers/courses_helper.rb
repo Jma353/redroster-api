@@ -1,5 +1,8 @@
 module CoursesHelper
 
+	require 'net/http'
+  require 'json'
+
 	def format_course(c)
 		course_json = { 
 										id: c["crseId"], # 123456, unique
@@ -14,8 +17,8 @@ module CoursesHelper
 										begin_date: c["enrollGroups"][0]["sessionBeginDt"], # begin date 
 										end_date: c["enrollGroups"][0]["sessionEndDt"], # end data 
 									 }
-		course_json
 	end 
+
 
 	def format_course_less(c)
 		course_json = {
@@ -27,6 +30,23 @@ module CoursesHelper
 										description: c["description"], # Description of course 
 									 }
 	end 
+
+
+	# Get a list of subjects 
+	def query_subjects(term, query)
+		uri = URI("https://classes.cornell.edu/api/2.0/config/subjects.json?roster=#{term}")
+		subject_json = JSON.parse(Net::HTTP.get(uri))
+		subjects = []
+		if subject_json["status"] != "error"
+			subject_json["data"]["subjects"].each do |s| 
+				if s["value"].include?(query) # could do include? for more comprehensive search results 
+					subjects.push({ subject: { value: s["value"], descr: s["descr"] } })
+				end 
+			end 
+		end 
+		subjects
+	end 
+
 
 
 	# Method to curate courses based upon the number that has been given in the query 
@@ -42,6 +62,27 @@ module CoursesHelper
 		end 
 		return false 
 	end 
+
+
+	def query_courses(term, subjects, q_num)
+		courses = []
+		subjects.each do |s| 
+			subject_uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{s}")
+			course_json = JSON.parse(Net::HTTP.get(subject_uri))
+			if course_json["status"] != "error"
+				courses_info = course_json["data"]["classes"]
+				courses_info.each do |ci|
+					if num_compare(q_num, ci)
+						result_json = format_course_less(ci)
+						courses.push(result_json)
+					end
+				end 
+			end 
+		end 
+		courses
+	end 
+
+
 
 
 end

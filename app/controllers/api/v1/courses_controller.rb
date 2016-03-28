@@ -92,6 +92,19 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 
 
 
+	def search_subjects 
+		term = params[:term]
+		query = params[:query]
+		query.gsub! " ", ""
+
+		subjects = query_subjects(term, query)
+
+		render json: { success: true, data: { subjects: subjects } }
+
+	end 
+
+
+
 	# Searching for courses based on a search query 
 	def search_courses
 
@@ -104,35 +117,10 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		q_subj = query[0..(i==nil ? -1 : i-1)]
 		q_num = i == nil ? i : Integer(query[i..-1])
 
-		# Get all the subjects from a term 
-		uri = URI("https://classes.cornell.edu/api/2.0/config/subjects.json?roster=#{term}")
-		subject_json = JSON.parse(Net::HTTP.get(uri))
-		if subject_json["status"] != "error"
-			subjects = []
-			subject_json["data"]["subjects"].each do |s| 
-				if s["value"] == q_subj # could do include? for more comprehensive search results 
-					subjects.push(s["value"])
-				end 
-			end 
-			courses = []
-			subjects.each do |s| 
-				subject_uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{s}")
-				course_json = JSON.parse(Net::HTTP.get(subject_uri))
-				if course_json["status"] != "error"
-					courses_info = course_json["data"]["classes"]
-					courses_info.each do |ci|
-						if num_compare(q_num, ci)
-							result_json = format_course_less(ci)
-							courses.push(result_json)
-						end
-					end 
-				end 
-			end 
-			render json: { success: true, data: { courses: courses } } and return
-		else 
-			render json: { success: false } and return 
-		end 
-
+		subjects = query_subjects(term, q_subj)
+		subjects = subjects.map { |s| s[:subject][:value] } # to only include values 
+		courses = query_courses(term, subjects, q_num)
+		render json: { success: true, data: { courses: courses } }
 
 	end 
 	

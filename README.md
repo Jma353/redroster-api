@@ -61,7 +61,11 @@ GET `api/v1/search/:term/:query` : Search results for all-purpose course query (
 	
 	{ api_key: "XYZ", id_token: "ABC" } 
 	
+GET `api/v1/search_by_subject/:term/:query` : Search subjects of a particular term based upon any search query.  Returns value/descr of the subject namespaced under "subject."
 
+	{ api_key: "XYZ", id_token: "ABC" }
+	
+ 
 
 
 
