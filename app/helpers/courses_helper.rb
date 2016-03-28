@@ -29,4 +29,18 @@ module CoursesHelper
 	end 
 
 
+	# Method to curate courses based upon the number that has been given in the query 
+	def num_compare(num, c)
+		course_num = c["catalogNbr"]
+		div = 1000 
+		while(div > 0) do 
+			if num == c/div
+				return true 
+			end 
+			div = div/10 
+		end 
+		return false 
+	end 
+
+
 end

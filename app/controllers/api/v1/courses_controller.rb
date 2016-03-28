@@ -114,8 +114,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 				course_json = JSON.parse(Net::HTTP.get(subject_uri))
 				if course_json["status"] != "error"
 					courses_info = course_json["data"]["classes"]
-					p course_json
-					p courses_info 
 					courses_info.each do |ci|
 						result_json = format_course_less(ci)
 						courses.push(result_json)
