@@ -32,6 +32,13 @@ POST `api/v1/schedule_elements/create` (not ready for production use)
 	  	
 	  			}
 	 }
+	 
+DELETE `api/v1/schedule_elements/delete` (not ready for production use)
+
+	{ api_key: "XYZ",
+	  id_token: "ABC",
+	  schedule_id: 1,
+	  section: { section_num: 11828 } 
 	
 GET `/api/v1/courses` : List of terms that offer courses 
 
@@ -45,7 +52,7 @@ GET `/api/v1/courses/:term/:subject` : List of courses offered for a particular 
 
 	{ api_key: "XYZ", id_token: "ABC" } 
 
-GET `/api/v1/courses/:term/:subject/:number` => In-depth course information (number is 1000..9999, not id #)
+GET `/api/v1/courses/:term/:subject/:number` : In-depth course information (number is 1000..9999, not id #)
 
 	{ api_key: "XYZ", id_token: "ABC" } 
 

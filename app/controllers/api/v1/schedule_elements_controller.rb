@@ -29,7 +29,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
-
 	# EXTREMELY FAT CREATE METHOD (logic is somewhat complex for a reason.. this is how we're going to load the database w/info)
 	# @ root of json, need :schedule_id 
 	# w/in :section, we need :term, :subject, :course_num (1000...9999), :section_num (5-digit section num)
@@ -72,32 +71,31 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 			else 
 				result = false 
 			end 
-
 		end 
-
 		# At this point, we have the @section and the @schedule we care about 
-
 		@schedule_element = ScheduleElement.create(schedule_id: @schedule.id, section_num: @section.section_num)
-
 		if @schedule_element.errors.any? 
 			result = false 
 			@schedule_element.errors.full_messages.each do |fm| 
 				errors.push(fm)
 			end 
 		end 
-
 		render json: { success: result, data: { errors: errors } }
-
 	end 
 
 
 
 
 
-
-
-
-
+	# Delete a schedule element from a specific schedule 
+	def destroy
+		# We have the schedule 
+		@schedule_element = ScheduleElement.where(schedule_id: @schedule.id).find_by_section_num(section_params[:section_num])
+		if !@schedule_element.blank?
+			@schedule_element.delete
+		end 
+		render json: { success: !@schedule_element.blank? }
+	end 
 
 
 
