@@ -31,10 +31,11 @@ module CoursesHelper
 
 	# Method to curate courses based upon the number that has been given in the query 
 	def num_compare(num, c)
-		course_num = c["catalogNbr"]
+		return true if num == nil # if no number was provided 
+		course_num = Integer(c["catalogNbr"])
 		div = 1000 
 		while(div > 0) do 
-			if num == c/div
+			if num == course_num/div
 				return true 
 			end 
 			div = div/10 

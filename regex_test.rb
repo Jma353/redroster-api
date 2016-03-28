@@ -14,13 +14,12 @@ i = line.index(/[0-9]/)
 
 p Integer(line[i..-1])
 
-line = "ORIE"
+line = "ORIE122"
 
 i = line.index(/[0-9]/)
 
-if i == nil 
-	p line
-end 
+p line[0..(i==nil ? -1 : i-1)]
+p line[(i==nil ? -1 : i)..-1]
 
 
 def num_compare(num, c)
@@ -36,3 +35,4 @@ def num_compare(num, c)
 end 
 
 p num_compare(212, 2112)
+

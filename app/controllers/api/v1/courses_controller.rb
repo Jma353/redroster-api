@@ -96,7 +96,13 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 	def search_courses
 
 		term = params[:term]
-		query = params[:query]	
+		query = params[:query]
+		query.gsub! " ", ""
+		i = query.index(/[0-9]/)
+
+		# Utilize these when finding courses
+		q_subj = query[0..(i==nil ? -1 : i-1)]
+		q_num = i == nil ? i : Integer(query[i..-1])
 
 		# Get all the subjects from a term 
 		uri = URI("https://classes.cornell.edu/api/2.0/config/subjects.json?roster=#{term}")
@@ -104,7 +110,7 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		if subject_json["status"] != "error"
 			subjects = []
 			subject_json["data"]["subjects"].each do |s| 
-				if s["value"].include?(query)
+				if s["value"] == q_subj # could do include? for more comprehensive search results 
 					subjects.push(s["value"])
 				end 
 			end 
@@ -115,8 +121,10 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 				if course_json["status"] != "error"
 					courses_info = course_json["data"]["classes"]
 					courses_info.each do |ci|
-						result_json = format_course_less(ci)
-						courses.push(result_json)
+						if num_compare(q_num, ci)
+							result_json = format_course_less(ci)
+							courses.push(result_json)
+						end
 					end 
 				end 
 			end 
@@ -124,8 +132,11 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		else 
 			render json: { success: false } and return 
 		end 
+
+
 	end 
 	
+
 
 end
 
