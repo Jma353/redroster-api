@@ -57,7 +57,7 @@ GET `/api/v1/courses/:term/:subject/:number` : In-depth course information (numb
 
 	{ api_key: "XYZ", id_token: "ABC" } 
 
-GET `api/v1/courses/search/:term/:query` : Query based on subject search term 
+GET `api/v1/search/:term/:query` : Query based on subject search term 
 	
 	{ api_key: "XYZ", id_token: "ABC" } 
 	
