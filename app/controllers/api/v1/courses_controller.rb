@@ -21,9 +21,9 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
 			terms = res_json["data"]["rosters"].map { |t| t["slug"] }
-			render json: { success: true, data: { terms: terms } } 
+			render json: { success: true, data: { terms: terms } } and return 
 		else 
-			render json: { success: false }
+			render json: { success: false } and return 
 		end 
 	end 
 
@@ -34,9 +34,9 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		uri = URI("https://classes.cornell.edu/api/2.0/config/subjects.json?roster=#{term}")
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
-			render json: { success: true, data: { subjects: res_json["data"]["subjects"] }  }
+			render json: { success: true, data: { subjects: res_json["data"]["subjects"] } } and return 
 		else 
-			render json: { success: false }
+			render json: { success: false } and return 
 		end 
 	end 
 
@@ -58,10 +58,10 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 				course_json = format_course(c)
 				result_json[:data][:courses].push(course_json)
 			end 
-			render json: result_json
+			render json: result_json and return 
 
 		else 
-			render json: { success: false } 
+			render json: { success: false } and return 
 		end 
 	end 
 
@@ -83,9 +83,9 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 			course_json[:class_sections] = res_json["data"]["classes"][0]["enrollGroups"][0]["classSections"]
 			result_json[:data] = course_json
 
-			render json: result_json
+			render json: result_json and return 
 		else 
-			render json: { success: false }
+			render json: { success: false } and return 
 		end 
 
 	end 
@@ -108,13 +108,26 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 					subjects.push(s["value"])
 				end 
 			end 
-			render json: { success: true, data: { subjects: subjects } }
+			courses = []
+			subjects.each do |s| 
+				subject_uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{s}")
+				course_json = JSON.parse(Net::HTTP.get(subject_uri))
+				if course_json["status"] != "error"
+					courses_info = course_json["data"]["classes"]
+					p course_json
+					p courses_info 
+					courses_info.each do |ci|
+						result_json = format_course_less(ci)
+						courses.push(result_json)
+					end 
+				end 
+			end 
+			render json: { success: true, data: { courses: courses } } and return
 		else 
-			render json: { success: false }
+			render json: { success: false } and return 
 		end 
 	end 
 	
-
 
 end
 
