@@ -4,6 +4,7 @@
 #  
 #  id 								:integer 					 	not null, PRIMARY KEY 
 #  user_id 						:integer					 	not null/blank 
+#  term								:string 						not null/blank
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
@@ -11,6 +12,7 @@
 class Schedule < ActiveRecord::Base
 
 	validates :user_id, presence: true 
+	validates :term, presence: true 
 	validate :user_exists, :on => :create 
 
 

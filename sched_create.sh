@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 
-data='{ "api_key": "'"$1"'", "id_token": "'"$2"'"}'
+data='{ "api_key": "'"$1"'", "id_token": "'"$2"'", "schedule": { "term": "'"$3"'" } }'
 
 echo $data
 

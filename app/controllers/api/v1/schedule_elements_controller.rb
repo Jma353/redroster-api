@@ -32,6 +32,9 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		if @section.blank? 
 			# All necessary to search for the required value 
 			term = section_params[:term]
+			if term != @schedule.term 
+				render json: { sucess: false, data: { error: "This schedule's term does not match this desired course's term"}} and return false
+			end 
 			subject = section_params[:subject]
 			course_num = section_params[:course_num]
 			section_num = section_params[:section_num]

@@ -12,7 +12,7 @@ POST `/api/v1/sign_in` : Sign in validation
 
 POST `/api/v1/schedules/create` (not ready for production use)
 
-	{ api_key: "XYZ", id_token: "ABC" } 
+	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16" } } 
 	
 GET `api/v1/schedules/show/:schedule_id` (not ready for production use) : Returns a formatted schedule ready for easy parsing.  
 

@@ -4,6 +4,7 @@
 #  
 #  id 								:integer 					 	not null, PRIMARY KEY 
 #  user_id 						:integer					 	not null/blank 
+#  term								:string 						not null/blank
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
@@ -18,7 +19,8 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 
 	# Schedule creation endpoint 
 	def create
-		s = Schedule.create(user_id: @user.id)
+		result = schedule_params.merge!({ user_id: @user.id })
+		s = Schedule.create(result)
 		render json: { success: s.valid? }
 	end 
 
@@ -55,7 +57,11 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 		render json: { success: !s.blank? }
 	end 
 
+	private 
 
+		def schedule_params 
+			params.require(:schedule).permit(:user_id, :term)
+		end 
 
 
 
