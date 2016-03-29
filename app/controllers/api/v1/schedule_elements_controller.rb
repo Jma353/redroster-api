@@ -73,7 +73,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		end 
 		# At this point, we have the @section and the @schedule we care about 
 		@schedule_element = ScheduleElement.create(schedule_id: @schedule.id, section_num: @section.section_num)
-		end 
 		render json: { success: @schedule_element.valid?, 
 									 data: { errors: (@schedule_element.errors.any? ? @schedule_element.errors.full_messages : []) } }
 
