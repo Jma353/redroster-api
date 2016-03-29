@@ -48,9 +48,17 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 				course_info = res_json["data"]["classes"][0]
 				@course = Course.find_by_course_id(course_info["crseId"])
+
 				# If this course doesn't exist, create it as necessary 
 				if @course.blank? 
 					@course = Course.create(course_id: course_info["crseId"], term: term, subject: subject, number: course_num)
+					@master_course = MasterCourse.find_by(subject: subject, number: course_num)
+					# If master course doesn't exist 
+					if @master_course.blank?
+						@master_course = MasterCourse.create(subject: subject, number:course_num)
+					end 
+					@course.master_course_id = @master_course.id 
+					@course.save 
 				end 
 
 				sections = course_info["enrollGroups"][0]["classSections"]

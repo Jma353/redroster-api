@@ -14,30 +14,27 @@ Rails.application.routes.draw do
 
       get "schedules/show/:schedule_id" => "schedules#show", :as => 'schedules_show'
 
-      delete "schedules/delete" => "schedules#destroy"
+      delete "schedules/delete" => "schedules#destroy", :as => 'schedules_destroy'
 
       # Schedule Elements 
 
-      post "schedule_elements/create" => "schedule_elements#create"
+      post "schedule_elements/create" => "schedule_elements#create", :as => 'schedule_elements_create'
 
-      delete "schedule_elements/delete" => "schedule_elements#destroy"
+      delete "schedule_elements/delete" => "schedule_elements#destroy", :as => 'schedule_elements_destroy'
 
       # All search stuff/fetching of terms, subjects, and courses 
 
-      get "search/:term/:query" => "courses#search_courses"
+      get "search/:term/:query" => "courses#search_courses", :as => 'search_by_term'
 
-      get "search_by_subject/:term/:query" => "courses#search_subjects"
+      get "search_by_subject/:term/:query" => "courses#search_subjects", :as => 'search_by_term_and_subject'
 
-      get "courses/" => "courses#list_of_terms"
+      get "courses/" => "courses#list_of_terms", :as => 'courses_terms'
 
-      get "courses/:term" => "courses#subjects_by_term"
+      get "courses/:term" => "courses#subjects_by_term", :as => 'courses_by_term'
 
-      get "courses/:term/:subject" => "courses#courses_by_subject"
+      get "courses/:term/:subject" => "courses#courses_by_subject", :as => 'courses_by_term__subject'
 
-      get "courses/:term/:subject/:number" => "courses#course_info"
-
-
-
+      get "courses/:term/:subject/:number" => "courses#course_info", :as => 'courses_by_term_subject_number'
 
     end 
   end 

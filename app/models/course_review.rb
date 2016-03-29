@@ -16,7 +16,7 @@ class CourseReview < ActiveRecord::Base
 
 	validates :course_id, presence: true 
 	validates :user_id, presence: true
-	belongs_to :course 
+	belongs_to :master_course
 	belongs_to :user 
 	validate :user_has_not_reviewed, :on => :create 
 
@@ -25,6 +25,6 @@ class CourseReview < ActiveRecord::Base
 		errors.add_to_base("You have already reviewed this course") unless c.blank? 
 	end 
 
-	
+
 
 end

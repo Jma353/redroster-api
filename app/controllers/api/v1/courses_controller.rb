@@ -2,12 +2,14 @@
 # 
 #  Table Name: courses 
 #  
-#  id					 				:integer					 	not null, PRIMARY KEY 
+#  course_id					:integer					 	not null (THIS IS GIVEN BY CORNELL), PRIMARY KEY 
+#  master_course_id 	:integer 						refers to master course 
 #  term 							:string 					 	not null/blank, 4 characters 
 #  subject 		 				:string 				   	not null/blank, 2 or more characters 
 #  number			 				:integer 				   	not null/blank, 1000..9999 range 
 #  created_at  				:datetime				   	not null
 #  updated_at  				:datetime 				 	not null 
+
 
 include CoursesHelper 
 class Api::V1::CoursesController < Api::V1::ApplicationController
