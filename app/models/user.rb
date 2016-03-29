@@ -2,17 +2,22 @@
 # 
 #  Table Name: users
 #  
-#  id     		 				:integer 				 	 	not null, PRIMARY KEY 			 
+#  id     		 				:integer 				 	 	not null, PRIMARY KEY 	
+#  google_id 					:integer						not null, corresponds w/Google SUD # returned on validation w/Google sign-in 		 
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 			 	 	not null 
 
-
 class User < ActiveRecord::Base
 
+	validates :google_id, presence: true 
 
-	# Get this user's session 
-	def session 
-		Session.find_by_user_id(self.id)
+	
+	def friends
+		a = Friendship.where(user1_id: self.id)
+		b = Friendship.where(user2_id: self.id)
+		a = a.map { |f| f.user2 }
+		b = b.map { |f| f.user1 }
+		a + b
 	end 
 
 

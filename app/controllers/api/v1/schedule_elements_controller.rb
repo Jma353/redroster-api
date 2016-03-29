@@ -19,6 +19,8 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
+
+
 	# EXTREMELY FAT CREATE METHOD (logic is somewhat complex for a reason.. this is how we're going to load the database w/info)
 	# @ root of json, need :schedule_id 
 	# w/in :section, we need :term, :subject, :course_num (1000...9999), :section_num (5-digit section num)
@@ -76,6 +78,7 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 									 data: { errors: (@schedule_element.errors.any? ? @schedule_element.errors.full_messages : []) } }
 
 	end 
+
 
 
 
