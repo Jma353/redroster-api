@@ -44,6 +44,8 @@ class Section < ActiveRecord::Base
 		min_int(self.end_time)
 	end 
 
+
+	# Method to test collision with another section 
 	def collides?(section)
 		same_dates = self.day_pattern.include?(section.day_pattern) || (section.day_pattern.include? self.day_pattern)
 		self_start_between = time_between?(self.start_hour, self.start_mins, section)
@@ -55,7 +57,7 @@ class Section < ActiveRecord::Base
 		both_contained = (section_start_between && section_end_between) || (self_start_between && self_end_between)
 
 		return same_dates && (both_contained || self_start_between || self_end_between)
-		
+
 	end 
 
 

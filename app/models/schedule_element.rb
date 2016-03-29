@@ -5,9 +5,10 @@
 #  PRIMARY KEY: (schedule_id, section_num)
 # 
 #  schedule_id 				:integer 						not null
-#  section_num				:integer						not null
+#  section_num 				:integer						not null 
+#  collision 					:boolean 						not null (set based on time collisions with other schedule elements)
 #  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 				 	not null 
+#  updated_at  				:datetime 				 	not null
 
 class ScheduleElement < ActiveRecord::Base
 
@@ -45,9 +46,21 @@ class ScheduleElement < ActiveRecord::Base
 		end 
 	end 
 
+
+	# Fill the `collision` field on creation in a way that utilizes appropriate logic 
 	def check_collisions
 		schedule_peers = ScheduleElement.where(schedule_id: self.schedule_id)
-		
+		section = Section.find_by_section_num(self.section_num)
+		schedule_peers.each do |se|
+			peer_section = Section.find_by_section_num(se.section_num)
+			if section.collides?(peer_section)
+				self.collision = true 
+				return 
+			end 
+		end 
+
+		self.collision = false 
+		return 
 	end 
 
 

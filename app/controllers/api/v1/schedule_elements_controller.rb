@@ -58,10 +58,10 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 				@section = Section.create(section_num: section_num, 
 																	course_id: @course.course_id, 
-																	section_type: section_type[0], 
-																	start_time: section_type[1],
-																	end_time: section_type[2],
-																	day_pattern: section_type[3])	
+																	section_type: section_dets[0], 
+																	start_time: section_dets[1],
+																	end_time: section_dets[2],
+																	day_pattern: section_dets[3])	
 
 			else 
 				result = false 
