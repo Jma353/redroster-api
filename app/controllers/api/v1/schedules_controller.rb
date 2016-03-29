@@ -16,12 +16,11 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 	before_action :schedule_belongs_to_user, only: [:show] # in ApplicationController 
 
 
-
 	# Schedule creation endpoint 
 	def create
 		result = schedule_params.merge!({ user_id: @user.id })
 		s = Schedule.create(result)
-		render json: { success: s.valid? }
+		render json: { success: s.valid? } and return true 
 	end 
 
 
@@ -39,6 +38,7 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 			result.push(sec)
 		end 
 		
+		p result 
 		render json: { success: true, data: { schedule: result } } 
 
 	end 
@@ -59,10 +59,13 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 
 	private 
 
-		def schedule_params 
-			params.require(:schedule).permit(:user_id, :term)
+		def schedule_params 	
+			if params[:schedule].present? 
+				params.require(:schedule).permit(:user_id, :term)
+			else 
+				{}
+			end 
 		end 
-
 
 
 end

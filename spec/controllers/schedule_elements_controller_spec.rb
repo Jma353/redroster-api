@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe ScheduleElementsController, type: :controller do
+RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 
 end

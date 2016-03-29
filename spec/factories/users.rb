@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :user do
-    google_token "MyString"
+    google_id "MyString"
   end
 end

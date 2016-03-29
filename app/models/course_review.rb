@@ -25,5 +25,6 @@ class CourseReview < ActiveRecord::Base
 		errors.add_to_base("You have already reviewed this course") unless c.blank? 
 	end 
 
+	
 
 end

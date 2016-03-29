@@ -20,8 +20,10 @@ class User < ActiveRecord::Base
 		a + b
 	end 
 
-
+	# Required number of reviews is 5 to see reviews on the platform 
 	def has_completed_reviews
+		reviews = CourseReview.where(user_id: self.id)
+		reviews.size >= 5
 	end 
 
 end

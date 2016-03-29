@@ -10,9 +10,9 @@ Rails.application.routes.draw do
 
       # Schedules
 
-      post "schedules/create" => "schedules#create"
+      post "schedules/create" => "schedules#create", :as => 'schedules_create'
 
-      get "schedules/show/:schedule_id" => "schedules#show"
+      get "schedules/show/:schedule_id" => "schedules#show", :as => 'schedules_show'
 
       delete "schedules/delete" => "schedules#destroy"
 
