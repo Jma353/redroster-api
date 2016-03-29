@@ -46,6 +46,16 @@ class Section < ActiveRecord::Base
 
 	def collides?(section)
 		same_dates = self.day_pattern.include?(section.day_pattern) || (section.day_pattern.include? self.day_pattern)
+		self_start_between = time_between?(self.start_hour, self.start_mins, section)
+		self_end_between = time_between?(self.end_hour, self.end_mins, section)
+
+		section_start_between = time_between?(section.start_hour, section.start_mins, self)
+		section_end_between = time_between?(section.end_hour, section.end_mins, self)
+
+		both_contained = (section_start_between && section_end_between) || (self_start_between && self_end_between)
+
+		return same_dates && (both_contained || self_start_between || self_end_between)
+		
 	end 
 
 

@@ -1,5 +1,5 @@
 module SectionsHelper
-
+	require 'date'
 
 	# From a string time in the format "HH:MM(AM/PM)", obtain minute integer 
 	def min_int(time_string)
@@ -16,6 +16,15 @@ module SectionsHelper
 		am_or_pm = time_string[(time_string.index(/[A-Za-z]/))..-1]
 		Integer(hour_string) + (am_or_pm.upcase == "PM" ? 12 : 0)
 	end
+
+
+	def time_between?(h, m, s)	
+		s1_time = Time.local(2016, 1, 1, h, m, 0)
+		s2_start = Time.local(2016, 1, 1, s.start_hour, s.start_mins, 0)
+		s2_end = Time.local(2016, 1, 1, s.end_hour, s.end_mins, 0)
+
+		(s2_start..s2_end).cover? s1_time
+	end 
 
 
 end
