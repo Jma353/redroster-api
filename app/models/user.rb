@@ -21,5 +21,7 @@ class User < ActiveRecord::Base
 	end 
 
 
+	def has_completed_reviews
+	end 
 
 end
