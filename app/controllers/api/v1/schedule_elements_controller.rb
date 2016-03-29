@@ -6,6 +6,7 @@
 # 
 #  schedule_id 				:integer 						not null
 #  section_num 				:integer						not null 
+#  collision 					:boolean 						not null (set based on time collisions with other schedule elements)
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
@@ -50,12 +51,17 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 				sections = course_info["enrollGroups"][0]["classSections"]
 				# If the section does not exist w/in the specified Course 
-				section_type = section_type(sections, section_num)
-				if section_type.blank? 
+				section_dets = section_details(sections, section_num)
+				if section_dets.blank? 
 					render json: { success: false, data: { error: "This section does not exist with within this term and course."}} and return false 
 				end 
-				
-				@section = Section.create(section_num: section_num, course_id: @course.course_id, section_type: section_type)	
+
+				@section = Section.create(section_num: section_num, 
+																	course_id: @course.course_id, 
+																	section_type: section_type[0], 
+																	start_time: section_type[1],
+																	end_time: section_type[2],
+																	day_pattern: section_type[3])	
 
 			else 
 				result = false 

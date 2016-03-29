@@ -18,6 +18,7 @@ class ScheduleElement < ActiveRecord::Base
 	validate :schedule_exists, :on => :create 
 	validate :section_exists, :on => :create 
 	validate :no_section_collision, :on => :create 
+		before_create :check_collisions
 
 	# Check to see if the schedule exists
 	def schedule_exists 
@@ -42,6 +43,11 @@ class ScheduleElement < ActiveRecord::Base
 				errors.add(:section_num, ": Another section exists that is of the same type and course as this one") unless section.section_type == "DIS"
 			end 
 		end 
+	end 
+
+	def check_collisions
+		schedule_peers = ScheduleElement.where(schedule_id: self.schedule_id)
+		
 	end 
 
 

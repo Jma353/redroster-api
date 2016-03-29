@@ -2,37 +2,26 @@
 
 # Playground file to test regex's/string searching method 
 
-line = "CS1110"
 
-i = line.index(/[0-9]/)
+line = "11:45PM"
 
-p Integer(line[i..-1])
-
-line = "ORIE31"
-
-i = line.index(/[0-9]/)
-
-p Integer(line[i..-1])
-
-line = "ORIE122"
-
-i = line.index(/[0-9]/)
-
-p line[0..(i==nil ? -1 : i-1)]
-p line[(i==nil ? -1 : i)..-1]
+p line[0...(line.index(":"))]
+p line[(line.index(/[A-Za-z]/))..-1]
 
 
-def num_compare(num, c)
-	course_num = c
-	div = 1000 
-	while(div > 0) do 
-		if num == c/div
-			return true 
-		end 
-		div = div/10 
-	end 
-	return false 
-end 
 
-p num_compare(212, 2112)
 
+
+def start_hour(start_time)
+	hour_string = start_time[0...(start_time.index(":"))]
+	am_or_pm = start_time[(start_time.index(/[A-Za-z]/))..-1]
+	Integer(hour_string) + (am_or_pm.upcase == "PM" ? 12 : 0)
+end
+
+
+p start_hour(line)
+
+
+
+
+p "MWF".split("")
