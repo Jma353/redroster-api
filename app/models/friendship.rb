@@ -24,5 +24,7 @@ class Friendship < ActiveRecord::Base
  		errors.add_to_base("You can't friend request yourself") unless self.user1_id != self.user2_id
  	end 
 
+
+ 	
  	
 end
