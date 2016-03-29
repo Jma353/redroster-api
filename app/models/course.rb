@@ -20,7 +20,7 @@ class Course < ActiveRecord::Base
 	validate :unique_class, :on => :create 
 
 	def unique_class 
-		errors.add(number: "This course exists already") unless Course.find_by(term: self.term, subject: self.subject, number: self.number).blank?
+		errors.add_to_base("This course exists already") unless Course.find_by(term: self.term, subject: self.subject, number: self.number).blank?
 	end 
 
 	def sections 
