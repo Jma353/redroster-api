@@ -24,20 +24,19 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 	# w/in :section, we need :term, :subject, :course_num (1000...9999), :section_num (5-digit section num)
 	def create 	
 		# At this point, we have the schedule
+		# Check this condition before continuing further 
+		if params[:term] != @schedule.term 
+			render json: { sucess: false, data: { error: "This schedule's term does not match this desired course's term"}} and return false
+		end 
 		@section = Section.find_by_section_num(section_params[:section_num])
-		# Tracks to the success of the action
-		result = true 
-		errors = []
 		# Make the section (and the course) if their bare credentials don't exist in our db already 
 		if @section.blank? 
 			# All necessary to search for the required value 
 			term = section_params[:term]
-			if term != @schedule.term 
-				render json: { sucess: false, data: { error: "This schedule's term does not match this desired course's term"}} and return false
-			end 
 			subject = section_params[:subject]
 			course_num = section_params[:course_num]
 			section_num = section_params[:section_num]
+
 			# Create this value 
 			url_string = "https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{course_num}"
 			p url_string
@@ -67,18 +66,15 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 																	day_pattern: section_dets[3])	
 
 			else 
-				result = false 
+				render json: { success: false, data: { error: "A networking error occurred." } } and return false
 			end 
 		end 
 		# At this point, we have the @section and the @schedule we care about 
 		@schedule_element = ScheduleElement.create(schedule_id: @schedule.id, section_num: @section.section_num)
-		if @schedule_element.errors.any? 
-			result = false 
-			@schedule_element.errors.full_messages.each do |fm| 
-				errors.push(fm)
-			end 
 		end 
-		render json: { success: result, data: { errors: errors } }
+		render json: { success: @schedule_element.valid?, 
+									 data: { errors: (@schedule_element.errors.any? ? @schedule_element.errors.full_messages : []) } }
+
 	end 
 
 
