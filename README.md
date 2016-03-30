@@ -97,6 +97,7 @@ POST `/api/v1/course_reviews/create` : Create a review for a specific course
 	 } 
 	 
 
+
 DELETE `/api/v1/course_reviews/delete` : Delete a review for a specific course 
 
 	{ api_key: "XYZ", id_token: "ABC", course_review: { master_course_id: 123 } }

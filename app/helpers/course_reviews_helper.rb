@@ -7,7 +7,7 @@ module CourseReviewsHelper
 	def review_statistics(reviews) 
 		lecture = 0; office_hours = 0; difficulty = 0; material = 0
 		reviews.each do |r| 
-			lecture += r.lecture; office_hours += r.office_hours; difficulty += difficulty; material += material 
+			lecture += r.lecture; office_hours += r.office_hours; difficulty += r.difficulty; material += r.material 
 		end
 		total = Float(reviews.size == 0 ? 1 : reviews.size)
 		return { lecture: lecture/total, office_hours: office_hours/total, difficulty: difficulty/total, material: material/total }

@@ -4,8 +4,11 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 
 	before(:each) do 
 		@user = FactoryGirl.create(:user, google_id: "hello_world")
-		@master_course = FactoryGirl.create(:master_course, subject: "CS", number: 1000)
+		@master_course = FactoryGirl.create(:master_course, subject: "CS", number: 1110)
 	end 
+
+
+
 
 	# CREATING COURSE 
 
@@ -26,6 +29,10 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 	end 
 
 
+
+
+
+
 	# DELETING COURSE 
 
 	def delete_course(user, master_course)
@@ -44,6 +51,46 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 
 
 
+
+
+	# OBTAINING FULL COURSE REVIEW STATS 
+
+	def create_course_review(user, term, subject, number, scores={}, feedback)
+		post :create, { api_key: ENV["API_KEY"], id_token: user.google_id,
+									  course_review: 
+									  { term: term, 
+									  	subject: subject, 
+										 	number: number, 
+										 	lecture: scores[:lecture],
+											office_hours: scores[:office_hours],
+											difficulty: scores[:difficulty],
+											material: scores[:material],
+											feedback: feedback
+									 	}
+								  }
+	end 
+
+
+	it "test obtaining full set of reviews for a course" do 
+		# Create several reviews
+		(1..10).each do |i| 
+			u = FactoryGirl.create(:user, google_id: "#{i}")
+			create_course_review(u, "FA15","CS", 1110, { lecture: rand(1..10),
+													 					 							 office_hours: rand(1..10),
+													 					 							 difficulty: rand(1..10),
+													 					 							 material: rand(1..10)
+													 				 							  }, "This is review number #{i}")
+		end 
+
+		get :reviews_by_course, { api_key: ENV["API_KEY"], id_token: @user.google_id, 
+															course_review: { subject: "CS", number: 1110 }
+														}
+
+		expect(response).to be_success
+		json = JSON.parse(response.body)
+		p json
+
+	end
 
 
 

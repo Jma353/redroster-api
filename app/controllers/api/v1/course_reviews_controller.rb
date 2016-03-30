@@ -48,11 +48,11 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 	end 
 
 
-	def show 
-		@reviews = CourseReview.where(master_course_id: @master_course.id)
-		
-	end 
 
+	def reviews_by_course 
+		master_course_with_reviews = @master_course.as_json([:include_reviews])	
+		render json: { success: true, data: master_course_with_reviews }
+	end 
 
 
 
@@ -65,8 +65,6 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 			render json: { success: true }
 		end
 	end 
-
-
 
 
 
