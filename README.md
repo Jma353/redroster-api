@@ -4,17 +4,20 @@
 
 
 ## Endpoints 
-
+### Sign In 
 
 POST `/api/v1/sign_in` : Sign in validation 
 	
 	{ api_key: "XYZ", id_token: "ABC" }
 
+### Schedules
+
 POST `/api/v1/schedules/create` (not ready for production use)
 
 	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16" } } 
 	
-GET `api/v1/schedules/show/:schedule_id` (not ready for production use) : Returns a formatted schedule ready for easy parsing.  
+	
+GET `/api/v1/schedules/show/:schedule_id` (not ready for production use) : Returns a formatted schedule ready for easy parsing.  
 
 	{ api_key: "XYZ", id_token: "ABC", schedule_id: 1} 
 
@@ -23,7 +26,9 @@ DELETE `/api/v1/schedules/delete` (not ready for production use)
 
 	{ api_key: "XYZ", id_token: "ABC", schedule_id: 1 } 
 	
-POST `api/v1/schedule_elements/create` (not ready for production use)
+### Schedule Elements 
+	
+POST `/api/v1/schedule_elements/create` (not ready for production use)
 
 	{ 
 	  api_key: "XYZ", 
@@ -38,13 +43,14 @@ POST `api/v1/schedule_elements/create` (not ready for production use)
 	  			}
 	 }
 	 
-DELETE `api/v1/schedule_elements/delete` (not ready for production use)
+DELETE `/api/v1/schedule_elements/delete` (not ready for production use)
 
 	{ api_key: "XYZ",
 	  id_token: "ABC",
 	  schedule_id: 1,
 	  section: { section_num: 11828 } 
 	 }
+### Courses 
 	
 GET `/api/v1/courses` : List of terms that offer courses 
 
@@ -62,15 +68,25 @@ GET `/api/v1/courses/:term/:subject/:number` : In-depth course information (numb
 
 	{ api_key: "XYZ", id_token: "ABC" } 
 
-GET `api/v1/search/:term/:query` : Search results for all-purpose course query (e.g. "ORIE3120", "ORI", "CS11", etc.) 
+GET `/api/v1/search/:term/:query` : Search results for all-purpose course query (e.g. "ORIE3120", "ORI", "CS11", etc.) 
 	
 	{ api_key: "XYZ", id_token: "ABC" } 
 	
-GET `api/v1/search_by_subject/:term/:query` : Search subjects of a particular term based upon any search query.  Returns value/descr of the subject namespaced under "subject."
+GET `/api/v1/search_by_subject/:term/:query` : Search subjects of a particular term based upon any search query.  Returns value/descr of the subject namespaced under "subject."
 
 	{ api_key: "XYZ", id_token: "ABC" }
 	
  
+### Course Reviews 
+
+POST `/api/v1/course_reviews/create` : Create a review for a specific course 
+
+	{ api_key: "XYZ", id_token: "ABC", course_review: { master_course_id: 123, // Soon to come review attrs } } 
+
+DELETE `/api/v1/course_reviews/delete` : Delete a review for a specific course 
+
+	{ api_key: "XYZ", id_token: "ABC", course_review: { master_course_id: 123 } }
+	
 
 
 
