@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
       get "course_reviews/by_course" => "course_reviews#reviews_by_course", :as => 'course_reviews_by_course'
 
-      get "course_reviews/specific_course" => "course_reviews#specific_review", :as => 'course_review_for_course'
+      get "course_reviews/specific_review" => "course_reviews#specific_review", :as => 'course_review_for_course'
 
       delete "course_reviews/delete" => "course_reviews#destroy", :as => 'course_reviews_destroy'
 
