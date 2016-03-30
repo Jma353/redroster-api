@@ -19,11 +19,11 @@ class CourseReview < ActiveRecord::Base
 
 	validates :master_course_id, presence: true 
 	validates :user_id, presence: true
-	validates :lecture, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
-	validates :office_hours, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
-	validates :difficulty, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
-	validates :material, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
-	validates	:feedback, length: { maximim: 200 } # => max 200 character feedback 
+	validates :lecture, allow_blank: true, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+	validates :office_hours, allow_blank: true, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+	validates :difficulty, allow_blank: true, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+	validates :material, allow_blank: true, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+	validates	:feedback, allow_blank: true, length: { maximum: 200 } # => max 200 character feedback 
 
 	belongs_to :master_course
 	belongs_to :user 

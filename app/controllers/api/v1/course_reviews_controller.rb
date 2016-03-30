@@ -35,9 +35,14 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 	def create
 		@review = CourseReview.create(master_course_id: @master_course.id, 
+																	term: course_review_params[:term],
+																	lecture: course_review_params[:lecture],
+																	office_hours: course_review_params[:office_hours],
+																	difficulty: course_review_params[:difficulty],
+																	material: course_review_params[:material],
 																	feedback: course_review_params[:feedback], 
 																	user_id: course_review_params[:user_id])
-
+		
 		data = @review.valid? ? ({ course_review: @review }) : ({ errors: @review.errors.full_messages })
 		render json: { success: @review.valid?, data: data }  
 	end 
@@ -71,7 +76,13 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 		def course_review_params 
 			if params[:course_review].present? 
-				params.require(:course_review).permit(:master_course_id, :feedback).merge(user_id: @user.id)
+				params.require(:course_review).permit(:master_course_id, 
+																							:term, 
+																							:lecture,
+																							:office_hours, 
+																							:difficulty, 
+																							:material,
+																							:feedback).merge(user_id: @user.id)
 			else
 				return {}
 			end 

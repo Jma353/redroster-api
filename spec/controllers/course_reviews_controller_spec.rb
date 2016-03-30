@@ -15,6 +15,7 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 
 		expect(response).to be_success
 		json = JSON.parse(response.body)
+		p json
 		expect(json["success"]).to be(true)
 		expect(json["data"]["course_review"]["feedback"]).to eq("This course rocks")
 	end 
