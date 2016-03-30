@@ -81,7 +81,21 @@ GET `/api/v1/search_by_subject/:term/:query` : Search subjects of a particular t
 
 POST `/api/v1/course_reviews/create` : Create a review for a specific course 
 
-	{ api_key: "XYZ", id_token: "ABC", course_review: { subject: "CS", number: 1110, // Soon to come review attrs } } 
+	{ 
+	  api_key: "XYZ", 
+	  id_token: "ABC",
+	  course_review: { 
+	  					subject: "CS", 
+	  					number: 1110, 
+	  					term: "FA15",
+	  					lecture: [1-10],
+	  					office_hours: [1-10],
+	  					difficulty: [1-10],
+	  					material: [1-10],
+	  					feedback: "Max 200 char feedback" 
+	  				  } 
+	 } 
+	 
 
 DELETE `/api/v1/course_reviews/delete` : Delete a review for a specific course 
 
