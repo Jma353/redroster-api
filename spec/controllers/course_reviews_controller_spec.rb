@@ -11,10 +11,11 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 
 	def create_course(user, master_course)
 		post :create, { api_key: ENV["API_KEY"], id_token: user.google_id, 
-										course_review: { master_course_id: master_course.id, feedback: "This course rocks" }}
+										course_review: { subject: "CS", number: 1110, feedback: "This course rocks" }}
 
 		expect(response).to be_success
 		json = JSON.parse(response.body)
+		expect(json["success"]).to be(true)
 		expect(json["data"]["course_review"]["feedback"]).to eq("This course rocks")
 	end 
 

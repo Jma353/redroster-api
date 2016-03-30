@@ -81,7 +81,7 @@ GET `/api/v1/search_by_subject/:term/:query` : Search subjects of a particular t
 
 POST `/api/v1/course_reviews/create` : Create a review for a specific course 
 
-	{ api_key: "XYZ", id_token: "ABC", course_review: { master_course_id: 123, // Soon to come review attrs } } 
+	{ api_key: "XYZ", id_token: "ABC", course_review: { subject: "CS", number: 1110, // Soon to come review attrs } } 
 
 DELETE `/api/v1/course_reviews/delete` : Delete a review for a specific course 
 
