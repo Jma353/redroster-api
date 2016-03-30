@@ -4,7 +4,12 @@
 #  
 #  id 								:integer 					 	not null, PRIMARY KEY 
 #  master_course_id 	:integer 						not null/blank
-#  user_id 						:integer 						not null/blank				
+#  user_id 						:integer 						not null/blank
+#  term								:string 						
+#  lecture						:integer						1..10
+#  office_hours 			:integer 						1..10 
+#  difficulty					:integer 						1..10 
+#  material						:integer 						1..10 
 #  feedback						:text 			
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
@@ -26,6 +31,8 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 
 
+
+
 	def create
 		@review = CourseReview.create(master_course_id: @master_course.id, 
 																	feedback: course_review_params[:feedback], 
@@ -37,9 +44,13 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 
 
+
 	def show 
-		# TODO 
+		@reviews = CourseReview.where(master_course_id: @master_course.id)
+		
 	end 
+
+
 
 
 
@@ -51,6 +62,9 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 			render json: { success: true }
 		end
 	end 
+
+
+
 
 
 	private 
