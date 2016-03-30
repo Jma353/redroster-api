@@ -3,7 +3,7 @@
 #  Table Name: course_reviews 
 #  
 #  id 								:integer 					 	not null, PRIMARY KEY 
-#  course_id 					:integer 						not null/blank
+#  master_course_id 	:integer 						not null/blank
 #  user_id 						:integer 						not null/blank
 #  title							:integer 						
 #  feedback						:text 			
@@ -24,7 +24,6 @@ class CourseReview < ActiveRecord::Base
 		c = CourseReview.where(course_id: self.course_id).find_by_user_id(self.user)
 		errors.add_to_base("You have already reviewed this course") unless c.blank? 
 	end 
-
 
 
 end

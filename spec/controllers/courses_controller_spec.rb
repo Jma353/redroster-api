@@ -35,6 +35,8 @@ RSpec.describe Api::V1::CoursesController, type: :controller do
 		expect(json["data"]["courses"][0]["id"]).to be(358526)
 	end 
 
+	
+
 
 
 end

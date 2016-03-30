@@ -11,4 +11,5 @@
 # To track all courses + reviews ever, just just given a term 
 
 class MasterCourse < ActiveRecord::Base
+	
 end
