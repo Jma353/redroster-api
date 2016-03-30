@@ -34,7 +34,11 @@ class CourseReview < ActiveRecord::Base
 		errors.add_to_base("You have already reviewed this course") unless c.blank? 
 	end 
 
-	
+
+	# Will change later to feat. usernames or handles or something 
+	def as_json(options=[])
+		super({ only: [:user_id, :term, :lecture, :office_hours, :difficulty, :material, :feedback] })
+	end 
 
 
 end

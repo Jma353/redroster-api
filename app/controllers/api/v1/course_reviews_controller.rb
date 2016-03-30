@@ -48,8 +48,6 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 	end 
 
 
-
-
 	def show 
 		@reviews = CourseReview.where(master_course_id: @master_course.id)
 		
