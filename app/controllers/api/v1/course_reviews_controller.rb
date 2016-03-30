@@ -33,6 +33,7 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 
 
+
 	def create
 		@review = CourseReview.create(master_course_id: @master_course.id, 
 																	term: course_review_params[:term],
@@ -49,10 +50,12 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 
 
+
 	def reviews_by_course 
 		master_course_with_reviews = @master_course.as_json([:include_reviews])	
 		render json: { success: true, data: master_course_with_reviews }
 	end 
+
 
 
 
@@ -65,6 +68,8 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 			render json: { success: true }
 		end
 	end 
+
+
 
 
 

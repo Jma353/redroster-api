@@ -96,7 +96,11 @@ POST `/api/v1/course_reviews/create` : Create a review for a specific course
 	  				  } 
 	 } 
 	 
+GET `/api/v1/course_reviews/by_course` : View reviews/overall averages for review metrics given a course subject and number 
 
+	{ api_key: "XYZ", 
+	  id_token: "ABC", 
+	  course_review: { subject: "CS", number: 1110 } } 
 
 DELETE `/api/v1/course_reviews/delete` : Delete a review for a specific course 
 

@@ -41,7 +41,7 @@ Rails.application.routes.draw do
 
       post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
 
-      get "course_reviews/analytics" => "course_reviews#reviews_by_course", :as => 'course_reviews_by_course'
+      get "course_reviews/by_course" => "course_reviews#reviews_by_course", :as => 'course_reviews_by_course'
 
       delete "course_reviews/delete" => "course_reviews#destroy", :as => 'course_reviews_destroy'
 

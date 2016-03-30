@@ -37,7 +37,7 @@ class CourseReview < ActiveRecord::Base
 
 	# Will change later to feat. usernames or handles or something 
 	def as_json(options=[])
-		super({ only: [:user_id, :term, :lecture, :office_hours, :difficulty, :material, :feedback] })
+		super({ only: [:id, :user_id, :term, :lecture, :office_hours, :difficulty, :material, :feedback] })
 	end 
 
 
