@@ -14,11 +14,11 @@
 #  created_at  				:datetime				 	 	not null
 #  updated_at  				:datetime 				 	not null 
 
-
+include CourseReviewsHelper
 class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 	before_action :grab_test_user 
-	before_action :get_or_create_master_course, only: [:create, :reviews_by_course]
+	before_action :get_or_create_master_course, only: [:create, :reviews_by_course, :specific_review]
 
 
 
@@ -58,6 +58,17 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 
 
+	def specific_review 
+		p course_review_params[:course_review_id]
+		@review = CourseReview.where(master_course_id: @master_course.id).find_by_id(params[:course_review][:course_review_id])
+
+		if !@review.blank? 
+			result = @review.as_json.merge({ instructors: get_prof(@review.term, @review.master_course.subject, @review.master_course.number) })
+		else 
+			result =  {} 
+		end 
+		render json: { success: !@review.blank?, data: result }
+	end 
 
 
 	def destroy

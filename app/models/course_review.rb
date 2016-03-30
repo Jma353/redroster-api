@@ -33,7 +33,7 @@ class CourseReview < ActiveRecord::Base
 		c = CourseReview.where(master_course_id: self.master_course_id).find_by_user_id(self.user_id)
 		errors.add_to_base("You have already reviewed this course") unless c.blank? 
 	end 
-
+	
 
 	# Will change later to feat. usernames or handles or something 
 	def as_json(options=[])

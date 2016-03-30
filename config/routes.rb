@@ -4,9 +4,11 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
 
-
+      # Sign In 
 
       post "sign_in" => "users#google_sign_in"
+
+
 
       # Schedules
 
@@ -21,6 +23,8 @@ Rails.application.routes.draw do
       post "schedule_elements/create" => "schedule_elements#create", :as => 'schedule_elements_create'
 
       delete "schedule_elements/delete" => "schedule_elements#destroy", :as => 'schedule_elements_destroy'
+
+
 
       # All search stuff/fetching of terms, subjects, and courses 
 
@@ -37,11 +41,14 @@ Rails.application.routes.draw do
       get "courses/:term/:subject/:number" => "courses#course_info", :as => 'courses_by_term_subject_number'
 
 
+
       # Course reviews 
 
       post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
 
       get "course_reviews/by_course" => "course_reviews#reviews_by_course", :as => 'course_reviews_by_course'
+
+      get "course_reviews/specific_course" => "course_reviews#specific_review", :as => 'course_review_for_course'
 
       delete "course_reviews/delete" => "course_reviews#destroy", :as => 'course_reviews_destroy'
 

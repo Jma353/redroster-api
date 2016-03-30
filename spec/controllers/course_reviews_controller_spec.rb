@@ -82,11 +82,25 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 													 				 							  }, "This is review number #{i}")
 		end 
 
+
+
 		get :reviews_by_course, { api_key: ENV["API_KEY"], id_token: @user.google_id, 
 															course_review: { subject: "CS", number: 1110 }
 														}
 
 		expect(response).to be_success
+		json = JSON.parse(response.body)
+		p json
+		expect(json["success"]).to be(true)
+		random_review_id = json["data"]["reviews"][0]["id"]
+		p random_review_id
+
+
+
+		get :specific_review, { api_key: ENV["API_KEY"], id_token: @user.google_id,
+														 course_review: { subject: "CS", number: 1110, course_review_id: random_review_id } }
+
+		expect(response).to be_success 
 		json = JSON.parse(response.body)
 		p json
 

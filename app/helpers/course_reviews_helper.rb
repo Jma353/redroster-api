@@ -13,5 +13,22 @@ module CourseReviewsHelper
 		return { lecture: lecture/total, office_hours: office_hours/total, difficulty: difficulty/total, material: material/total }
 	end 
 
+	def instructor_name(json) 
+		"#{json['firstName']} #{json['lastName']}"
+	end
+
+	def get_prof(term, subject, number)
+		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{number}")
+		result_json = JSON.parse(Net::HTTP.get(uri))
+		instructors = result_json["data"]["classes"][0]["enrollGroups"][0]["classSections"][0]["meetings"][0]["instructors"]
+		result = ""
+		instructors.each do |i|
+			result += instructor_name(i)
+			if i != instructors.last 
+				result += " & "
+			end
+		end 
+		result 
+	end 
 
 end

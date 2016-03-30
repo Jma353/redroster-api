@@ -17,6 +17,10 @@ class MasterCourse < ActiveRecord::Base
 	validates :number, presence: true, numericality: { greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999 }
 
 
+	def reviews
+		CourseReview.where(master_course_id: self.id)
+	end 
+
 	def as_json(options=[])
 		result = [] 
 		if options.include?(:include_reviews)
