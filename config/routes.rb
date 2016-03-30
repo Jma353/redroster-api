@@ -36,6 +36,15 @@ Rails.application.routes.draw do
 
       get "courses/:term/:subject/:number" => "courses#course_info", :as => 'courses_by_term_subject_number'
 
+
+      # Course reviews 
+
+      post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
+
+      delete "course_reviews/delete" => "course_reviews#destroy", :as => 'course_reviews_destroy'
+
+      
+
     end 
   end 
 
