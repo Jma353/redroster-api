@@ -17,6 +17,7 @@ module CoursesHelper
 										begin_date: c["enrollGroups"][0]["sessionBeginDt"], # begin date 
 										end_date: c["enrollGroups"][0]["sessionEndDt"], # end data 
 										grading_basis: c["enrollGroups"][0]["gradingBasis"] # OPT or SUS
+										cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
 									 }
 	end 
 
