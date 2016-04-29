@@ -13,8 +13,13 @@
 
 
 class Course < ActiveRecord::Base
+	# References 
+	belongs_to :master_course, class_name: "MasterCourse", foreign_key: "master_course_id"
+	has_many :sections, class_name: "Section"
 
+	# Validations 
 	validates :course_id, presence: true 
+	validates :master_course_id, presence: true 
 	validates :term, presence: true, length: { minimum: 4, maximum: 4 }
 	validates :subject, presence: true, length: { minimum: 2 }
 	validates :number, presence: true, numericality: { greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999 }

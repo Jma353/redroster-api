@@ -41,7 +41,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 			# Create this value 
 			url_string = "https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{course_num}"
-			p url_string
 			uri = URI(url_string)
 			res_json = JSON.parse(Net::HTTP.get(uri))
 			if res_json["status"] != "error"

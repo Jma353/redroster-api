@@ -10,10 +10,13 @@
 
 
 class Schedule < ActiveRecord::Base
+	# References 
+	belongs_to :user, class_name: "User", foreign_key: "user_id"
+	has_many :schedule_elements, class_name: "ScheduleElement"
 
-	validates :user_id, presence: true 
-	validates :term, presence: true 
-	validate :user_exists, :on => :create 
+		validates :user_id, presence: true 
+		validates :term, presence: true 
+		validate :user_exists, :on => :create 
 	
 
 	def user_exists 

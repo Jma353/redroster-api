@@ -8,6 +8,11 @@
 #  updated_at  				:datetime 			 	 	not null 
 
 class User < ActiveRecord::Base
+	# Associations 
+	has_many :course_reviews, class_name: "CourseReview"
+	has_many :friendships, class_name: "Friendship"
+	has_many :schedules, class_name: "Schedule"
+
 
 	validates :google_id, presence: true 
 

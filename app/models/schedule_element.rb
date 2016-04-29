@@ -11,15 +11,20 @@
 #  updated_at  				:datetime 				 	not null
 
 class ScheduleElement < ActiveRecord::Base
+	# References 
+	belongs_to :schedule, class_name: "Schedule", foreign_key: "schedule_id"
+	belongs_to :section, class_name: "Section", foreign_key: "section_num"
 
-	# Must be validated b/c they make up the primary key 
-	validates :schedule_id, presence: true
-	validates :section_num, presence: true 
-	# Must be validated to ensure the above are relevant 
-	validate :schedule_exists, :on => :create 
-	validate :section_exists, :on => :create 
-	validate :no_section_collision, :on => :create 
-		before_create :check_collisions
+		# Must be validated b/c they make up the primary key 
+		validates :schedule_id, presence: true
+		validates :section_num, presence: true 
+		# Must be validated to ensure the above are relevant 
+		validate :schedule_exists, :on => :create 
+		validate :section_exists, :on => :create 
+		validate :no_section_collision, :on => :create 
+			
+			
+	before_create :check_collisions
 
 	# Check to see if the schedule exists
 	def schedule_exists 

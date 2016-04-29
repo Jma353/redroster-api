@@ -16,6 +16,10 @@
 
 
 class CourseReview < ActiveRecord::Base
+	# References 
+	belongs_to :master_course, class_name: "MasterCourse", foreign_key: "master_course_id"
+	belongs_to :user, class_name: "User", foreign_key: "user_id"
+
 
 	validates :master_course_id, presence: true 
 	validates :user_id, presence: true

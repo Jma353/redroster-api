@@ -8,8 +8,6 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 	end 
 
 
-
-
 	# CREATING COURSE 
 
 	def create_course(user, master_course)

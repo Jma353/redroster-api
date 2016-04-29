@@ -13,7 +13,12 @@
 
 include SectionsHelper 
 class Section < ActiveRecord::Base
+	# References 
+	belongs_to :course, class_name: "Course", foreign_key: "course_id"
+	has_many :schedule_elements, class_name: "ScheduleElement"
 
+
+	# Validations 
 	validates :section_num, presence: true, uniqueness: true 
 	validates :course_id, presence: true 
 	validates :section_type, presence: true, length: { minimum: 3, maximum: 4 }
