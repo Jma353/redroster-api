@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160429043655) do
+ActiveRecord::Schema.define(version: 20160429204331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,16 +42,17 @@ ActiveRecord::Schema.define(version: 20160429043655) do
 
   add_index "courses", ["master_course_id"], name: "index_courses_on_master_course_id", using: :btree
 
-  create_table "friendships", force: :cascade do |t|
+  create_table "followings", force: :cascade do |t|
     t.integer  "user1_id"
     t.integer  "user2_id"
     t.boolean  "is_active"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "following_score"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
-  add_index "friendships", ["user1_id"], name: "index_friendships_on_user1_id", using: :btree
-  add_index "friendships", ["user2_id"], name: "index_friendships_on_user2_id", using: :btree
+  add_index "followings", ["user1_id"], name: "index_followings_on_user1_id", using: :btree
+  add_index "followings", ["user2_id"], name: "index_followings_on_user2_id", using: :btree
 
   create_table "master_courses", force: :cascade do |t|
     t.string   "subject"
