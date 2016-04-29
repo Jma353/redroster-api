@@ -22,7 +22,7 @@ class Friendship < ActiveRecord::Base
   
 
  	def user1_is_not_user2 
- 		errors.add_to_base("You can't friend request yourself") unless self.user1_id != self.user2_id
+ 		errors[:base] << ("You can't friend request yourself") unless self.user1_id != self.user2_id
  	end 
 
 
