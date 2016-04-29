@@ -1,13 +1,13 @@
-# == Schema Information 
-# 
-#  Table Name: schedules
-#  
-#  id 								:integer 					 	not null, PRIMARY KEY 
-#  user_id 						:integer					 	not null/blank 
-#  term								:string 						not null/blank
-#  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 				 	not null 
-
+# == Schema Information
+#
+# Table name: schedules
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  term       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 
 class Schedule < ActiveRecord::Base
 	# References 

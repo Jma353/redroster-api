@@ -1,15 +1,14 @@
-# == Schema Information 
-# 
-#  Table Name: friendships
-#  
-#  id 								:integer 					 	not null, PRIMARY KEY 
-#  user1_id 					:integer					 	not null/blank 
-#  user2_id						:integer						not null/blank
-#  is_active 					:boolean 						true/false
-#  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 				 	not null 
-
-
+# == Schema Information
+#
+# Table name: friendships
+#
+#  id         :integer          not null, primary key
+#  user1_id   :integer
+#  user2_id   :integer
+#  is_active  :boolean
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 
 class Friendship < ActiveRecord::Base
 	# References 

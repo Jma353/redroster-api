@@ -8,9 +8,6 @@
 #  updated_at :datetime         not null
 #
 
-require 'rails_helper'
-
-RSpec.describe "User API " do 
-	
-  
-end
+class UserSerializer < ActiveModel::Serializer
+	attributes :google_id
+end 

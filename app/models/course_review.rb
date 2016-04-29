@@ -1,19 +1,18 @@
-# == Schema Information 
-# 
-#  Table Name: course_reviews 
-#  
-#  id 								:integer 					 	not null, PRIMARY KEY 
-#  master_course_id 	:integer 						not null/blank
-#  user_id 						:integer 						not null/blank
-#  term								:string 						
-#  lecture						:integer						1..10
-#  office_hours 			:integer 						1..10 
-#  difficulty					:integer 						1..10 
-#  material						:integer 						1..10 
-#  feedback						:text 			
-#  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 				 	not null 
-
+# == Schema Information
+#
+# Table name: course_reviews
+#
+#  id                 :integer          not null, primary key
+#  master_course_id   :integer
+#  user_id            :integer
+#  term               :string
+#  lecture_score      :integer
+#  office_hours_score :integer
+#  difficulty_score   :integer
+#  material_score     :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
 
 class CourseReview < ActiveRecord::Base
 	# References 

@@ -9,8 +9,8 @@
 #  updated_at :datetime         not null
 #
 
-require 'rails_helper'
+class ScheduleSerializer < ActiveModel::Serializer
+	has_one :user
+	attributes :id, :term, :created_at
+end 
 
-RSpec.describe Schedule, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
-end

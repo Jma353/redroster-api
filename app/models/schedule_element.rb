@@ -1,14 +1,13 @@
-# == Schema Information 
-# 
-#  Table Name: schedule_elements
-# 
-#  PRIMARY KEY: (schedule_id, section_num)
-# 
-#  schedule_id 				:integer 						not null
-#  section_num 				:integer						not null 
-#  collision 					:boolean 						not null (set based on time collisions with other schedule elements)
-#  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 				 	not null
+# == Schema Information
+#
+# Table name: schedule_elements
+#
+#  schedule_id :integer          not null, primary key
+#  section_num :integer          not null
+#  collision   :boolean
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 
 class ScheduleElement < ActiveRecord::Base
 	# References 
