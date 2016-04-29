@@ -16,7 +16,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 
 	##### GET ENDPOINTS BASED ON THE CORNELL COURSE API ##### 
 
-
 	# List of terms 
 	def list_of_terms
 		uri = URI("https://classes.cornell.edu/api/2.0/config/rosters.json")
@@ -109,7 +108,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 
 	# Searching for courses based on a search query 
 	def search_courses
-
 		term = params[:term]
 		query = params[:query]
 		query.gsub! " ", ""
@@ -125,6 +123,18 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		render json: { success: true, data: { courses: courses } }
 
 	end 
+	
+
+
+	
+
+
+
+
+
+
+
+
 	
 
 

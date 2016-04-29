@@ -10,4 +10,6 @@
 
 class UserSerializer < ActiveModel::Serializer
 	attributes :google_id
+
+
 end 

@@ -13,81 +13,59 @@
 include ScheduleElementsHelper 
 
 class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
-
+	# To get the user themself 
 	before_action :grab_test_user 
-	before_action :schedule_belongs_to_user 
+
+	# Used to validate creation
+	before_action :schedule_belongs_to_user, only [:create]
+	before_action :proper_term, only [:create]
+
+	## CREATION 
+
+  # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
+  def schedule_belongs_to_user
+  	@schedule = @user.schedules.find_by_id(params[:schedule_id])
+    if @schedule.blank? 
+      render json: { success: false, data: { errors: ["This schedule either doesn't exist or doesn't belong to you"] } }
+    else 
+      @schedule
+    end 
+  end 
+  
+
+  # Cascading validations for creation
+  def proper_term 
+  	if schedule_element_params[:term] != @schedule.term
+  		render json: { success: false, data: { errors: ["This schedule's term does not match the desired course's term"]}} and return 
+  	end 
+  	@schedule
+  end 
 
 
-
-
-
-	# EXTREMELY FAT CREATE METHOD (logic is somewhat complex for a reason.. this is how we're going to load the database w/info)
-	# @ root of json, need :schedule_id 
-	# w/in :section, we need :term, :subject, :course_num (1000...9999), :section_num (5-digit section num)
+  # Create a schedule element and load the DB accordingly 
 	def create 	
-		# At this point, we have the schedule
-		# Check this condition before continuing further 
-		if params[:term] != @schedule.term 
-			render json: { sucess: false, data: { error: "This schedule's term does not match this desired course's term"}} and return false
-		end 
-		@section = Section.find_by_section_num(section_params[:section_num])
-		# Make the section (and the course) if their bare credentials don't exist in our db already 
-		if @section.blank? 
-			# All necessary to search for the required value 
-			term = section_params[:term]
-			subject = section_params[:subject]
-			course_num = section_params[:course_num]
-			section_num = section_params[:section_num]
 
-			# Create this value 
-			url_string = "https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{course_num}"
-			uri = URI(url_string)
-			res_json = JSON.parse(Net::HTTP.get(uri))
-			if res_json["status"] != "error"
+		# `response` b/c could return an error json 
+		section_response = get_or_create_section(schedule_element_params)
 
-				course_info = res_json["data"]["classes"][0]
-				@course = Course.find_by_course_id(course_info["crseId"])
+		# Will only be true if the response is an error hash
+		if section_response["success"] == false
+			render json: section_response and return 
+		end
 
-				# If this course doesn't exist, create it as necessary 
-				if @course.blank? 
-					@course = Course.create(course_id: course_info["crseId"], term: term, subject: subject, number: course_num)
-					@master_course = MasterCourse.find_by(subject: subject, number: course_num)
-					# If master course doesn't exist 
-					if @master_course.blank?
-						@master_course = MasterCourse.create(subject: subject, number:course_num)
-					end 
-					@course.master_course_id = @master_course.id 
-					@course.save 
-				end 
+		# Else, we know section is valid, unless collision or something 
+		@se = @schedule.schedule_elements.create(section_num: section_response.section_num)
 
-				sections = course_info["enrollGroups"][0]["classSections"]
-				# If the section does not exist w/in the specified Course 
-				section_dets = section_details(sections, section_num)
-				if section_dets.blank? 
-					render json: { success: false, data: { error: "This section does not exist with within this term and course."}} and return false 
-				end 
+		# Create our data 
+		data = @se.valid? ? schedule_element_json(@se) : { errors: @se.errors.full_messages }
 
-				@section = Section.create(section_num: section_num, 
-																	course_id: @course.course_id, 
-																	section_type: section_dets[0], 
-																	start_time: section_dets[1],
-																	end_time: section_dets[2],
-																	day_pattern: section_dets[3])	
-
-			else 
-				render json: { success: false, data: { error: "A networking error occurred." } } and return false
-			end 
-		end 
-		# At this point, we have the @section and the @schedule we care about 
-		@schedule_element = ScheduleElement.create(schedule_id: @schedule.id, section_num: @section.section_num)
-		render json: { success: @schedule_element.valid?, 
-									 data: { errors: (@schedule_element.errors.any? ? @schedule_element.errors.full_messages : []) } }
-
+		# Render our JSON 
+		render json: { success: @se.valid?, data: data } 
 	end 
 
 
 
-
+	## END CREATION 
 
 
 	# Delete a schedule element from a specific schedule 
@@ -106,6 +84,13 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 	private 
+
+
+		# Schedule Element Safe Params 
+		def schedule_element_params
+			params[:schedule_element].present? ? params.require(:schedule_element).permit(:schedule_id, :term, :subject, :course_num, :section_num)
+		end
+
 
 		# Parameters necessary to creation this section as necessary 
 		def section_params

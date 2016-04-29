@@ -17,11 +17,14 @@
 require 'rails_helper'
 
 RSpec.describe CourseReview, type: :model do
- 			
+ 		
+		
 	before(:each) do 
 		@u = FactoryGirl.create(:user, google_id: 12)
 		@mc = FactoryGirl.create(:master_course, subject: "CS", number: 1110)
 	end 
+
+
 
  	it "test course review creation" do 
  		review = CourseReview.create(user_id: @u.id, master_course_id: @mc.id, term: "FA14", 
@@ -34,8 +37,6 @@ RSpec.describe CourseReview, type: :model do
  		end 
  		r_json = CourseReviewSerializer.new(review).as_json
  		pp r_json
-
-
  	end 
 
 

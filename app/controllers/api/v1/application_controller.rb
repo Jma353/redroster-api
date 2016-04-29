@@ -52,6 +52,10 @@ class Api::V1::ApplicationController < ActionController::Base
 
 
 
+
+
+
+
   # BUILT FOR THE PURPOSES OF TESTING ENDPOINTS FOR SCHEDULE CREATION AND SUCH 
   def grab_test_user 
     google_id = params[:id_token]
@@ -60,15 +64,9 @@ class Api::V1::ApplicationController < ActionController::Base
 
 
 
-  # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
-  def schedule_belongs_to_user
-    @schedule = Schedule.where(user_id: @user.id).find_by_id(params[:schedule_id])
-    if @schedule.blank? 
-      render json: { success: false, data: { errors: "This schedule either doesn't exist or doesn't belong to you" } }
-    else 
-      @schedule
-    end 
-  end 
-  
+
+
+
+
 
 end
