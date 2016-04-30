@@ -2,8 +2,9 @@
 #
 # Table name: schedule_elements
 #
-#  schedule_id :integer          not null, primary key
-#  section_num :integer          not null
+#  id          :integer          not null, primary key
+#  schedule_id :integer
+#  section_num :integer
 #  collision   :boolean
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

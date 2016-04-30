@@ -2,8 +2,9 @@
 #
 # Table name: schedule_elements
 #
-#  schedule_id :integer          not null, primary key
-#  section_num :integer          not null
+#  id          :integer          not null, primary key
+#  schedule_id :integer
+#  section_num :integer
 #  collision   :boolean
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -80,8 +81,6 @@ module ScheduleElementsHelper
 																						start_time: section_dets[1], end_time: section_dets[2], 
 																						day_pattern: section_dets[3])
 
-				
-
 			end
 		end 
 
@@ -134,13 +133,10 @@ module ScheduleElementsHelper
 		if master_course.blank? 
 			subject = cross_listings[0][:subject]
 			number = cross_listings[0][:number]
-			p subject 
-			p number
 			master_course = MasterCourse.create(subject: subject, number: number)
 		end
 
 		# Return the master_course we got before or just created 
-		p master_course
 		master_course
 	end 
 
@@ -181,6 +177,7 @@ module ScheduleElementsHelper
 
 	## SERIALIZATION 
 
+
 	def schedule_element_json(se) 
 		ScheduleElementSerializer.new(se).as_json
 	end 
@@ -188,3 +185,6 @@ module ScheduleElementsHelper
 
 
 end
+
+
+

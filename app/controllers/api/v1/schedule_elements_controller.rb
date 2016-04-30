@@ -11,14 +11,16 @@
 #  updated_at  				:datetime 				 	not null 
 
 include ScheduleElementsHelper 
-include SectionsHelper
 class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
+	
 	# To get the user themself 
 	before_action :grab_test_user 
 
 	# Used to validate creation
-	before_action :schedule_belongs_to_user, only: [:create]
+	before_action :schedule_belongs_to_user, only: [:create, :destroy]
 	before_action :proper_term, only: [:create]
+
+
 
 	## CREATION 
 
@@ -56,29 +58,32 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		# Else, we know section is valid, unless collision or something 
 		@se = @schedule.schedule_elements.create(section_num: section_response.section_num)
 
+		# If this is valid and saves, we need to update all attributes to reflect this
+		if @se.valid? 
+			@schedule.schedule_elements.each do |se|
+				se.update_attributes(collision: se.collisions?)
+			end 
+		end
+
 		# Create our data 
-		data = @se.valid? ? section_json(@se.section) : { errors: @se.errors.full_messages }
-
-
+		data = @se.valid? ? schedule_element_json(@se) : { errors: @se.errors.full_messages }
 
 		# Render our JSON 
 		render json: { success: @se.valid?, data: data } 
 	end 
 
 
-
 	## END CREATION 
-
-
 
 
 
 	# Delete a schedule element from a specific schedule 
 	def destroy
-		# We have the schedule 
-		@schedule_element = ScheduleElement.where(schedule_id: @schedule.id).find_by_section_num(section_params[:section_num])
+		@schedule_element = ScheduleElement.destroy_all(schedule_id: @schedule.id, id: schedule_element_params[:id])
 		if !@schedule_element.blank?
-			@schedule_element.delete
+			@schedule.schedule_elements.each do |se|
+				se.update_attributes(collision: se.collisions?)
+			end 
 		end 
 		render json: { success: !@schedule_element.blank? }
 	end 
@@ -86,22 +91,16 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
-
-
 	private 
-
 
 		# Schedule Element Safe Params 
 		def schedule_element_params
-			params[:schedule_element].present? ? params.require(:schedule_element).permit(:schedule_id, :term, :subject, :course_num, :section_num) : {} 
+			params[:schedule_element].present? ? params.require(:schedule_element).permit(:id, :schedule_id, :term, :subject, :course_num, :section_num) : {} 
 		end
-
-
-		# Parameters necessary to creation this section as necessary 
-		def section_params
-			params.require(:section).permit(:term, :schedule_id, :subject, :course_num, :section_num)
-		end 
 
 
 
 end
+
+
+

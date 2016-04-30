@@ -61,8 +61,9 @@ ActiveRecord::Schema.define(version: 20160429204331) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "schedule_elements", primary_key: "schedule_id", force: :cascade do |t|
-    t.integer  "section_num", null: false
+  create_table "schedule_elements", force: :cascade do |t|
+    t.integer  "schedule_id"
+    t.integer  "section_num"
     t.boolean  "collision"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false

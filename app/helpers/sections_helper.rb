@@ -1,4 +1,4 @@
-# == Schema Information
+	# == Schema Information
 #
 # Table name: sections
 #
@@ -28,7 +28,7 @@ module SectionsHelper
 	def hour_int(time_string)
 		hour_string = time_string[0...(start_time.index(":"))]
 		am_or_pm = time_string[(time_string.index(/[A-Za-z]/))..-1]
-		Integer((hour_string[0] == "0" ? hour_string[1] : hour_string)) + (am_or_pm.upcase == "PM" ? 12 : 0)
+		((hour_string[0] == "0" ? hour_string[1] : hour_string).to_i % 12) + (am_or_pm.upcase == "PM" ? 12 : 0)
 	end
 
 

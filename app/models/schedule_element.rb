@@ -2,8 +2,9 @@
 #
 # Table name: schedule_elements
 #
-#  schedule_id :integer          not null, primary key
-#  section_num :integer          not null
+#  id          :integer          not null, primary key
+#  schedule_id :integer
+#  section_num :integer
 #  collision   :boolean
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -23,6 +24,7 @@ class ScheduleElement < ActiveRecord::Base
 	before_create :check_collisions
 
 
+
 	# Checks to see if this schedule has a conflicting section that clashes with this one in identity 
 	# E.g. If one tries to add two CS 1110 lectures at different times to their schedule 
 	def no_section_collision 
@@ -37,21 +39,29 @@ class ScheduleElement < ActiveRecord::Base
 	end 
 
 
-	# Fill the `collision` field on creation in a way that utilizes appropriate logic 
-	def check_collisions
-		schedule_peers = ScheduleElement.where(schedule_id: self.schedule_id)
+
+
+	# General collision detection function 
+	def collisions? 
+		schedule_peers = ScheduleElement.where(schedule_id: self.schedule_id) - [self]
 		section = Section.find_by_section_num(self.section_num)
 		schedule_peers.each do |se|
 			peer_section = Section.find_by_section_num(se.section_num)
 			if section.collides?(peer_section)
-				self.collision = true 
-				return 
+				return true
 			end 
 		end 
+		return false  
+	end
 
-		self.collision = false 
-		return 
+
+
+	# Fill the `collision` field on creation in a way that utilizes appropriate logic 
+	def check_collisions
+		self.collision = self.collisions? 
+		return true 
 	end 
+
 
 
 
