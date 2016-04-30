@@ -50,5 +50,12 @@ module SchedulesHelper
 
 
 
+	def user_schedules(u)
+		schedules = { "schedules" => [] } 
+		u.schedules.each { |s| schedules["schedules"] << schedule_json(s) }
+		schedules 
+	end 
+
+
 
 end

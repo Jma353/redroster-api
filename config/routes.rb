@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
       # Schedules // work 
 
+      get "schedules/index" => "schedules#index", :as => "schedules_index"
+
       post "schedules/create" => "schedules#create", :as => 'schedules_create'
 
       get "schedules/show/:id" => "schedules#show", :as => 'schedules_show'

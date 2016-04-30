@@ -38,6 +38,10 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 	end 
 
 
+	def index 
+		render json: { success: true, data: user_schedules(@user) }
+	end 
+
 
 	# Schedule + all sections that are in it 
 	def show 

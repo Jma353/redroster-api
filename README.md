@@ -14,6 +14,11 @@ POST `/api/v1/sign_in` : Sign in validation
 
 ### Schedules
 
+GET `api/v1/schedules/index` : Show logged in user's schedules 
+##### HTTP Request Body
+	{ api_key: "XYZ", id_token: "ABC" }
+
+
 POST `/api/v1/schedules/create` : Create a schedule for a specific term 
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16" } } 

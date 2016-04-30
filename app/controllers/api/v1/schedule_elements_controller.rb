@@ -25,8 +25,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
-	## START CREATION 
-
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
   def schedule_belongs_to_user
   	@schedule = Schedule.find_by(id: schedule_element_params[:schedule_id], user_id: @user.id)
@@ -36,7 +34,9 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
       @schedule
     end 
   end 
+
   
+
 
   # Cascading validations for creation
   def proper_term 
@@ -45,6 +45,9 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
   	end 
   	@schedule
   end 
+
+
+
 
 
   # Create a schedule element and load the DB accordingly 
@@ -81,9 +84,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
-	
-	## START DELETION 
-
 	# Delete a schedule element from a specific schedule 
 	def destroy
 		@schedule_element = ScheduleElement.destroy_all(schedule_id: @schedule.id, id: schedule_element_params[:id])
@@ -95,7 +95,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		render json: { success: !@schedule_element.blank? }
 	end 
 
-	## END DELETION 
 
 
 
