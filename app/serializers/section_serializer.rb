@@ -13,6 +13,6 @@
 #
 
 class SectionSerializer < ActiveModel::Serializer
-	has_one :course 
+	# has_one :course 
 	attributes :section_type, :start_time, :end_time, :day_pattern, :created_at
 end 

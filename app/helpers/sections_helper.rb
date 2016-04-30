@@ -41,4 +41,20 @@ module SectionsHelper
 	end 
 
 
+	def section_json(s) 
+		SectionSerializer.new(s).as_json
+	end 
+
+
+
+	
+
+
+
+
+
+
+
+
+
 end

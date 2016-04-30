@@ -11,7 +11,7 @@
 #  updated_at  				:datetime 				 	not null 
 
 include ScheduleElementsHelper 
-
+include SectionsHelper
 class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 	# To get the user themself 
 	before_action :grab_test_user 
@@ -57,7 +57,9 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		@se = @schedule.schedule_elements.create(section_num: section_response.section_num)
 
 		# Create our data 
-		data = @se.valid? ? schedule_element_json(@se) : { errors: @se.errors.full_messages }
+		data = @se.valid? ? section_json(@se.section) : { errors: @se.errors.full_messages }
+
+
 
 		# Render our JSON 
 		render json: { success: @se.valid?, data: data } 
