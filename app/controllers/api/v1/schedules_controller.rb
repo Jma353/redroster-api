@@ -12,7 +12,9 @@ include SchedulesHelper
 class Api::V1::SchedulesController < Api::V1::ApplicationController
 
 	# To get a test user to associate this schedule with 
-	before_action :grab_test_user 
+	# before_action :grab_test_user 
+	
+	before_action :google_auth 
 	before_action :schedule_belongs_to_user, only: [:show, :destroy] # in ApplicationController 
 
 
