@@ -13,59 +13,58 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 
 	# To get a test user to associate this schedule with 
 	before_action :grab_test_user 
-	before_action :schedule_belongs_to_user, only: [:show] # in ApplicationController 
+	before_action :schedule_belongs_to_user, only: [:show, :destroy] # in ApplicationController 
+
+
+  # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
+  def schedule_belongs_to_user
+  	@schedule = @user.schedules.find_by_id(params[:id])
+    if @schedule.blank? 
+      render json: { success: false, data: { errors: ["This schedule either doesn't exist or doesn't belong to you"] } }
+    else 
+      @schedule
+    end 
+  end 
+
 
 
 	# Schedule creation endpoint 
 	def create
-		result = schedule_params.merge!({ user_id: @user.id })
-		s = Schedule.create(result)
-		render json: { success: s.valid? } and return true 
+		@s = @user.schedules.create(schedule_params)
+		data = @s.errors.any? ? { errors: @s.errors.full_messages } : schedule_json(@s)
+		render json: { success: @s.valid?, data: data } 
 	end 
 
 
 
-	# Endpoint to show a full schedule JSON to be parsed on iOS frontend for viewing schedules
+	# Schedule + all sections that are in it 
 	def show 
-		# have @schedule I care about 
-		result = []
-		@schedule_elements = ScheduleElement.where(schedule_id: @schedule.id)
-		section_nums = @schedule_elements.map { |se| se.section_num }
-		@sections = section_nums.map { |n| Section.find_by_section_num(n) }
-
-		@sections.each do |s| 
-			sec = schedule_section(s)
-			result.push(sec)
-		end 
-		
-		p result 
-		render json: { success: true, data: { schedule: result } } 
-
+		render json: { success: true, data: schedule_json(@schedule) } 
 	end 
-
 
 
 	# Schedule deletion endpoint 
 	def destroy
-		s = Schedule.where(user_id: @user.id).find_by_id(params[:schedule_id])
-		unless s.blank? 
-			ScheduleElement.where(schedule_id: s.id).each do |se| 
-				se.delete 
-			end 
-			s.delete 
-		end 
-		render json: { success: !s.blank? }
+		# Also deletes all corresponding ScheduleElements b/c of `:dependent => :destroy` in the model 
+		@schedule.destroy
+		render json: { success: !@schedule.blank? }
 	end 
+
+
+
 
 	private 
 
-		def schedule_params 	
-			if params[:schedule].present? 
-				params.require(:schedule).permit(:user_id, :term)
-			else 
-				{}
-			end 
+		def schedule_params(extras={})	
+			params[:schedule].present? ? params.require(:schedule).permit(:term).merge(extras) : {} 
 		end 
 
 
+
+
 end
+
+
+
+
+

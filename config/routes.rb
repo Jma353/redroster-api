@@ -4,30 +4,33 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
 
-      # Sign In 
+      # Sign In // work 
 
       post "sign_in" => "users#google_sign_in"
 
       post "users/create" => "users#create"
 
 
-      # Schedules
+
+      # Schedules // work 
 
       post "schedules/create" => "schedules#create", :as => 'schedules_create'
 
-      get "schedules/show/:schedule_id" => "schedules#show", :as => 'schedules_show'
+      get "schedules/show/:id" => "schedules#show", :as => 'schedules_show'
 
-      delete "schedules/delete" => "schedules#destroy", :as => 'schedules_destroy'
+      delete "schedules/delete/:id" => "schedules#destroy", :as => 'schedules_destroy'
 
 
-      # Schedule Elements 
+
+      # Schedule Elements // work 
 
       post "schedule_elements/create" => "schedule_elements#create", :as => 'schedule_elements_create'
 
       delete "schedule_elements/delete" => "schedule_elements#destroy", :as => 'schedule_elements_destroy'
 
 
-      # All search stuff/fetching of terms, subjects, and courses 
+
+      # All search stuff/fetching of terms, subjects, and courses // work  
 
       get "search/:term/:query" => "courses#search_courses", :as => 'search_by_term'
 
@@ -43,7 +46,7 @@ Rails.application.routes.draw do
 
 
 
-      # Course reviews 
+      # Course reviews // need to test these 
 
       post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
 

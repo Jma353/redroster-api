@@ -22,7 +22,9 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
-	## CREATION 
+
+
+	## START CREATION 
 
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
   def schedule_belongs_to_user
@@ -72,10 +74,14 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		render json: { success: @se.valid?, data: data } 
 	end 
 
-
 	## END CREATION 
 
 
+
+
+
+	
+	## START DELETION 
 
 	# Delete a schedule element from a specific schedule 
 	def destroy
@@ -87,6 +93,10 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		end 
 		render json: { success: !@schedule_element.blank? }
 	end 
+
+	## END DELETION 
+
+
 
 
 

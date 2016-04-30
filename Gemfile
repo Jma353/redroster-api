@@ -38,6 +38,8 @@ gem 'puma'
 # For modular serialization of models 
 gem 'active_model_serializers'
 
+# gem 'rails_12factor'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

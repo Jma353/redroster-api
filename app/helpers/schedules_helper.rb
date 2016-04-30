@@ -13,6 +13,8 @@ module SchedulesHelper
 	require 'net/http'
 	require 'json'
 
+
+	# Deprecated (opted for serializers -- they're more modular)
 	def schedule_section(section)
 		course = section.course
 		term = course.term 
@@ -33,7 +35,16 @@ module SchedulesHelper
 		end 
 		result
 	end
+	
 
+
+	def schedule_json(s)
+		schedule_conflict = false 
+		s.schedule_elements.each { |se| schedule_conflict = se.collision || schedule_conflict }
+		schedule_json = ScheduleSerializer.new(s).as_json
+		schedule_json["schedule"].merge!({ schedule_conflict: schedule_conflict })
+		return schedule_json
+	end 
 
 
 
