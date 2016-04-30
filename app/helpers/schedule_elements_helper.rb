@@ -18,12 +18,12 @@ module ScheduleElementsHelper
 	# Check to see if a section exists amongst a list of sections provided by the Cornell Courses API 
 	def section_details(sections, desired_num)
 		sections.each do |s| 
-			if s["classNbr"] == desired_num
+			if s["classNbr"].to_i == desired_num.to_i
 				# Return: [type, startTime, endTime, pattern]
 				return s["ssrComponent"], s["meetings"][0]["timeStart"], s["meetings"][0]["timeEnd"], s["meetings"][0]["pattern"]
 			end 
 		end 
-		return { success: false, data: { errors: ["This section number does not correspond to a section of the desired course"]}}
+		return false
 	end 	
 
 
@@ -40,7 +40,7 @@ module ScheduleElementsHelper
 			# Grab all the terms for the search query 
 			term = params[:term]
 			subject = params[:subject]
-			course_num = params[:course_num]
+			course_num = params[:course_num].to_i
 			course_level = (course_num / 1000) * 1000 
 			section_num = params[:section_num]
 
@@ -55,7 +55,7 @@ module ScheduleElementsHelper
 			else 
 
 				# Find the course's index in the response
-				c_index = find_course_index(res_json)
+				c_index = find_course_index(res_json, course_num)
 
 				# Get the course's overall info 
 				course_info = res_json["data"]["classes"][c_index]
@@ -68,14 +68,19 @@ module ScheduleElementsHelper
 
 				# Get the section details 
 				section_dets = section_details(sections, section_num)
-				if section_dets.blank? 
+
+				if section_dets.blank? || section_dets == false
 					return { success: false, data: { error: "This section does not exist with within this term and course."}} 
 				end 
 
+
+
 				# Instantiate the section 
-				@section = @course.sections.create(section_num: section_num, section_type: section_dets[0], 
+				@section = @course.sections.create(section_num: section_num.to_i, section_type: section_dets[0], 
 																						start_time: section_dets[1], end_time: section_dets[2], 
-																						day_pattern: section_dets[3])	
+																						day_pattern: section_dets[3])
+
+				
 
 			end
 		end 
@@ -100,9 +105,9 @@ module ScheduleElementsHelper
 			possible_listings = [{ subject: subject, number: course_num }]
 			cross_listings = course_info["enrollGroups"][0]["simpleCombinations"]
 			cross_listings.each { |c| possible_listings << { subject: c["subject"], number: c["catalogNbr"].to_i }}
-
+			
 			# Get the master_course
-			@master_course = get_or_create_master_course(cross_listings)	
+			@master_course = get_or_create_master_course(possible_listings)	
 
 			# Set the course's :master_course_id field 
 			@course.master_course_id = @master_course.id 
@@ -110,6 +115,7 @@ module ScheduleElementsHelper
 			# Save the course to the DB 
 			@course.save 
 		end 
+
 
 		@course
 
@@ -126,12 +132,15 @@ module ScheduleElementsHelper
 		# If the master_course does not exist in the DB, make it given the first 
 		# cross listing provided (this is always guaranteed to be present)
 		if master_course.blank? 
-			subject = cross_listings[0]["subject"]
-			number = cross_listings[0]["number"]
+			subject = cross_listings[0][:subject]
+			number = cross_listings[0][:number]
+			p subject 
+			p number
 			master_course = MasterCourse.create(subject: subject, number: number)
 		end
 
 		# Return the master_course we got before or just created 
+		p master_course
 		master_course
 	end 
 
@@ -145,9 +154,10 @@ module ScheduleElementsHelper
 	# Check a full list of queried courses for the course we're looking for 
 	def find_course_index(cl_json, num)
 		classes = cl_json["data"]["classes"]
-		(0...classes.length) do |i| 
+		(0...classes.length).each do |i| 
 			if classes[i]["catalogNbr"].to_i == num
 				return i
+			end
 		end 
 		return -1 
 	end 
@@ -157,7 +167,7 @@ module ScheduleElementsHelper
 	# if it's not found 
 	def find_master_course(cross_listings)
 		cross_listings.each do |cl|
-			mc = MasterCourse.find_by(subject: cl["subject"], number: cl["number"])
+			mc = MasterCourse.find_by(subject: cl[:subject], number: cl[:number])
 			if !mc.blank? 		
 				return mc 
 			end  

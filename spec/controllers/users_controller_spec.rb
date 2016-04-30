@@ -28,10 +28,10 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 	it "tests user creation" do 
 		create_user(2)
 		expect(response).to be_success
-		json = JSON.parse(response.body)
-		pp json
-		expect(json["success"]).to eq(true)
-		expect(json["data"]["user"]["google_id"]).to eq(2)
+		res_json = JSON.parse(response.body)
+		pp res_json
+		expect(res_json["success"]).to eq(true)
+		expect(res_json["data"]["user"]["google_id"]).to eq(2)
 	end 
 
 

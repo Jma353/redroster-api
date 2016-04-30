@@ -12,5 +12,6 @@
 FactoryGirl.define do
   factory :schedule do
     user_id 1
+    term "FA15"
   end
 end

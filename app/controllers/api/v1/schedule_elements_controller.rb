@@ -17,14 +17,14 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 	before_action :grab_test_user 
 
 	# Used to validate creation
-	before_action :schedule_belongs_to_user, only [:create]
-	before_action :proper_term, only [:create]
+	before_action :schedule_belongs_to_user, only: [:create]
+	before_action :proper_term, only: [:create]
 
 	## CREATION 
 
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
   def schedule_belongs_to_user
-  	@schedule = @user.schedules.find_by_id(params[:schedule_id])
+  	@schedule = Schedule.find_by(id: schedule_element_params[:schedule_id], user_id: @user.id)
     if @schedule.blank? 
       render json: { success: false, data: { errors: ["This schedule either doesn't exist or doesn't belong to you"] } }
     else 
@@ -49,7 +49,7 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 		section_response = get_or_create_section(schedule_element_params)
 
 		# Will only be true if the response is an error hash
-		if section_response["success"] == false
+		if section_response[:success] == false
 			render json: section_response and return 
 		end
 
@@ -66,6 +66,9 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 	## END CREATION 
+
+
+
 
 
 	# Delete a schedule element from a specific schedule 
@@ -88,7 +91,7 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 		# Schedule Element Safe Params 
 		def schedule_element_params
-			params[:schedule_element].present? ? params.require(:schedule_element).permit(:schedule_id, :term, :subject, :course_num, :section_num)
+			params[:schedule_element].present? ? params.require(:schedule_element).permit(:schedule_id, :term, :subject, :course_num, :section_num) : {} 
 		end
 
 

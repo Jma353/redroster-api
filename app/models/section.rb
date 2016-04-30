@@ -29,7 +29,7 @@ class Section < ActiveRecord::Base
 	validate :course_exists, :on => :create 
 
 	def course_exists 
-		errors.add_to_base("This course does not exist.") unless !Course.find_by_course_id(self.course_id).blank? 
+		errors[:base] << ("This course does not exist.") unless !Course.find_by_course_id(self.course_id).blank? 
 	end 	
 
 	# Section time information 
