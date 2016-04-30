@@ -14,35 +14,37 @@ module SchedulesHelper
 	require 'json'
 
 
-	# Deprecated (opted for serializers -- they're more modular)
-	def schedule_section(section)
-		course = section.course
-		term = course.term 
-		subject = course.subject
-		number = course.number
-		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{number}")
-		section_json = JSON.parse(Net::HTTP.get(uri))
-		result = { term: term, subject: subject, number: number, section: nil }
-		if section_json["status"] != "error"
-			section_json = section_json["data"]["classes"][0]["enrollGroups"][0]["classSections"]
-			section_json.each do |s| 
-				p section.section_num
-				if s["classNbr"] == section.section_num
-					result[:section] = s 
-					return result 
-				end 
-			end 
-		end 
-		result
-	end
-	
-
-
 	def schedule_json(s)
-		schedule_conflict = false 
-		s.schedule_elements.each { |se| schedule_conflict = se.collision || schedule_conflict }
+		# Initial bool value 
+		schedule_conflict = false
+		# Tracking courses by course_id 
+		element_ag = {} 
+		course_ids = [] 
+		# Go through schedule_elements 
+		s.schedule_elements.each do |se| 
+			# Update the bool 
+			schedule_conflict = se.collision || schedule_conflict 
+			# Obtain the course_id in string form
+			course_id = se.section.course.course_id.to_s
+			# Add se to namespace of the course_id and to the course_ids list 
+			element_ag[course_id] = element_ag[course_id].blank? ? [] : element_ag[course_id] 
+			course_ids = course_ids | [course_id]
+			element_ag[course_id] << se 
+		end 
+
+		courses = { "courses" => [] }
+		course_ids.each do |ci| 
+			# Get the course_json 
+			course_json = CourseSerializer.new(Course.find_by_course_id(ci.to_i)).as_json
+			schedule_elements = element_ag[ci]
+			s_e_jsons = schedule_elements.map { |se| ScheduleElementSerializer.new(se).as_json }
+			course_json["schedule_elements"] = s_e_jsons
+			courses["courses"] << course_json
+		end 
+
 		schedule_json = ScheduleSerializer.new(s).as_json
 		schedule_json["schedule"].merge!({ schedule_conflict: schedule_conflict })
+		schedule_json.merge!(courses)
 		return schedule_json
 	end 
 

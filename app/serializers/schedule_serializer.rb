@@ -10,8 +10,8 @@
 #
 
 class ScheduleSerializer < ActiveModel::Serializer
-	has_one :user
-	has_many :schedule_elements 
+	# has_one :user
+	# has_many :schedule_elements 
 	attributes :id, :term, :created_at
 end 
 
