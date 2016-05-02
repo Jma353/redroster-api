@@ -42,25 +42,25 @@ POST `/api/v1/schedule_elements/create` (not ready for production use)
 	{ 
 	  	api_key: "XYZ", 
 	  	id_token: "ABC", 
-	  	section: 	{ 
-	  					schedule_id: 1
-	  					term: "SP16",
-	  					subject: "CS",
-	  					course_num: 1110,
-	  					section_num: 11828 // Specific to the course 
-	  				}	
-	 }
+	  	schedule_element: 	{ 
+	  							schedule_id: 1
+	  							term: "SP16",
+	  							subject: "CS",
+	  							course_num: 1110,
+	  							section_num: 11828 // Specific to the course 
+	  						}	
+	}
 
 DELETE `/api/v1/schedule_elements/delete` (not ready for production use)
 ##### HTTP Request Body
 	{ 	
 		api_key: "XYZ",
 	  	id_token: "ABC",
-	 	section: 	{ 
-	 					schedule_id: 1,
-	 					id: 44 // The schedule_element primary key
-	 				} 
-	 }
+	 	schedule_element: 	{ 
+	 							schedule_id: 1,
+	 							id: 44 // The schedule_element primary key
+	 						} 
+	}
 
 
 

@@ -10,16 +10,18 @@
 include UsersHelper
 class Api::V1::UsersController < Api::V1::ApplicationController
 
-	before_action :google_auth, only: [:google_sign_in]
-
+	before_action :google_creds, only: [:google_sign_in]
+	
 
 	# Google sign in and user creation on new user sign in 
 	def google_sign_in 	
 		# @user passed by google_auth() method if the method succeeds 
+		@user = User.find_by_google_id(@google_id)
 		if @user.blank? 
-			User.create(google_id: @google_id)
+			p @google_id 
+			@user = User.create(google_id: @google_id)
 		end 
-		render json: { success: true, data: { new_user: @user.blank? } }
+		render json: { success: @user.valid?, data: { new_user: @user.blank? } }
 	end 
 
 

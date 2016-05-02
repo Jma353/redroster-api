@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20160429204331) do
   add_index "sections", ["course_id"], name: "index_sections_on_course_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.integer  "google_id"
+    t.string   "google_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -30,8 +30,8 @@ class Api::V1::ApplicationController < ActionController::Base
   end 
 
 
-  # Maintains google auth state 
-  def google_auth
+  # Grabs google_id
+  def google_creds 
     # Get the ID token 
     id_token = params[:id_token]
     # Get the google app id for later validation of the response from Google endpoint 
@@ -42,15 +42,29 @@ class Api::V1::ApplicationController < ActionController::Base
     res = Net::HTTP.get(uri)
     res_json = JSON.parse(res)
     p res_json
-    render json: { success: false, error: "An error occurred.  Please try logging in again." } unless 
-                          (res_json["error_description"].blank? && res_json["aud"].include?(google_app_id))
-
-    # Pass this along to see what's going on w/the User 
-    google_id = res_json["sud"]
-    @user = User.find_by_google_id(google_id)
+    if !(res_json["error_description"].blank? && res_json["aud"].include?(google_app_id))
+      render json: { success: false, data: { errors: ["An error occurred.  Please try logging in again."] } } and return false
+    else                  
+      # Pass this along to see what's going on w/the User 
+      @google_id = res_json["sub"]
+    end 
   end 
 
 
+  # Checks to see if a user actually exists with verified google_id 
+  def google_auth 
+    # Idk if I need thi s
+    result = google_creds 
+    if result == false 
+      return 
+    end 
+    @user = User.find_by_google_id(@google_id)
+    if @user.blank? 
+      render json: { success: false, data: { error: ["No user exists with these Google credentials.  Please sign in as a new user."] } }
+    else 
+      @user
+    end 
+  end 
 
 
 
