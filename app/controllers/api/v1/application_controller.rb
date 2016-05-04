@@ -24,7 +24,7 @@ class Api::V1::ApplicationController < ActionController::Base
     head(401) and return false if params[:api_key].blank? 
     provided_api_key = params[:api_key]
     if provided_api_key != ENV["API_KEY"]
-      render json: { success: false, error: "Unauthorized services cannot use this backend"}, status: :unauthorized
+      render json: { success: false, errors: ["Unauthorized services cannot use this backend"] }, status: :unauthorized
       return false 
     end 
   end 
@@ -60,7 +60,7 @@ class Api::V1::ApplicationController < ActionController::Base
     end 
     @user = User.find_by_google_id(@google_id)
     if @user.blank? 
-      render json: { success: false, data: { error: ["No user exists with these Google credentials.  Please sign in as a new user."] } }
+      render json: { success: false, data: { errors: ["No user exists with these Google credentials.  Please sign in as a new user."] } }
     else 
       @user
     end 

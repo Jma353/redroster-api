@@ -72,15 +72,21 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		term = params[:term]
 		subject = params[:subject]
 		number = params[:number]
-		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{number}")
+		course_level = (number / 1000) * 1000 # To truncate the num + get the 1000-level of it 
+
+		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&classLevels[]=#{course_level}")
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
 			result_json = { 
 											success: true, 
 											# Data is to go here 
 										}
-			# Format the course JSON; index 0 b/c only one result 
-			course_json = format_course(res_json["data"]["classes"][0])
+			# Format the course JSON; index i (properly search through the response)
+			i = find_courses_index(res_json, number)
+			if (i == -1) 
+				render json: { success: false, data: { errors: ["Course not found."]}} and return 
+			end 
+			course_json = format_course(res_json["data"]["classes"][i])
 			course_json[:class_sections] = res_json["data"]["classes"][0]["enrollGroups"][0]["classSections"]
 			result_json[:data] = course_json
 

@@ -24,6 +24,7 @@ module CoursesHelper
 										title_short: c["titleShort"], # Shorter title 
 										title_long: c["titleLong"], # Longer title 
 										description: c["description"], # Description of course 
+										prerequisites: c["catalogPrereqCoreq"], # Prereqs 
 										credits_minimum: c["enrollGroups"][0]["unitsMinimum"], # minimum units of this course 
 										credits_maximum: c["enrollGroups"][0]["unitsMaximum"], # maximum units of this course 
 										required_sections: c["enrollGroups"][0]["componentsRequired"], # components required (e.g. LEC, DIS, etc.)
@@ -97,6 +98,19 @@ module CoursesHelper
 		courses
 	end 
 
+
+
+
+	# Check a full list of queried courses for the course we're looking for 
+	def find_course_index(cl_json, num)
+		classes = cl_json["data"]["classes"]
+		(0...classes.length).each do |i| 
+			if classes[i]["catalogNbr"].to_i == num
+				return i
+			end
+		end 
+		return -1 
+	end 
 
 
 

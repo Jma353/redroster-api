@@ -14,7 +14,7 @@ require 'net/http'
 require 'json'
 
 module ScheduleElementsHelper
-
+include CoursesHelper 
 
 	# Check to see if a section exists amongst a list of sections provided by the Cornell Courses API 
 	def section_details(sections, desired_num)
@@ -71,7 +71,7 @@ module ScheduleElementsHelper
 				section_dets = section_details(sections, section_num)
 
 				if section_dets.blank? || section_dets == false
-					return { success: false, data: { error: "This section does not exist with within this term and course."}} 
+					return { success: false, data: { errors: ["This section does not exist with within this term and course"] }} 
 				end 
 
 
@@ -145,18 +145,6 @@ module ScheduleElementsHelper
 
 
 	## SEARCH METHODS 
-
-
-	# Check a full list of queried courses for the course we're looking for 
-	def find_course_index(cl_json, num)
-		classes = cl_json["data"]["classes"]
-		(0...classes.length).each do |i| 
-			if classes[i]["catalogNbr"].to_i == num
-				return i
-			end
-		end 
-		return -1 
-	end 
 
 
 	# Finds a master_course from a series of cross_listings, or returns nil 

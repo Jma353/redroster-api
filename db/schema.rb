@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20160429204331) do
   create_table "schedules", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "term"
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

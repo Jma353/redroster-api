@@ -74,7 +74,7 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 	def destroy
 		@review = CourseReview.where(user_id: @user.id).find_by_master_course_id(course_review_params[:master_course_id])
 		if @review.blank? 
-			render json: { success: false, data: { error: "This review either doesn't exist or does not belong to you"} } and return false
+			render json: { success: false, data: { errors: ["This review either doesn't exist or does not belong to you"] } } and return false
 		else 
 			render json: { success: true }
 		end
