@@ -105,7 +105,7 @@ module CoursesHelper
 	def find_course_index(cl_json, num)
 		classes = cl_json["data"]["classes"]
 		(0...classes.length).each do |i| 
-			if classes[i]["catalogNbr"].to_i == num
+			if classes[i]["catalogNbr"].to_i == num.to_i
 				return i
 			end
 		end 

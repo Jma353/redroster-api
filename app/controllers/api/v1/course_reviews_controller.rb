@@ -25,7 +25,8 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 	def get_or_create_master_course 
 		subject = course_review_params[:subject]
-		number = course_review_params[:number]
+		number = course_review_params[:number].to_i
+		p number
 		@master_course = (MasterCourse.find_by(subject: subject, number: number) || 
 											MasterCourse.create(subject: subject, number: number))
 
@@ -81,7 +82,7 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 	private 
 
 		def course_review_params(extras={})
-			params[:course_review].present? ? params.require(:course_review).permit(:master_course_id, :term, :lecture, :office_hours, :difficulty, :material, :feedback, :subject).merge(extras) : {}  
+			params[:course_review].present? ? params.require(:course_review).permit(:master_course_id, :term, :lecture, :office_hours, :difficulty, :material, :feedback, :subject, :number).merge(extras) : {}  
 		end 
 
 

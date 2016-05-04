@@ -24,7 +24,7 @@ class Api::V1::ApplicationController < ActionController::Base
     head(401) and return false if params[:api_key].blank? 
     provided_api_key = params[:api_key]
     if provided_api_key != ENV["API_KEY"]
-      render json: { success: false, errors: ["Unauthorized services cannot use this backend"] }, status: :unauthorized
+      render json: { success: false, data: { errors: ["Unauthorized services cannot use this backend"] } }, status: :unauthorized
       return false 
     end 
   end 
