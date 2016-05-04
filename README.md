@@ -21,7 +21,7 @@ GET `api/v1/schedules/index` : Show logged in user's schedules
 
 POST `/api/v1/schedules/create` : Create a schedule for a specific term 
 ##### HTTP Request Body
-	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16" } } 
+	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16", name: "My crazzzaay schedule" } } 
 	
 
 GET `/api/v1/schedules/show/:id` : Returns a formatted schedule ready for easy parsing.  
@@ -47,7 +47,7 @@ POST `/api/v1/schedule_elements/create` (not ready for production use)
 	  							term: "SP16",
 	  							subject: "CS",
 	  							course_num: 1110,
-	  							section_num: 11828 // Specific to the course 
+	  							section_num: [11828, XXXXX, ...] // Specific to the course (must be an array)
 	  						}	
 	}
 

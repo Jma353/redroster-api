@@ -72,7 +72,7 @@ describe "Full Schedule Creation", :type => :request do
 			:term => "FA15", 
 			:subject => "CS", 
 			:course_num => 2850, 
-			:section_num => 12447
+			:section_num => [12447]
 		}
 		add_section_to_schedule(@u, networks)
 		json_res = check_json_response(response, false)
@@ -89,13 +89,13 @@ describe "Full Schedule Creation", :type => :request do
 			:term => "FA15",
 			:subject => "MATH",
 			:course_num => 2930,
-			:section_num => 6059
+			:section_num => [6059]
 		}
 		add_section_to_schedule(@u, diff_eq)
 		json_res = check_json_response(response, false)
 
 		# Grab the id for later
-		diff_eq_id = json_res["data"]["schedule_element"]["id"]
+		diff_eq_id = json_res["data"]["schedule_elements"][0]["id"]
 
 
 		# Show the schedule once again, but with networks + diff_eq added AND a schedule_conflict present 

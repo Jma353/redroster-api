@@ -62,7 +62,7 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 	private 
 
 		def schedule_params(extras={})	
-			params[:schedule].present? ? params.require(:schedule).permit(:term).merge(extras) : {} 
+			params[:schedule].present? ? params.require(:schedule).permit(:term, :name).merge(extras) : {} 
 		end 
 
 

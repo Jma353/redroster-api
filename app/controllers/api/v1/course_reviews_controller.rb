@@ -15,6 +15,7 @@
 #  updated_at  				:datetime 				 	not null 
 
 include CourseReviewsHelper
+include MasterCourseHelper 
 class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 	before_action :grab_test_user 
@@ -23,28 +24,21 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 
 	def get_or_create_master_course 
-		subject = params[:course_review][:subject]
-		number = params[:course_review][:number]
+		subject = course_review_params[:subject]
+		number = course_review_params[:number]
 		@master_course = (MasterCourse.find_by(subject: subject, number: number) || 
 											MasterCourse.create(subject: subject, number: number))
+
+		if !@master_course.valid? 
+			render json: { success: false, data: { errors: ["This course does not exist or is not being referred to properly"] } } and return 
+		end 
 	end 
 
 
 
-
-
-
 	def create
-		@review = CourseReview.create(master_course_id: @master_course.id, 
-																	term: course_review_params[:term],
-																	lecture: course_review_params[:lecture],
-																	office_hours: course_review_params[:office_hours],
-																	difficulty: course_review_params[:difficulty],
-																	material: course_review_params[:material],
-																	feedback: course_review_params[:feedback], 
-																	user_id: course_review_params[:user_id])
-		
-		data = @review.valid? ? ({ course_review: @review }) : ({ errors: @review.errors.full_messages })
+		@review = @user.course_reviews.create(course_review_params({ master_course_id: @master_course.id }))	
+		data = @review.valid? ? course_review_json(@review)  : { errors: @review.errors.full_messages }
 		render json: { success: @review.valid?, data: data }  
 	end 
 
@@ -52,7 +46,7 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 
 	def reviews_by_course 
-		master_course_with_reviews = @master_course.as_json([:include_reviews])	
+		master_course_with_reviews = master_course_with_reviews_json(@master_course)
 		render json: { success: true, data: master_course_with_reviews }
 	end 
 
@@ -86,18 +80,10 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 
 	private 
 
-		def course_review_params 
-			if params[:course_review].present? 
-				params.require(:course_review).permit(:master_course_id, 
-																							:term, 
-																							:lecture,
-																							:office_hours, 
-																							:difficulty, 
-																							:material,
-																							:feedback).merge(user_id: @user.id)
-			else
-				return {}
-			end 
+		def course_review_params(extras={})
+			params[:course_review].present? ? params.require(:course_review).permit(:master_course_id, :term, :lecture, :office_hours, :difficulty, :material, :feedback, :subject).merge(extras) : {}  
 		end 
+
+
 
 end

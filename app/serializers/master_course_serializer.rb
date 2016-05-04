@@ -10,6 +10,7 @@
 #
 
 class MasterCourseSerializer < ActiveModel::Serializer
+	has_many :course_reviews 
 	attributes :id, :subject, :number, :created_at
 end 
 

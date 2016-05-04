@@ -37,7 +37,7 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 			:term => "FA15", 
 			:subject => "CS", 
 			:course_num => 2850, 
-			:section_num => 12447
+			:section_num => [12447]
 		}
 
 		post :create, common_creds({ id_token: @u.google_id, schedule_element: networks })
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 			:term => "FA15",
 			:subject => "MATH",
 			:course_num => 2930,
-			:section_num => 6059
+			:section_num => [6059]
 		}
 
 		post :create, common_creds({ id_token: @u.google_id, schedule_element: diff_eq })
@@ -65,7 +65,7 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 		# Santiy check 
 		pp res_json
 
-		diff_eq_id = res_json["data"]["schedule_element"]["id"]
+		diff_eq_id = res_json["data"]["schedule_elements"][0]["id"]
 
 
 		# Now, we expect networks to also have a collision associated with it 
@@ -79,7 +79,7 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 			:term => "FA15",
 			:subject => "CS",
 			:course_num => 1110,
-			:section_num => 11829
+			:section_num => [11829]
 		}
 
 

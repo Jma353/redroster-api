@@ -23,8 +23,6 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
-
-
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
   def schedule_belongs_to_user
   	@schedule = Schedule.find_by(id: schedule_element_params[:schedule_id], user_id: @user.id)
@@ -52,30 +50,46 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
   # Create a schedule element and load the DB accordingly 
 	def create 	
+		# List of sections
+		sections = schedule_element_params[:section_num]
+		# schedule_elements 
+		schedule_elmts = [] 
+		# [CS1110_LEC, CS1110_DIS].each do .. 
+		sections.each do |sn| 
 
-		# `response` b/c could return an error json 
-		section_response = get_or_create_section(schedule_element_params)
+			# `response` b/c could return an error json 
+			section_response = get_or_create_section(schedule_element_params.merge({ section_num: sn }))
 
-		# Will only be true if the response is an error hash
-		if section_response[:success] == false
-			render json: section_response and return 
-		end
+			# Will only be true if the response is an error hash
+			if section_response[:success] == false
+				render json: section_response and return 
+			end
 
-		# Else, we know section is valid, unless collision or something 
-		@se = @schedule.schedule_elements.create(section_num: section_response.section_num)
+			# Else, we know section is valid, unless collision or something 
+			@se = @schedule.schedule_elements.create(section_num: section_response.section_num)
 
-		# If this is valid and saves, we need to update all attributes to reflect this
-		if @se.valid? 
-			@schedule.schedule_elements.each do |se|
-				se.update_attributes(collision: se.collisions?)
+			# If this is valid and saves, we need to update all attributes to reflect this
+			if @se.valid? 
+				@schedule.schedule_elements.each do |se|
+					se.update_attributes(collision: se.collisions?)
+				end 
+			end
+
+			# Create our data 
+			data = @se.valid? ? schedule_element_json(@se) : { errors: @se.errors.full_messages }
+
+			# If invalid, render the issue 
+			if !@se.valid?  
+				render json: { success: false, data: data } and return 
+			else # If not an issue, add to the list 
+				schedule_elmts << data["schedule_element"]
 			end 
-		end
 
-		# Create our data 
-		data = @se.valid? ? schedule_element_json(@se) : { errors: @se.errors.full_messages }
+		end 
 
-		# Render our JSON 
-		render json: { success: @se.valid?, data: data } 
+		# Render our JSON (at this point, it would be true)
+		render json: { success: true, data: { schedule_elements: schedule_elmts } }
+
 	end 
 
 	## END CREATION 
@@ -99,13 +113,16 @@ class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
 
 
 
-
-
 	private 
 
 		# Schedule Element Safe Params 
-		def schedule_element_params
-			params[:schedule_element].present? ? params.require(:schedule_element).permit(:id, :schedule_id, :term, :subject, :course_num, :section_num) : {} 
+		def schedule_element_params(extra={})
+			if params[:schedule_element].present? 
+				params[:schedule_element][:section_num] ||= [] # To ensure array structure
+				params.require(:schedule_element).permit(:id, :schedule_id, :term, :subject, :course_num, section_num: []).merge(extra) 
+			else 
+				{} 
+			end 
 		end
 
 

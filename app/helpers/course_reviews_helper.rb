@@ -33,6 +33,7 @@ module CourseReviewsHelper
 		"#{json['firstName']} #{json['lastName']}"
 	end
 
+
 	def get_prof(term, subject, number)
 		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{number}")
 		result_json = JSON.parse(Net::HTTP.get(uri))
@@ -47,4 +48,15 @@ module CourseReviewsHelper
 		result 
 	end 
 
+
+	def course_review_json(review)
+		CourseReviewSerializer.new(review).as_json
+	end 
+
+
 end
+
+
+
+
+
