@@ -14,7 +14,10 @@
 #  updated_at    :datetime         not null
 #
 
+
+# NOTE: Made the model this bloated to save DB rows 
 class Following < ActiveRecord::Base
+	
 	# References 
 	belongs_to :user1, class_name: "User", foreign_key: "user1_id"
 	belongs_to :user2, class_name: "User", foreign_key: "user2_id"
