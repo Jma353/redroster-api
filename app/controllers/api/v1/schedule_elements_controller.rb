@@ -1,14 +1,14 @@
-# == Schema Information 
-# 
-#  Table Name: schedule_elements
-# 
-#  PRIMARY KEY: (schedule_id, section_num)
-# 
-#  schedule_id 				:integer 						not null
-#  section_num 				:integer						not null 
-#  collision 					:boolean 						not null (set based on time collisions with other schedule elements)
-#  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 				 	not null 
+# == Schema Information
+#
+# Table name: schedule_elements
+#
+#  id          :integer          not null, primary key
+#  schedule_id :integer
+#  section_num :integer
+#  collision   :boolean
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
 
 include ScheduleElementsHelper 
 class Api::V1::ScheduleElementsController < Api::V1::ApplicationController

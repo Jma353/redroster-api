@@ -45,10 +45,13 @@ ActiveRecord::Schema.define(version: 20160429204331) do
   create_table "followings", force: :cascade do |t|
     t.integer  "user1_id"
     t.integer  "user2_id"
+    t.boolean  "u1_follows_u2"
+    t.boolean  "u2_follows_u1"
+    t.integer  "u1_popularity"
+    t.integer  "u2_popularity"
     t.boolean  "is_active"
-    t.integer  "following_score"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "followings", ["user1_id"], name: "index_followings_on_user1_id", using: :btree

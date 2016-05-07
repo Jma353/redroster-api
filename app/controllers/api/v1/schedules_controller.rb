@@ -1,12 +1,14 @@
-# == Schema Information 
-# 
-#  Table Name: schedules
-#  
-#  id 								:integer 					 	not null, PRIMARY KEY 
-#  user_id 						:integer					 	not null/blank 
-#  term								:string 						not null/blank
-#  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 				 	not null 
+# == Schema Information
+#
+# Table name: schedules
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  term       :string
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 
 include SchedulesHelper
 class Api::V1::SchedulesController < Api::V1::ApplicationController

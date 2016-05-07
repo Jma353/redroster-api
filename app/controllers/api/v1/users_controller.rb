@@ -1,11 +1,12 @@
-# == Schema Information 
-# 
-#  Table Name: users
-#  
-#  id     		 				:integer 				 	 	not null, PRIMARY KEY 	
-#  google_id 					:integer						not null, corresponds w/Google SUD # returned on validation w/Google sign-in 		 
-#  created_at  				:datetime				 	 	not null
-#  updated_at  				:datetime 			 	 	not null 
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer          not null, primary key
+#  google_id  :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 
 include UsersHelper
 class Api::V1::UsersController < Api::V1::ApplicationController
