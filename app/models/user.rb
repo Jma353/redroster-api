@@ -13,7 +13,9 @@ class User < ActiveRecord::Base
 	has_many :course_reviews, class_name: "CourseReview"
 	has_many :friendships, class_name: "Friendship"
 	has_many :schedules, class_name: "Schedule"
-	has_many :followings, class_name "Followings" 
+	has_many :followings, class_name: "Following" 
+	has_many :following_requests, class_name: "FollowingRequest"
+
 
 	# Validations 
 	validates :google_id, presence: true 

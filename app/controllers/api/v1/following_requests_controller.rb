@@ -15,11 +15,40 @@
 
 class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 
+	# To get the user 
+	before_action :grab_test_user 
+	# before_action :google_auth
 
 
 	def create
-		# TODO 
+		# Manually check these each time for now
+		user1_id = following_request_params[:user1_id]
+		user2_id = following_request_params[:user2_id]
+
+		# Check that the user is actually logged in 
+		if (user1_id != @user.id && user2_id != @user.id) 
+			render json: { success: false, data: { errors: ["You are not logged in as this user."]}} and return false
+		end 
+
+		# Reorder as necessary 
+		order = [user1_id, user2_id].sort! {|x,y| x <=> y }
+		extra = { user1_id: order.first, user2_id: order.second }
+		@fr = FollowingRequest.create(following_request_params(extra))
+		# data = @fr.valid? ? 
+		# TODO, package data in with this response 
+		render json: { success: @fr.valid? }
+
 	end 
+
+
+
+
+	private 
+
+
+		def following_request_params(extra={})
+			params[:following_request].present? ? params.require(:following_request).permit(:user1_id, :user2_id, :sent_by_id).merge(extra) : {} 
+		end
 
 
 end

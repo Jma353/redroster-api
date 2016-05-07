@@ -12,8 +12,8 @@
 #  updated_at  :datetime         not null
 #
 
-require 'rails_helper'
-
-RSpec.describe FollowingRequestsController, type: :controller do
-
-end
+class FollowingRequestSerializer < ActiveModel::Serializer 
+	has_one :user1
+	has_one :user2 
+	attributes :is_pending, :is_accepted, :created_at 
+end 
