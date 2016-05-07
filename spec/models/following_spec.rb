@@ -9,6 +9,7 @@
 #  u2_follows_u1 :boolean
 #  u1_popularity :integer
 #  u2_popularity :integer
+#  is_active     :boolean
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

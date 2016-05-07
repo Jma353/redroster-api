@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160429204331) do
+ActiveRecord::Schema.define(version: 20160507204819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,20 @@ ActiveRecord::Schema.define(version: 20160429204331) do
   end
 
   add_index "courses", ["master_course_id"], name: "index_courses_on_master_course_id", using: :btree
+
+  create_table "following_requests", force: :cascade do |t|
+    t.integer  "user1_id"
+    t.integer  "user2_id"
+    t.integer  "sent_by_id"
+    t.boolean  "is_pending"
+    t.boolean  "is_accepted"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "following_requests", ["sent_by_id"], name: "index_following_requests_on_sent_by_id", using: :btree
+  add_index "following_requests", ["user1_id"], name: "index_following_requests_on_user1_id", using: :btree
+  add_index "following_requests", ["user2_id"], name: "index_following_requests_on_user2_id", using: :btree
 
   create_table "followings", force: :cascade do |t|
     t.integer  "user1_id"

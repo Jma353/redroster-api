@@ -9,6 +9,7 @@
 #  u2_follows_u1 :boolean
 #  u1_popularity :integer
 #  u2_popularity :integer
+#  is_active     :boolean
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -20,8 +21,8 @@ class Following < ActiveRecord::Base
 	
 
 	# Validations (note, :scope checks one param against 1+ other params)
-	validate :user1_id, presence: true, uniqueness: { scope: :user2_id } 
-	validate :user2_id, presence: true, numericality: { greater_than: :user1_id }
+	validates :user1_id, presence: true, uniqueness: { scope: :user2_id } 
+	validates :user2_id, presence: true, numericality: { greater_than: :user1_id }
 
 
 	# Defaults + value setting 
