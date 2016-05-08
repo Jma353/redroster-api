@@ -33,7 +33,8 @@ class FollowingRequest < ActiveRecord::Base
 	def is_valid 
 		errors[:base] << "User 1 does not exist" unless User.exists?(self.user1_id)
 		errors[:base] << "User 2 does not exist" unless User.exists?(self.user2_id)
-		errors[:base] << "The sent_by field doesn't match either user" unless (self.sent_by_id == self.user1_id || self.sent_by_id == self.user2_id)
+		errors[:base] << "You cannot request to friend yourself" unless (self.user1_id != self.user2_id)
+ 		errors[:base] << "The sent_by field doesn't match either user" unless (self.sent_by_id == self.user1_id || self.sent_by_id == self.user2_id)
 	end 
 
 

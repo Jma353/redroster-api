@@ -17,3 +17,5 @@ class FollowingRequestSerializer < ActiveModel::Serializer
 	has_one :user2 
 	attributes :is_pending, :is_accepted, :created_at 
 end 
+
+

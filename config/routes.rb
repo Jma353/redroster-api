@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
 
 
-      # Course reviews // need to test these 
+      # Course reviews // need to test these more
 
       post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
 
@@ -59,8 +59,25 @@ Rails.application.routes.draw do
       delete "course_reviews/delete" => "course_reviews#destroy", :as => 'course_reviews_destroy'
 
 
+
+      # Following requests // need to test these 
+
+      post "following_requests/create" => "following_requests#create", :as => 'create_following_request'
+
+
+
+
+
     end 
   end 
 
 
 end
+
+
+
+
+
+
+
+
