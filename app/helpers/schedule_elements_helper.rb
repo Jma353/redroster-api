@@ -66,7 +66,8 @@ include CoursesHelper
 
 				# Get section info 
 				sections = course_info["enrollGroups"][0]["classSections"]
-
+				p sections 
+				p section_num 
 				# Get the section details 
 				section_dets = section_details(sections, section_num)
 
