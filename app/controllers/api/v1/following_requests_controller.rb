@@ -45,21 +45,43 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 
 
 	# React to a following request 
-	def react_to_request 
+	def accept_request 
 		# Get the necessary info from the params for this request 
 		fr_id = following_request_params[:id] 
+		reaction = params[:reaction]
 
-		# TODO 
-		# Pull user1_id and user2_id from the obtained following_request 
-		# Check that the person accepting or rejecting is accepting or rejecting a request sent by another person to THEM 
-		# Accept or reject (update the boolean) and make is_pending false 
-		# Creating a follower object or update a current one 
+		# Pull following_request or render error
+		@fr = FollowingRequest.find_by_id(fr_id)
+		if @fr.blank? || @fr.is_pending == false
+			render json: { success: false, data: { errors: "No active following request exists with this id" } } and return false 
+		end 	
 
-		render json: { success: true }
+		# Check if this user is valid to respond to this request 
+		valid_user = @fr.valid_reacting_user(@user)
+		if !valid_user 
+			render json: { success: false, data: { errors: "You don't have permission to accept or reject this following request" } } and return false
+		end 	
+
+		# Update the friend request 
+		@fr.update_attributes(is_pending: false, is_accepted: reaction)
+
+		# If accepted friend request
+		if reaction 	
+			# Update or create model w/appropriate information
+			@following = Following.find_or_create_by(user1_id: @fr.user1_id, user2_id: @fr.user2_id) do |f|
+				# Check which attribute we're updating 
+				if @user.id == f.user1_id
+					f.u2_follows_u1 = true
+				else 
+					f.u1_follows_u2 = true 
+				end
+			end 
+		end 
+
+		# Return the reaction and possible following object 
+		render json: { success: true, data: { following_request_accepted: reaction, following: @following } }
 
 	end 
-
-
 
 
 
@@ -67,8 +89,6 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 		def following_request_params(extra={})
 			params[:following_request].present? ? params.require(:following_request).permit(:id, :user1_id, :user2_id).merge(extra) : {} 
 		end
-
-
 
 
 

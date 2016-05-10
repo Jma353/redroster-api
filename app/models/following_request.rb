@@ -43,6 +43,23 @@ class FollowingRequest < ActiveRecord::Base
  		self.is_pending = true 
  		self.is_accepted = false 
 	end 
-	
+
+		
+	# True if it's a valid user to react to the friend request 
+	def valid_reacting_user(u)
+		(u.id == self.user1_id || u.id == self.user2_id) && u.id != sent_by_id
+	end 
+
+
+
 
 end
+
+
+
+
+
+
+
+
+
