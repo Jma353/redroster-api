@@ -20,6 +20,8 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 	# before_action :google_auth
 
 
+
+
 	# Create a following request 
 	def create
 		# Manually check these each time for now
@@ -44,11 +46,14 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 	end 
 
 
+
+
+
 	# React to a following request 
-	def accept_request 
+	def react_to_request 
 		# Get the necessary info from the params for this request 
 		fr_id = following_request_params[:id] 
-		reaction = params[:reaction]
+		accept = params[:accept]
 
 		# Pull following_request or render error
 		@fr = FollowingRequest.find_by_id(fr_id)
@@ -63,10 +68,10 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 		end 	
 
 		# Update the friend request 
-		@fr.update_attributes(is_pending: false, is_accepted: reaction)
+		@fr.update_attributes(is_pending: false, is_accepted: accept)
 
 		# If accepted friend request
-		if reaction 	
+		if accept	
 			# Update or create model w/appropriate information
 			@following = Following.find_or_create_by(user1_id: @fr.user1_id, user2_id: @fr.user2_id) do |f|
 				# Check which attribute we're updating 
@@ -79,9 +84,12 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 		end 
 
 		# Return the reaction and possible following object 
-		render json: { success: true, data: { following_request_accepted: reaction, following: @following } }
+		render json: { success: true, data: { following_request_accepted: accept, following: @following } }
 
 	end 
+
+
+
 
 
 

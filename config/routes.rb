@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
       post "following_requests/create" => "following_requests#create", :as => 'create_following_request'
 
+      post "following_requests/react_to_request/:accept" => "following_requests#react_to_request", :as => "react_to_following_request"
 
 
 

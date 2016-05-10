@@ -64,6 +64,20 @@ RSpec.describe Api::V1::FollowingRequestsController, type: :controller do
 
 
 
+	it "Following request followed by acceptance" do 
+
+		# user1 wants to follow user2
+		post :create, 
+		common_creds({ id_token: @u1.google_id, 
+			following_request: { user1_id: @u1.id, user2_id: @u2.id }})
+
+		# Check the JSON response without printing 
+		json_res = check_json_response(response, true, false)
+
+	end 
+
+
+
 
 
 
