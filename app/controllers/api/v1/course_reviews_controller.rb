@@ -27,8 +27,8 @@ class Api::V1::CourseReviewsController < Api::V1::ApplicationController
 		subject = course_review_params[:subject]
 		number = course_review_params[:number].to_i
 		p number
-		@master_course = (MasterCourse.find_by(subject: subject, number: number) || 
-											MasterCourse.create(subject: subject, number: number))
+		@master_course = MasterCourse.find_or_create_by(subject: subject, number: number)  
+											
 
 		if !@master_course.valid? 
 			render json: { success: false, data: { errors: ["This course does not exist or is not being referred to properly"] } } and return 

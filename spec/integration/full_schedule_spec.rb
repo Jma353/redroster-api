@@ -12,9 +12,11 @@ describe "Full Schedule Creation", :type => :request do
 	end 
 
 
-	# Establish a user 
+	# Establish users
 	before(:each) do	
 		@u = FactoryGirl.create(:user, google_id: 1)
+		@u2 = FactoryGirl.create(:user, google_id: 2)
+		@u3 = FactoryGirl.create(:user, google_id: 3)
 	end 
 
 
@@ -41,7 +43,7 @@ describe "Full Schedule Creation", :type => :request do
 
 
 
-	def check_json_response(response, print=true)
+	def check_json_response(response, print=true, success=true)
 		expect(response).to be_success
 		json_res = JSON.parse(response.body)
 		if print 
@@ -124,10 +126,61 @@ describe "Full Schedule Creation", :type => :request do
 		expect(se.length).to eq(0)
 
 
-		
-
-
 	end 	
+
+
+
+
+	it  "Schedule creation + calling course endpoints to see users in them" do 
+
+		# The courses we're returning information for 
+		# Networks 
+		networks = { 
+			:term => "FA15", 
+			:subject => "CS", 
+			:course_num => 2850, 
+			:section_num => [12447]
+		}
+
+		# Pyhton 
+		python_class = {
+			:term => "FA15",
+			:subject => "CS",
+			:course_num => 1110,
+			:section_num => [11829]
+		}
+
+		# Create a schedules + grab id's 
+		create_schedule(@u, "FA15")
+		res_json = check_json_response(response, false)
+		u_sched_id = res_json["data"]["schedule"]["id"]
+		create_schedule(@u2, "FA15")
+		u2_sched_id = res_json["data"]["schedule"]["id"]
+		create_schedule(@u3, "FA15")
+		u3_sched_id = res_json["data"]["schedule"]["id"]
+
+
+
+		# Add networks and python to u schedule 
+		add_section_to_schedule(@u, networks.clone.merge({ schedule_id: u_sched_id }))
+		add_section_to_schedule(@u, python_class.clone.merge({ schedule_id: u_sched_id }))
+
+		# Now that u has added these to their schedule, we should see them on requesting
+		# both courses from the course endpoints 
+
+		get "/api/v1/courses/FA15/CS/2850", common_creds
+		res_json = check_json_response(response, true)
+
+
+
+
+
+
+	end 
+
+
+
+
 
 
 

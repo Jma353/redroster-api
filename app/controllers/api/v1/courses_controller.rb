@@ -57,7 +57,7 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 											}
 										}
 			res_json["data"]["classes"].each do |c| 
-				course_json = format_course(c)
+				course_json = format_course(c, term)
 				result_json[:data][:courses].push(course_json)
 			end 
 			render json: result_json and return 
@@ -87,7 +87,7 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 			if (i == -1) 
 				render json: { success: false, data: { errors: ["Course not found."]}} and return 
 			end 
-			course_json = format_course(res_json["data"]["classes"][i])
+			course_json = format_course(res_json["data"]["classes"][i], term)
 			course_json[:class_sections] = res_json["data"]["classes"][i]["enrollGroups"][0]["classSections"]
 			result_json[:data] = course_json
 

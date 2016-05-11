@@ -12,12 +12,13 @@
 #
 
 module CoursesHelper
-	include ScheduleElementsHelper 
+	include ApplicationHelper 
 	require 'net/http'
   require 'json'
 
 
 	def format_course(c, term)
+
 		course_json = { 
 			id: c["crseId"], # 123456, unique
 			subject: c["subject"], # CS, ORIE, etc. 
@@ -35,23 +36,29 @@ module CoursesHelper
 			cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
 		}
 
-
 		# Get db course info here (logic in ScheduleElementsHelper)
 		@course = get_or_create_course(c, term, course_json[:subject], course_json[:catalog_number])
+		
+		# Create a field for users in this course 
+		course_json[:people_in_course] = @course.users 
 
+		# Return the course info 
+		course_json
 		
 	end 
 
 
 	def format_course_less(c)
+
 		course_json = {
-										id: c["crseId"], # 123456, unique
-										subject: c["subject"], # CS, ORIE, etc. 
-										catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
-										title_short: c["titleShort"], # Shorter title 
-										title_long: c["titleLong"], # Longer title 
-										description: c["description"], # Description of course 
-									 }
+			id: c["crseId"], # 123456, unique
+			subject: c["subject"], # CS, ORIE, etc. 
+			catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
+			title_short: c["titleShort"], # Shorter title 
+			title_long: c["titleLong"], # Longer title 
+			description: c["description"], # Description of course 
+		}
+
 	end 
 
 

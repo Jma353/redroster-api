@@ -14,7 +14,18 @@
 class Course < ActiveRecord::Base
 	# References 
 	belongs_to :master_course, class_name: "MasterCourse", foreign_key: "master_course_id"
+	# Chain references to access users 
 	has_many :sections, class_name: "Section"
+	has_many :schedule_elements, through: :sections
+	has_many :schedules, through: :schedule_elements
+	has_many :users, through: :schedules
+
+
+
+	has_many :schedule_elements, through: :sections, foreign_key: "section_num"
+	has_many :schedules, through: :schedule_elements
+	has_many :users, through: :schedules
+
 
 	# Validations 
 	validates :course_id, presence: true 
