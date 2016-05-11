@@ -10,9 +10,11 @@
 #  updated_at  :datetime         not null
 #
 
-include ScheduleElementsHelper 
 class Api::V1::ScheduleElementsController < Api::V1::TestsController
-	
+include ScheduleElementsHelper 
+include SchedulesHelper
+
+
 	# Used to validate creation
 	before_action :schedule_belongs_to_user, only: [:create, :destroy]
 	before_action :proper_term, only: [:create]
@@ -80,11 +82,10 @@ class Api::V1::ScheduleElementsController < Api::V1::TestsController
 			else # If not an issue, add to the list 
 				schedule_elmts << data["schedule_element"]
 			end 
-
 		end 
 
 		# Render our JSON (at this point, it would be true)
-		render json: { success: true, data: { schedule_elements: schedule_elmts } }
+		render json: { success: true, data: schedule_json(@schedule) }
 
 	end 
 

@@ -48,7 +48,6 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 		pp res_json
 
 
-
 		# The credentials of FA15 MATH2930, 11:15 - 12:05 (testing collision detection)
 		diff_eq = { 
 			:schedule_id => @sched.id, 
@@ -65,7 +64,8 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 		# Santiy check 
 		pp res_json
 
-		diff_eq_id = res_json["data"]["schedule_elements"][0]["id"]
+		section_num = Section.find_by(section_num: diff_eq[:section_num][0]).section_num
+		diff_eq_id = ScheduleElement.find_by_section_num(section_num)
 
 
 		# Now, we expect networks to also have a collision associated with it 
