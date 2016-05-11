@@ -34,6 +34,8 @@ module SchedulesHelper
 		end 
 
 		courses = { "courses" => [] }
+		max_creds = 0
+		min_creds = 0 
 		course_ids.each do |ci| 
 			# Get the course_json 
 			course_json = CourseSerializer.new(Course.find_by_course_id(ci.to_i)).as_json
@@ -41,11 +43,15 @@ module SchedulesHelper
 			s_e_jsons = schedule_elements.map { |se| ScheduleElementSerializer.new(se).as_json }
 			course_json["schedule_elements"] = s_e_jsons
 			courses["courses"] << course_json
+
+			max_creds += course_json["course"][:credits_maximum]
+			min_creds += course_json["course"][:credits_minimum]
 		end 
 
 		schedule_json = ScheduleSerializer.new(s).as_json
 		schedule_json["schedule"].merge!({ schedule_conflict: schedule_conflict })
-		schedule_json.merge!(courses)
+		schedule_json.merge!(courses).merge!({max_sched_credits: max_creds, min_sched_credits: min_creds })
+
 		return schedule_json
 	end 
 

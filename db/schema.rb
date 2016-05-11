@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 20160507204819) do
     t.string   "term"
     t.string   "subject"
     t.integer  "number"
+    t.integer  "credits_maximum"
+    t.integer  "credits_minimum"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end

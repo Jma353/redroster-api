@@ -15,10 +15,11 @@ include ScheduleElementsHelper
 include SchedulesHelper
 
 
+	## BEGIN CREATION 
+
 	# Used to validate creation
 	before_action :schedule_belongs_to_user, only: [:create, :destroy]
 	before_action :proper_term, only: [:create]
-
 
 
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
@@ -31,8 +32,6 @@ include SchedulesHelper
     end 
   end 
 
-  
-
 
   # Cascading validations for creation
   def proper_term 
@@ -41,9 +40,6 @@ include SchedulesHelper
   	end 
   	@schedule
   end 
-
-
-
 
 
   # Create a schedule element and load the DB accordingly 
@@ -90,10 +86,7 @@ include SchedulesHelper
 	end 
 
 	## END CREATION 
-
-
-
-
+	
 
 	# Delete a schedule element from a specific schedule 
 	def destroy

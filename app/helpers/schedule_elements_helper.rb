@@ -97,22 +97,6 @@ include ApplicationHelper
 
 
 
-	## SEARCH METHODS 
-
-
-	# Finds a master_course from a series of cross_listings, or returns nil 
-	# if it's not found 
-	def find_master_course(cross_listings)
-		cross_listings.each do |cl|
-			mc = MasterCourse.find_by(subject: cl[:subject], number: cl[:number])
-			if !mc.blank? 		
-				return mc 
-			end  
-		end 
-		return nil 
-	end
-
-
 
 
 

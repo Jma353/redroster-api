@@ -7,6 +7,8 @@
 #  term             :string
 #  subject          :string
 #  number           :integer
+#  credits_maximum  :integer
+#  credits_minimum  :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -31,7 +33,7 @@ class Course < ActiveRecord::Base
 	validate :unique_class, :on => :create 
 
 	def unique_class 
-		errors.add_to_base("This course exists already") unless Course.find_by(term: self.term, subject: self.subject, number: self.number).blank?
+		errors[:base] << ("This course exists already") unless Course.find_by(term: self.term, subject: self.subject, number: self.number).blank?
 	end 
 
 

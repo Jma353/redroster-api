@@ -6,6 +6,8 @@ class CreateCourses < ActiveRecord::Migration
     	t.string :term 
     	t.string :subject 
     	t.integer :number 
+        t.integer :credits_maximum
+        t.integer :credits_minimum  
 
     	t.timestamps null: false
     end

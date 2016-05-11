@@ -10,8 +10,17 @@ module ApplicationHelper
 		# If the course was not found in the DB
 		if @course.blank? 
 
+			course_json = { 
+				course_id: course_info["crseId"], 
+				term: term, 
+				subject: subject, 
+				number: course_num, 
+				credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
+				credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"]
+			}
+
 			# Create the course
-			@course = Course.new(course_id: course_info["crseId"], term: term, subject: subject, number: course_num)
+			@course = Course.new(course_json)
 
 			# Create a listing of all possible cross-listings 
 			possible_listings = [{ subject: subject, number: course_num }]
@@ -50,6 +59,25 @@ module ApplicationHelper
 		# Return the master_course we got before or just created 
 		master_course
 	end 
+
+
+	## SEARCH METHODS 
+
+
+	# Finds a master_course from a series of cross_listings, or returns nil 
+	# if it's not found 
+	def find_master_course(cross_listings)
+		cross_listings.each do |cl|
+			mc = MasterCourse.find_by(subject: cl[:subject], number: cl[:number])
+			if !mc.blank? 		
+				return mc 
+			end  
+		end 
+		return nil 
+	end
+
+
+
 
 
 
