@@ -124,13 +124,35 @@ GET `/api/v1/course_reviews/specific_review` : View review for a course given co
 ##### HTTP Request Body
 	{ 
 		api_key: "XYZ", 
-	 	 id_token: "ABC", 
+	 	id_token: "ABC", 
 	  	course_review: { subject: "CS", number: 1110, course_review_id: 100 } } 	  
 
 DELETE `/api/v1/course_reviews/delete` : Delete a review for a specific course 
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC", course_review: { master_course_id: 123 } }
 	
+
+
+### Following Requests 
+
+
+POST `api/v1/following_requests/create` : Send a request to follow someone 
+##### HTTP Request Body
+	{
+		api_key: "XYZ", 
+		id_token: "ABC", 
+		following_request: { user_id: 123 }
+	}
+
+
+POST `api/v1/following_requests/react_to_request/:accept(true or false)` : Accept or reject a following request to you
+##### HTTP Request Body
+	{
+		api_key: "XYZ", 
+		id_token: "ABC",
+		following_requests: { id: 40 // Unique id, can be pulled from viewing the request on the frontend } 
+	}
+
 
 
 

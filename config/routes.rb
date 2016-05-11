@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
 
 
-      # Course reviews // need to test these more
+      # Course reviews // work
 
       post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
 
@@ -60,13 +60,13 @@ Rails.application.routes.draw do
 
 
 
-      # Following requests // need to test these 
+      # Following requests // work
 
       post "following_requests/create" => "following_requests#create", :as => 'create_following_request'
 
       post "following_requests/react_to_request/:accept" => "following_requests#react_to_request", :as => "react_to_following_request"
 
-
+      
 
 
     end 
