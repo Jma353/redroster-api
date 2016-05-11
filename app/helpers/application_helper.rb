@@ -9,7 +9,6 @@ module ApplicationHelper
 
 		# If the course was not found in the DB
 		if @course.blank? 
-
 			course_json = { 
 				course_id: course_info["crseId"], 
 				term: term, 
@@ -22,6 +21,7 @@ module ApplicationHelper
 			# Create the course
 			@course = Course.new(course_json)
 
+
 			# Create a listing of all possible cross-listings 
 			possible_listings = [{ subject: subject, number: course_num }]
 			cross_listings = course_info["enrollGroups"][0]["simpleCombinations"]
@@ -32,7 +32,6 @@ module ApplicationHelper
 
 			# Set the course's :master_course_id field 
 			@course.master_course_id = @master_course.id 
-
 			# Save the course to the DB 
 			@course.save 
 		end 

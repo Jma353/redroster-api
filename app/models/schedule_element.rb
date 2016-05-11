@@ -13,7 +13,7 @@
 class ScheduleElement < ActiveRecord::Base
 	# References 
 	belongs_to :schedule, class_name: "Schedule", foreign_key: "schedule_id"
-	belongs_to :section, class_name: "Section", foreign_key: "section_num", primary_key: "section_num"
+	belongs_to :section, class_name: "Section", foreign_key: "section_num" 
 
 	# Must be validated b/c they make up the primary key 
 	validates :schedule_id, presence: true

@@ -49,8 +49,10 @@ module SchedulesHelper
 		end 
 
 		schedule_json = ScheduleSerializer.new(s).as_json
+
+		# Merge in stuff 
 		schedule_json["schedule"].merge!({ schedule_conflict: schedule_conflict })
-		schedule_json.merge!(courses).merge!({max_sched_credits: max_creds, min_sched_credits: min_creds })
+		schedule_json["schedule"].merge!(courses).merge!({max_sched_credits: max_creds, min_sched_credits: min_creds })
 
 		return schedule_json
 	end 

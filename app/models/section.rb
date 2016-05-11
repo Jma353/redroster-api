@@ -25,9 +25,9 @@ class Section < ActiveRecord::Base
 	validates :section_num, presence: true, uniqueness: true 
 	validates :course_id, presence: true 
 	validates :section_type, presence: true, length: { minimum: 3, maximum: 4 }
-	validates :start_time, presence: true 
-	validates :end_time, presence: true 
-	validates :day_pattern, presence: true 
+	# validates :start_time, presence: true 
+	# validates :end_time, presence: true 
+	# validates :day_pattern, presence: true 
 	validate :course_exists, :on => :create 
 
 	def course_exists 

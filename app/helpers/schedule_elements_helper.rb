@@ -43,7 +43,6 @@ include ApplicationHelper
 
 		# Attempts to find the section 
 		@section = Section.find_by_section_num(params[:section_num]) 
-
 		# If the section was not found in the DB 
 		if @section.blank?
 
@@ -61,7 +60,7 @@ include ApplicationHelper
 
 			# Check to see if the request was successful and that the course actually exists amongst the response
 			if res_json["status"] != "success" && (find_course_index(res_json, course_num) == -1)
-				return { success: false, data: { errors: ["Your requested section credentials match no courses"]}}
+				render json: { success: false, data: { errors: ["Your requested section credentials match no courses"]}} and return 
 			else 
 
 				# Find the course's index in the response
@@ -80,13 +79,14 @@ include ApplicationHelper
 				section_dets = section_details(sections, section_num)
 
 				if section_dets.blank? || section_dets == false
-					return { success: false, data: { errors: ["This section does not exist with within this term and course"] }} 
+					render json: { success: false, data: { errors: ["This section does not exist with within this term and course"] }} and return 
 				end 
 
 
 
 				# Instantiate the section 
 				@section = @course.sections.create(section_dets)
+
 
 			end
 		end 
