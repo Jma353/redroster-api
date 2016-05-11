@@ -224,6 +224,8 @@ describe "Full Schedule Creation", :type => :request do
 
 	end 
 
+	
+
 
 
 

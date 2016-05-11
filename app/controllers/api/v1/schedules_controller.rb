@@ -17,7 +17,7 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 	before_action :grab_test_user 
 	# before_action :google_auth 
 
-	before_action :schedule_belongs_to_user, only: [:show, :destroy] # in ApplicationController 
+	before_action :schedule_belongs_to_user, only: [:show, :clear, :destroy] # in ApplicationController 
 
 
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
@@ -48,6 +48,16 @@ class Api::V1::SchedulesController < Api::V1::ApplicationController
 	# Schedule + all sections that are in it 
 	def show 
 		render json: { success: true, data: schedule_json(@schedule) } 
+	end 
+
+
+	# Clear the schedule of all schedule_elements 
+	def clear 
+		@schedule_elements = ScheduleElements.where(schedule_id: @schedule.id)
+		@schedule_elements.each do |se|
+			se.destroy 
+		end 
+		render json: { success: true }
 	end 
 
 

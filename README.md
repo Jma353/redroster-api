@@ -18,16 +18,17 @@ GET `api/v1/schedules/index` : Show logged in user's schedules
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC" }
 
-
 POST `/api/v1/schedules/create` : Create a schedule for a specific term 
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16", name: "My crazzzaay schedule" } } 
-	
 
 GET `/api/v1/schedules/show/:id` : Returns a formatted schedule ready for easy parsing.  
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC" } 
 
+POST `api/v1/schedules/clear/:id` : Clear the schedule specified of all schedule_elements 
+##### HTTP Request Body
+	{ api_key: "XYZ", id_token: "ABC" }
 	
 DELETE `/api/v1/schedules/delete/:id` : Delete a schedule (cascades as well)
 ##### HTTP Request Body
