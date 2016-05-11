@@ -11,12 +11,8 @@
 #
 
 include ScheduleElementsHelper 
-class Api::V1::ScheduleElementsController < Api::V1::ApplicationController
+class Api::V1::ScheduleElementsController < Api::V1::TestsController
 	
-	# To get the user themself 
-	before_action :grab_test_user 
-	# before_action :google_auth
-
 	# Used to validate creation
 	before_action :schedule_belongs_to_user, only: [:create, :destroy]
 	before_action :proper_term, only: [:create]

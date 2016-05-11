@@ -11,7 +11,6 @@ class Api::V1::ApplicationController < ActionController::Base
   skip_before_filter :verify_authenticity_token # Add own custom API key for iOS frontend 
   before_action :check_api_key 
 
-
 	# HTTP Request Body includes: 
   # { api_key: API_KEY,
   #   id_token: ABC,
@@ -53,10 +52,14 @@ class Api::V1::ApplicationController < ActionController::Base
 
   # Checks to see if a user actually exists with verified google_id 
   def google_auth 
-    google_id = google_creds["sub"]
-    if google_id == false 
+    # Check 
+    google_credentials = google_creds
+    if google_credentials == false 
       return 
     end 
+    # Grab the google_id that we can access for sure now
+    google_id = google_credentials["sub"]
+
     @user = User.find_by_google_id(google_id)
     if @user.blank? 
       render json: { success: false, data: { errors: ["No user exists with these Google credentials.  Please sign in as a new user."] } }

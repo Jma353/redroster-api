@@ -12,5 +12,5 @@
 #  updated_at   :datetime         not null
 #
 
-class Api::V1::SectionsController < Api::V1::ApplicationController
+class Api::V1::SectionsController < Api::V1::TestsController
 end

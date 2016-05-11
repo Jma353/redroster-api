@@ -16,10 +16,9 @@
 
 include CourseReviewsHelper
 include MasterCourseHelper 
-class Api::V1::CourseReviewsController < Api::V1::ApplicationController
+class Api::V1::CourseReviewsController < Api::V1::TestsController
 
-	before_action :grab_test_user 
-	# before_action :google_auth
+
 	before_action :get_or_create_master_course, only: [:create, :reviews_by_course, :specific_review]
 
 

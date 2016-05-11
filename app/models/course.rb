@@ -20,7 +20,6 @@ class Course < ActiveRecord::Base
 
 	has_many :schedule_elements, through: :sections, foreign_key: "section_num"
 	has_many :schedules, through: :schedule_elements
-	has_many :users, through: :schedules
 
 
 	# Validations 
@@ -46,13 +45,13 @@ class Course < ActiveRecord::Base
 	# Made the decision to write this method rather than using the :through associations 
 	# b/c :through uses INNER JOIN, rather than indexing (or so it seems)
 	def users 
-		users_array = [] 
+		users_set = [] 
 		self.sections.each do |s|
 			s.schedule_elements.each do |se|
-				users_array << se.schedule.user # append the user 
+				users_set = users_set | [se.schedule.user] # append the user
 			end 
 		end
-		users_array
+		users_set 
 	end
 
 

@@ -1,4 +1,4 @@
-	# == Schema Information
+ 	# == Schema Information
 #
 # Table name: sections
 #
@@ -47,14 +47,10 @@ module SectionsHelper
 
 
 
-	
-
-
-
-
-
-
-
-
 
 end
+
+
+
+
+
