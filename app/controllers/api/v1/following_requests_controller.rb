@@ -21,24 +21,17 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 
 
 
-
 	# Create a following request 
 	def create
-		# Manually check these each time for now
-		user1_id = following_request_params[:user1_id]
-		user2_id = following_request_params[:user2_id]
-
-		# Check that the user is actually logged in 
-		if (user1_id.to_i != @user.id && user2_id.to_i != @user.id) 
-			render json: { success: false, data: { errors: ["You are not logged in as this user."]}} and return false
-		end 
+		# Grab the user_id of the user being sent this following request 
+		user_id = following_request_params[:user_id].to_i
 
 		# Reorder as necessary + fill in sent_by_id
-		order = [user1_id, user2_id].sort! {|x,y| x <=> y }
+		order = [user_id, @user.id].sort! {|x,y| x <=> y }
 		extra = { user1_id: order.first, user2_id: order.second, sent_by_id: @user.id }
 
 		# Make new following_request 
-		@fr = FollowingRequest.create(following_request_params(extra))
+		@fr = FollowingRequest.create(extra)
 
 		# Data + JSON return 
 		data = @fr.valid? ? FollowingRequestSerializer.new(@fr).as_json : { errors: @fr.errors.full_messages } 
@@ -73,15 +66,10 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 		# If accepted friend request
 		if accept	
 			# Update or create model w/appropriate information
-			@following = Following.find_or_create_by(user1_id: @fr.user1_id, user2_id: @fr.user2_id) do |f|
-				# Check which attribute we're updating 
-				if @user.id == f.user1_id
-					f.u2_follows_u1 = true
-				else 
-					f.u1_follows_u2 = true 
-				end
-			end 
-		end 
+			data = (@user.id == @fr.user1_id) ? { u2_follows_u1: true } : { u1_follows_u2: true }
+			@following = Following.find_or_create_by(user1_id: @fr.user1_id, user2_id: @fr.user2_id)
+			@following.update_attributes(data)
+		end 	
 
 		# Return the reaction and possible following object 
 		render json: { success: true, data: { following_request_accepted: accept, following: @following } }
@@ -95,7 +83,7 @@ class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 
 	private 
 		def following_request_params(extra={})
-			params[:following_request].present? ? params.require(:following_request).permit(:id, :user1_id, :user2_id).merge(extra) : {} 
+			params[:following_request].present? ? params.require(:following_request).permit(:id, :user_id).merge(extra) : {} 
 		end
 
 

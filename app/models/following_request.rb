@@ -21,7 +21,7 @@ class FollowingRequest < ActiveRecord::Base
 
 	# Validations 
 	validates :user2_id, presence: true, numericality: { greater_than: :user1_id }
-	validates :user1_id, presence: true, uniqueness: { scope: :user2_id }
+	validates :user1_id, presence: true, uniqueness: { scope: [:user2_id, :sent_by_id] }
 	validate :is_valid, :on => :create 
 
 
@@ -33,15 +33,18 @@ class FollowingRequest < ActiveRecord::Base
 	def is_valid 
 		errors[:base] << "User 1 does not exist" unless User.exists?(self.user1_id)
 		errors[:base] << "User 2 does not exist" unless User.exists?(self.user2_id)
-		errors[:base] << "You cannot request to friend yourself" unless (self.user1_id != self.user2_id)
+		errors[:base] << "You cannot request to follow yourself" unless (self.user1_id != self.user2_id)
  		errors[:base] << "The sent_by field doesn't match either user" unless (self.sent_by_id == self.user1_id || self.sent_by_id == self.user2_id)
+ 		errors[:base] << "You are already following this person" unless FollowingRequest.find_by(user1_id: self.user1_id,
+ 			user2_id: self.user2_id, sent_by_id: self.sent_by_id, is_pending: false, is_accepted: true).blank? 
 	end 
 
 
 	# Setting method for default values of the following_request 
-	def default_values 
+	def default_values
+		# Order these assignments this way to avoid returning false 
+		self.is_accepted = false  
  		self.is_pending = true 
- 		self.is_accepted = false 
 	end 
 
 		

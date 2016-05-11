@@ -27,13 +27,16 @@ class Following < ActiveRecord::Base
 	validates :user1_id, presence: true, uniqueness: { scope: :user2_id } 
 	validates :user2_id, presence: true, numericality: { greater_than: :user1_id }
 
-
 	# Defaults + value setting 
 	before_create :default_values 
 
 
 	# Default values 
 	def default_values 
+		# Must be managed 
+		self.u1_follows_u2 = false # Could be true, could be nil 
+		self.u2_follows_u1 = false # Could be true, could be nil 
+		# Other default values 
 		self.u1_popularity = 0
 		self.u2_popularity = 0 
 		self.is_active = true 
