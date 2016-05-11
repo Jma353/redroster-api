@@ -21,8 +21,16 @@ include ApplicationHelper
 	def section_details(sections, desired_num)
 		sections.each do |s| 
 			if s["classNbr"].to_i == desired_num.to_i
-				# Return: [type, startTime, endTime, pattern]
-				return s["ssrComponent"], s["meetings"][0]["timeStart"], s["meetings"][0]["timeEnd"], s["meetings"][0]["pattern"]
+				resp_json = { 
+					section_num: desired_num.to_i, 
+					section_type: s["ssrComponent"],
+					start_time: s["meetings"][0]["timeStart"],
+					end_time: s["meetings"][0]["timeEnd"],
+					day_pattern: s["meetings"][0]["pattern"],
+					class_number: s["section"], 
+					long_location: s["meetings"][0]["facilityDescr"]
+				}
+				return resp_json
 			end 
 		end 
 		return false
@@ -78,9 +86,7 @@ include ApplicationHelper
 
 
 				# Instantiate the section 
-				@section = @course.sections.create(section_num: section_num.to_i, section_type: section_dets[0], 
-																						start_time: section_dets[1], end_time: section_dets[2], 
-																						day_pattern: section_dets[3])
+				@section = @course.sections.create(section_dets)
 
 			end
 		end 

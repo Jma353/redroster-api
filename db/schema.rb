@@ -105,8 +105,10 @@ ActiveRecord::Schema.define(version: 20160507204819) do
     t.string   "start_time"
     t.string   "end_time"
     t.string   "day_pattern"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "class_number"
+    t.string   "long_location"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "sections", ["course_id"], name: "index_sections_on_course_id", using: :btree
