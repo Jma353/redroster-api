@@ -12,27 +12,34 @@
 #
 
 module CoursesHelper
-
+	include ScheduleElementsHelper 
 	require 'net/http'
   require 'json'
 
-	def format_course(c)
+
+	def format_course(c, term)
 		course_json = { 
-										id: c["crseId"], # 123456, unique
-										subject: c["subject"], # CS, ORIE, etc. 
-										catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
-										title_short: c["titleShort"], # Shorter title 
-										title_long: c["titleLong"], # Longer title 
-										description: c["description"], # Description of course 
-										prerequisites: c["catalogPrereqCoreq"], # Prereqs 
-										credits_minimum: c["enrollGroups"][0]["unitsMinimum"], # minimum units of this course 
-										credits_maximum: c["enrollGroups"][0]["unitsMaximum"], # maximum units of this course 
-										required_sections: c["enrollGroups"][0]["componentsRequired"], # components required (e.g. LEC, DIS, etc.)
-										begin_date: c["enrollGroups"][0]["sessionBeginDt"], # begin date 
-										end_date: c["enrollGroups"][0]["sessionEndDt"], # end data 
-										grading_basis: c["enrollGroups"][0]["gradingBasis"], # OPT or SUS
-										cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
-									 }
+			id: c["crseId"], # 123456, unique
+			subject: c["subject"], # CS, ORIE, etc. 
+			catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
+			title_short: c["titleShort"], # Shorter title 
+			title_long: c["titleLong"], # Longer title 
+			description: c["description"], # Description of course 
+			prerequisites: c["catalogPrereqCoreq"], # Prereqs 
+			credits_minimum: c["enrollGroups"][0]["unitsMinimum"], # minimum units of this course 
+			credits_maximum: c["enrollGroups"][0]["unitsMaximum"], # maximum units of this course 
+			required_sections: c["enrollGroups"][0]["componentsRequired"], # components required (e.g. LEC, DIS, etc.)
+			begin_date: c["enrollGroups"][0]["sessionBeginDt"], # begin date 
+			end_date: c["enrollGroups"][0]["sessionEndDt"], # end data 
+			grading_basis: c["enrollGroups"][0]["gradingBasis"], # OPT or SUS
+			cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
+		}
+
+
+		# Get db course info here (logic in ScheduleElementsHelper)
+		@course = get_or_create_course(c, term, course_json[:subject], course_json[:catalog_number])
+
+		
 	end 
 
 
