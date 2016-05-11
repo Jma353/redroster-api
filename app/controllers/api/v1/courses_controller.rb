@@ -74,7 +74,6 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		subject = params[:subject]
 		number = params[:number]
 		course_level = (number.to_i / 1000) * 1000 # To truncate the num + get the 1000-level of it 
-		p course_level
 		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&classLevels[]=#{course_level}")
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"

@@ -38,10 +38,11 @@ module CoursesHelper
 
 		# Get db course info here (logic in ScheduleElementsHelper)
 		@course = get_or_create_course(c, term, course_json[:subject], course_json[:catalog_number])
-		
-		# Create a field for users in this course 
-		course_json[:people_in_course] = @course.users 
 
+		# Create a field for users in this course 
+		users_in_course = @course.users.map {|u| UserSerializer.new(u).as_json["user"] }
+		course_json[:people_in_course] = users_in_course
+		
 		# Return the course info 
 		course_json
 		

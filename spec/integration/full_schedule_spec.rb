@@ -40,8 +40,7 @@ describe "Full Schedule Creation", :type => :request do
 	def destroy_schedule(u, schedule_id)
 		delete "/api/v1/schedules/delete/#{schedule_id}", common_creds({ id_token: u.google_id })
 	end 
-
-
+	
 
 	def check_json_response(response, print=true, success=true)
 		expect(response).to be_success
@@ -49,7 +48,7 @@ describe "Full Schedule Creation", :type => :request do
 		if print 
 			pp json_res
 		end 
-		expect(json_res["success"]).to eq(true)
+		expect(json_res["success"]).to eq(success)
 		json_res
 	end
 
@@ -142,7 +141,7 @@ describe "Full Schedule Creation", :type => :request do
 			:section_num => [12447]
 		}
 
-		# Pyhton 
+		# Python 
 		python_class = {
 			:term => "FA15",
 			:subject => "CS",
@@ -150,13 +149,19 @@ describe "Full Schedule Creation", :type => :request do
 			:section_num => [11829]
 		}
 
-		# Create a schedules + grab id's 
+
+
+		# Create u schedule + sched_id
 		create_schedule(@u, "FA15")
 		res_json = check_json_response(response, false)
 		u_sched_id = res_json["data"]["schedule"]["id"]
+		# Create u2 schedule + sched_id
 		create_schedule(@u2, "FA15")
+		res_json = check_json_response(response, false)
 		u2_sched_id = res_json["data"]["schedule"]["id"]
+		# Create u3 schedule + sched_id
 		create_schedule(@u3, "FA15")
+		res_json = check_json_response(response, false)
 		u3_sched_id = res_json["data"]["schedule"]["id"]
 
 
@@ -167,11 +172,52 @@ describe "Full Schedule Creation", :type => :request do
 
 		# Now that u has added these to their schedule, we should see them on requesting
 		# both courses from the course endpoints 
-
 		get "/api/v1/courses/FA15/CS/2850", common_creds
-		res_json = check_json_response(response, true)
+		res_json = check_json_response(response, false)
+		pp "People in Networks"
+		pp res_json["data"]["people_in_course"] # Should just be the one person 
+
+		get "/api/v1/courses/FA15/CS/1110", common_creds
+		res_json = check_json_response(response, false)
+		pp "People in Python"
+		pp res_json["data"]["people_in_course"]
 
 
+
+		# Add networks and python to u2 schedule 
+		add_section_to_schedule(@u2, networks.clone.merge({ schedule_id: u2_sched_id }))
+		add_section_to_schedule(@u2, python_class.merge({ schedule_id: u2_sched_id }))
+
+
+
+		# Now that u + u2 has added these to their schedule, we should see them on requesting
+		# both courses from the course endpoints 
+		get "/api/v1/courses/FA15/CS/2850", common_creds
+		res_json = check_json_response(response, false)
+		pp "People in Networks"
+		pp res_json["data"]["people_in_course"] # Should just be the one person 
+
+		get "/api/v1/courses/FA15/CS/1110", common_creds
+		res_json = check_json_response(response, false)
+		pp "People in Python"
+		pp res_json["data"]["people_in_course"]
+
+
+
+		# Now, u2 destroys his schedule :(
+		destroy_schedule(@u2, u2_sched_id)
+
+
+		# Only u should come up 
+		get "/api/v1/courses/FA15/CS/2850", common_creds
+		res_json = check_json_response(response, false)
+		pp "People in Networks"
+		pp res_json["data"]["people_in_course"] # Should just be the one person 
+
+		get "/api/v1/courses/FA15/CS/1110", common_creds
+		res_json = check_json_response(response, false)
+		pp "People in Python"
+		pp res_json["data"]["people_in_course"]
 
 
 
