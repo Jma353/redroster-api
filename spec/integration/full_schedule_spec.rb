@@ -14,9 +14,9 @@ describe "Full Schedule Creation", :type => :request do
 
 	# Establish users
 	before(:each) do	
-		@u = FactoryGirl.create(:user, google_id: 1)
-		@u2 = FactoryGirl.create(:user, google_id: 2)
-		@u3 = FactoryGirl.create(:user, google_id: 3)
+		@u = FactoryGirl.create(:user, google_id: 1, fname: "Joe", lname: "Antonakakis")
+		@u2 = FactoryGirl.create(:user, google_id: 2, fname:  "Daniel", lname: "Li")
+		@u3 = FactoryGirl.create(:user, google_id: 3, fname: "Emily", lname: "Smith")
 	end 
 
 

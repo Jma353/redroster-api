@@ -14,12 +14,8 @@
 class Course < ActiveRecord::Base
 	# References 
 	belongs_to :master_course, class_name: "MasterCourse", foreign_key: "master_course_id"
-	# Chain references to access users 
 	has_many :sections, class_name: "Section"
 	has_many :schedule_elements, through: :sections
-	has_many :schedules, through: :schedule_elements
-	has_many :users, through: :schedules
-
 
 
 	has_many :schedule_elements, through: :sections, foreign_key: "section_num"
@@ -39,8 +35,37 @@ class Course < ActiveRecord::Base
 		errors.add_to_base("This course exists already") unless Course.find_by(term: self.term, subject: self.subject, number: self.number).blank?
 	end 
 
+
 	def sections 
 		Section.where(course_id: self.id)
 	end 
 
+
+
+	# All the users with active schedules that include this class 
+	# Made the decision to write this method rather than using the :through associations 
+	# b/c :through uses INNER JOIN, rather than indexing (or so it seems)
+	def users 
+		users_array = [] 
+		self.sections.each do |s|
+			s.schedule_elements.each do |se|
+				users_array << se.schedule.user # append the user 
+			end 
+		end
+		users_array
+	end
+
+
+
+
 end
+
+
+
+
+
+
+
+
+
+

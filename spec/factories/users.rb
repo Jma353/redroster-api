@@ -15,5 +15,8 @@
 FactoryGirl.define do
   factory :user do
     google_id "MyString"
+    fname "First_Name"
+    lname "Last_Name"
+    picture_url "https://upload.wikimedia.org/wikipedia/en/0/05/Master_Chief_in_Halo_5.png"
   end
 end

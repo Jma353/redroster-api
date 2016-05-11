@@ -16,8 +16,8 @@
 class Api::V1::FollowingRequestsController < Api::V1::ApplicationController
 
 	# To get the user 
-	# before_action :grab_test_user 
-	before_action :google_auth
+	before_action :grab_test_user 
+	# before_action :google_auth
 
 
 
