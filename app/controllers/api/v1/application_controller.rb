@@ -46,19 +46,18 @@ class Api::V1::ApplicationController < ActionController::Base
       render json: { success: false, data: { errors: ["An error occurred.  Please try logging in again."] } } and return false
     else                  
       # Pass this along to see what's going on w/the User 
-      @google_id = res_json["sub"]
+      @google_creds = res_json
     end 
   end 
 
 
   # Checks to see if a user actually exists with verified google_id 
   def google_auth 
-    # Idk if I need thi s
-    result = google_creds 
-    if result == false 
+    google_id = google_creds["sub"]
+    if google_id == false 
       return 
     end 
-    @user = User.find_by_google_id(@google_id)
+    @user = User.find_by_google_id(google_id)
     if @user.blank? 
       render json: { success: false, data: { errors: ["No user exists with these Google credentials.  Please sign in as a new user."] } }
     else 
