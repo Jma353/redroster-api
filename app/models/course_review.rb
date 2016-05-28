@@ -12,6 +12,7 @@
 #  material_score     :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  feedback           :string
 #
 
 class CourseReview < ActiveRecord::Base
@@ -28,6 +29,7 @@ class CourseReview < ActiveRecord::Base
 	validates :material_score, allow_blank: true, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
 	# validates	:feedback, allow_blank: true, length: { maximum: 200 } # => max 200 character feedback 
 
+
 	validate :user_has_not_reviewed, :on => :create 
 
 	def user_has_not_reviewed 
@@ -35,11 +37,6 @@ class CourseReview < ActiveRecord::Base
 		errors[:base] << ("You have already reviewed this course") unless c.blank? 
 	end 
 	
-
-	# Will change later to feat. usernames or handles or something 
-	def as_json(options={})
-		super({ only: [:id, :user_id, :term, :lecture, :office_hours, :difficulty, :material, :feedback] }.merge(options))
-	end 
 
 
 end

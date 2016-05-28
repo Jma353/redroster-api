@@ -104,10 +104,10 @@ POST `/api/v1/course_reviews/create` : Create a review for a specific course
 	  						subject: "CS", 
 	  						number: 1110, 
 	  						term: "FA15",
-	  						lecture: [1-10],
-	  						office_hours: [1-10],
-	  						difficulty: [1-10],
-	  						material: [1-10],
+	  						lecture_score: [1-10],
+	  						office_hours_score: [1-10],
+	  						difficulty_score: [1-10],
+	  						material_score: [1-10],
 	  						feedback: "Max 200 char feedback" 
 	  				  	} 
 	 } 

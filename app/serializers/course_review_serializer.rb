@@ -12,6 +12,7 @@
 #  material_score     :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  feedback           :string
 #
 
 class CourseReviewSerializer < ActiveModel::Serializer
