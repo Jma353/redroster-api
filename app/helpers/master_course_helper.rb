@@ -15,7 +15,6 @@ module MasterCourseHelper
 		mc_json_w_reviews.merge!({ review_statistics: review_stats })
 
 
-
 	end
 
 end 
