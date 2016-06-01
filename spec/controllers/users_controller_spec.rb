@@ -35,7 +35,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 		res_json = JSON.parse(response.body)
 		pp res_json
 		expect(res_json["success"]).to eq(true)
-		expect(res_json["data"]["user"]["google_id"]).to eq(2)
 	end 
 
 

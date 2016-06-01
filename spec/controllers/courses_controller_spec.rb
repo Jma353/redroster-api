@@ -37,8 +37,8 @@ RSpec.describe Api::V1::CoursesController, type: :controller do
 		json = JSON.parse(response.body)
 		expect(json["success"]).to be(true)
 		expect(json["data"]["subjects"]).to include(({"value"=>"AEM", 
-																									"descr"=>"Applied Economics & Management",
-																									"descrformal"=>"Applied Economics & Management"}))
+												"descr"=>"Applied Economics & Management",
+												"descrformal"=>"Applied Economics & Management"}))
 	end 
 
 

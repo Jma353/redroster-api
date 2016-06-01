@@ -12,11 +12,12 @@
 #  material_score     :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  feedback           :string
 #
 
 include CourseReviewsHelper
 include MasterCourseHelper 
-class Api::V1::CourseReviewsController < Api::V1::TestsController
+class Api::V1::CourseReviewsController < Api::V1::AuthsController
 
 
 	before_action :get_or_create_master_course, only: [:create, :reviews_by_course, :specific_review]

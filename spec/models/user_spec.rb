@@ -14,19 +14,6 @@
 
 require 'rails_helper'
 
-RSpec.describe "User API " do 
-	
-  
-	
-	
-
-	
-
-
-
-
-
-
-
+RSpec.describe User, type: :model do 
 
 end

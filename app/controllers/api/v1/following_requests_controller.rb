@@ -13,7 +13,7 @@
 #
 
 
-class Api::V1::FollowingRequestsController < Api::V1::TestsController 
+class Api::V1::FollowingRequestsController < Api::V1::AuthsController 
 
 
 	# Create a following request 
@@ -70,10 +70,6 @@ class Api::V1::FollowingRequestsController < Api::V1::TestsController
 		render json: { success: true, data: { following_request_accepted: accept, following: @following } }
 
 	end 
-
-
-
-
 
 
 	private 

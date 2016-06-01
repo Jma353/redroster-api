@@ -11,7 +11,7 @@
 #
 
 include SchedulesHelper
-class Api::V1::SchedulesController < Api::V1::TestsController 
+class Api::V1::SchedulesController < Api::V1::AuthsController 
 
 	before_action :schedule_belongs_to_user, only: [:show, :clear, :destroy] # in ApplicationController 
 

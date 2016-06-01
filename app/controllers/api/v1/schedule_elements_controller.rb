@@ -10,7 +10,7 @@
 #  updated_at  :datetime         not null
 #
 
-class Api::V1::ScheduleElementsController < Api::V1::TestsController
+class Api::V1::ScheduleElementsController < Api::V1::AuthsController
 include ScheduleElementsHelper 
 include SchedulesHelper
 

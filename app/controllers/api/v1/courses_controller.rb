@@ -7,13 +7,15 @@
 #  term             :string
 #  subject          :string
 #  number           :integer
+#  credits_maximum  :integer
+#  credits_minimum  :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
 
 
 include CoursesHelper 
-class Api::V1::CoursesController < Api::V1::TestsController 
+class Api::V1::CoursesController < Api::V1::AuthsController 
 
 	##### GET ENDPOINTS BASED ON THE CORNELL COURSE API ##### 
 

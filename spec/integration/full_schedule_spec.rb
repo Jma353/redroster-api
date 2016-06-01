@@ -93,11 +93,11 @@ describe "Full Schedule Creation", :type => :request do
 			:section_num => [6059]
 		}
 		add_section_to_schedule(@u, diff_eq)
-		json_res = check_json_response(response, false)
+		json_res = check_json_response(response, true)
 
 		# Grab the id for later
-		diff_eq_id = json_res["data"]["schedule_elements"][0]["id"]
-
+		diff_eq_id = json_res["data"]["schedule"]["courses"][1]["schedule_elements"][0]["schedule_element"]["id"]
+		p diff_eq_id
 
 		# Show the schedule once again, but with networks + diff_eq added AND a schedule_conflict present 
 		show_schedule(@u, schedule_id)
