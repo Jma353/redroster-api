@@ -17,5 +17,5 @@
 class FollowingSerializer < ActiveModel::Serializer 
 	has_one :user1
 	has_one :user2 
-	attributes :id, :is_active, :following_score
+	attributes :id, :is_active, :u1_follows_u2, :u2_follows_u1
 end

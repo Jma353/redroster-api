@@ -156,5 +156,41 @@ POST `api/v1/following_requests/react_to_request/:accept(true or false)` : Accep
 
 
 
+### Followings 
+
+
+GET `api/v1/followings/fetch_followers` : Get a list of your follows 
+##### HTTP Request Body
+	{
+		api_key: "XYZ",
+		id_token: "ABC" 
+	}
+
+
+GET `api/v1/followings/fetch_followees` : Get a list of the people you follow 
+##### HTTP Request Body
+	{
+		api_key: "XYZ", 
+		id_token: "ABC"
+	}
+
+
+GET `api/v1/followings/fetch_followings` : Get a list of the relationships you have 
+##### HTTP Request Body 
+	{
+		api_key: "XYZ", 
+		id_token: "ABC"
+	}
+
+
+
+
+
+
+
+
+
+
+
 
 

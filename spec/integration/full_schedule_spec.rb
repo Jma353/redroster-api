@@ -19,7 +19,6 @@ describe "Full Schedule Creation", :type => :request do
 		@u3 = FactoryGirl.create(:user, google_id: 3, fname: "Emily", lname: "Smith")
 	end 
 
-
 	# Create a schedule for a particular user for a specific term 
 	def create_schedule(u, term)
 		post "/api/v1/schedules/create", common_creds({ id_token: u.google_id, schedule: { term: term }})
@@ -41,7 +40,6 @@ describe "Full Schedule Creation", :type => :request do
 		delete "/api/v1/schedules/delete/#{schedule_id}", common_creds({ id_token: u.google_id })
 	end 
 	
-
 	def check_json_response(response, print=true, success=true)
 		expect(response).to be_success
 		json_res = JSON.parse(response.body)
@@ -65,7 +63,6 @@ describe "Full Schedule Creation", :type => :request do
 		# Show the schedule 
 		show_schedule(@u, schedule_id)
 		json_res = check_json_response(response)
-
 
 		# Add networks course to this schedule 
 		networks = { 
