@@ -6,6 +6,7 @@
 #  user_id    :integer
 #  term       :string
 #  name       :string
+#  is_active  :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -13,6 +14,6 @@
 class ScheduleSerializer < ActiveModel::Serializer
 	# has_one :user
 	# has_many :schedule_elements 
-	attributes :id, :name, :term, :created_at
+	attributes :id, :name, :term, :is_active, :created_at
 end 
 

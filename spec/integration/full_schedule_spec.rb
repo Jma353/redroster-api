@@ -20,8 +20,8 @@ describe "Full Schedule Creation", :type => :request do
 	end 
 
 	# Create a schedule for a particular user for a specific term 
-	def create_schedule(u, term)
-		post "/api/v1/schedules/create", common_creds({ id_token: u.google_id, schedule: { term: term }})
+	def create_schedule(u, term, name, is_active)
+		post "/api/v1/schedules/create", common_creds({ id_token: u.google_id, schedule: { term: term, name: name, is_active: is_active }})
 	end 
 
 	def show_schedule(u, schedule_id)
@@ -54,7 +54,7 @@ describe "Full Schedule Creation", :type => :request do
 	it "schedule creation + adding valid sections to the schedule" do 
 
 		# Create the schedule 
-		create_schedule(@u, "FA15")
+		create_schedule(@u, "FA15", "my sched", true)
 		json_res = check_json_response(response)
 
 		# Grab the schedule_id for the `show` endpoint 
@@ -149,15 +149,15 @@ describe "Full Schedule Creation", :type => :request do
 
 
 		# Create u schedule + sched_id
-		create_schedule(@u, "FA15")
+		create_schedule(@u, "FA15", "u sched", true)
 		res_json = check_json_response(response, false)
 		u_sched_id = res_json["data"]["schedule"]["id"]
 		# Create u2 schedule + sched_id
-		create_schedule(@u2, "FA15")
+		create_schedule(@u2, "FA15", "u2 sched", true)
 		res_json = check_json_response(response, false)
 		u2_sched_id = res_json["data"]["schedule"]["id"]
 		# Create u3 schedule + sched_id
-		create_schedule(@u3, "FA15")
+		create_schedule(@u3, "FA15", "u3 sched", true)
 		res_json = check_json_response(response, false)
 		u3_sched_id = res_json["data"]["schedule"]["id"]
 

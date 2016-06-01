@@ -6,6 +6,7 @@
 #  user_id    :integer
 #  term       :string
 #  name       :string
+#  is_active  :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -14,7 +15,7 @@ module SchedulesHelper
 	require 'net/http'
 	require 'json'
 
-
+	# Method to construct a proper schedule JSON 
 	def schedule_json(s)
 		# Initial bool value 
 		schedule_conflict = false
@@ -33,6 +34,7 @@ module SchedulesHelper
 			element_ag[course_id] << se 
 		end 
 
+		# Build list of courses covered by this schedule 
 		courses = { "courses" => [] }
 		max_creds = 0
 		min_creds = 0 
@@ -54,11 +56,20 @@ module SchedulesHelper
 		schedule_json["schedule"].merge!({ schedule_conflict: schedule_conflict })
 		schedule_json["schedule"].merge!(courses).merge!({max_sched_credits: max_creds, min_sched_credits: min_creds })
 
+		# Update all other schedules of this user 
+		# to indicate that they are no longer active 
+		if schedule_json["schedule"][:is_active] 
+			other_schedules = Schedule.where("user_id = ? AND term = ? AND id != ?", s.user_id, s.term, s.id)
+			other_schedules.each do |s| 
+				s.update_attributes({ is_active: false })
+			end 
+		end 
+
 		return schedule_json
 	end 
 
 
-
+	# Get all the schedules own by a user 
 	def user_schedules(u)
 		schedules = { "schedules" => [] } 
 		u.schedules.each { |s| schedules["schedules"] << schedule_json(s) }

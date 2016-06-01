@@ -6,6 +6,7 @@
 #  user_id    :integer
 #  term       :string
 #  name       :string
+#  is_active  :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -18,15 +19,28 @@ class Schedule < ActiveRecord::Base
 	# Validations 
 	validates :user_id, presence: true 
 	validates :term, presence: true 
+	validates :name, presence: true
 	validate :user_exists, :on => :create 
+	validate :local_name_unqiueness, :if => :updating? # Will deal with this later
+	validate :local_name_unqiueness, :on => :create 
 	
-
+	def updating? 
+		@updating 
+	end
 
 
 	def user_exists 
-		errors.add_to_base("This user does not exist") unless !User.find_by_id(self.user_id).blank? 
+		errors[:base] << ("This user does not exist") unless !User.find_by_id(self.user_id).blank? 
+		return true 
 	end 
 
+
+	def local_name_unqiueness # name: self.name, user_id: self.user_id
+		fail_condition = Schedule.where("name = ? AND user_id = ?", 
+			self.name, self.user_id)
+		errors[:base] << "You already have a schedule with this name" unless fail_condition.empty? 
+		return true 
+	end 
 
 
 

@@ -50,7 +50,9 @@ class Course < ActiveRecord::Base
 		users_set = [] 
 		self.sections.each do |s|
 			s.schedule_elements.each do |se|
-				users_set = users_set | [se.schedule.user] # append the user
+				if se.schedule.is_active
+					users_set = users_set | [se.schedule.user] # append the user
+				end 
 			end 
 		end
 		users_set 

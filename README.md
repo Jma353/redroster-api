@@ -1,10 +1,10 @@
 # Red Roster Backend 
 
-## Backend for Red Roster iOS app 
+# Backend for Red Roster iOS app 
 
 
-## Endpoints 
-### Sign In 
+# Endpoints 
+## Sign In 
 
 POST `/api/v1/sign_in` : Sign in validation 
 ##### HTTP Request Body
@@ -12,7 +12,7 @@ POST `/api/v1/sign_in` : Sign in validation
 
 
 
-### Schedules
+## Schedules
 
 GET `api/v1/schedules/index` : Show logged in user's schedules 
 ##### HTTP Request Body
@@ -20,7 +20,7 @@ GET `api/v1/schedules/index` : Show logged in user's schedules
 
 POST `/api/v1/schedules/create` : Create a schedule for a specific term 
 ##### HTTP Request Body
-	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16", name: "My crazzzaay schedule" } } 
+	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16", name: "My crazzzaay schedule", is_active: true } } 
 
 GET `/api/v1/schedules/show/:id` : Returns a formatted schedule ready for easy parsing.  
 ##### HTTP Request Body
@@ -36,7 +36,7 @@ DELETE `/api/v1/schedules/delete/:id` : Delete a schedule (cascades as well)
 	
 
 
-### Schedule Elements 
+## Schedule Elements 
 
 POST `/api/v1/schedule_elements/create` (not ready for production use)
 ##### HTTP Request Body
@@ -65,7 +65,7 @@ DELETE `/api/v1/schedule_elements/delete` (not ready for production use)
 
 
 
-### Courses 
+## Courses 
 
 GET `/api/v1/courses` : List of terms that offer courses 
 ##### HTTP Request Body
@@ -93,7 +93,7 @@ GET `/api/v1/search_by_subject/:term/:query` : Search subjects of a particular t
 	
  
  
-### Course Reviews 
+## Course Reviews 
 
 POST `/api/v1/course_reviews/create` : Create a review for a specific course 
 ##### HTTP Request Body
@@ -134,7 +134,7 @@ DELETE `/api/v1/course_reviews/delete` : Delete a review for a specific course
 	
 
 
-### Following Requests 
+## Following Requests 
 
 
 POST `api/v1/following_requests/create` : Send a request to follow someone 
@@ -156,7 +156,7 @@ POST `api/v1/following_requests/react_to_request/:accept(true or false)` : Accep
 
 
 
-### Followings 
+## Followings 
 
 
 GET `api/v1/followings/fetch_followers` : Get a list of your follows 

@@ -6,6 +6,7 @@
 #  user_id    :integer
 #  term       :string
 #  name       :string
+#  is_active  :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -25,7 +26,6 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
       @schedule
     end 
   end 
-
 
 
 	# Schedule creation endpoint 
@@ -70,7 +70,7 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 	private 
 
 		def schedule_params(extras={})	
-			params[:schedule].present? ? params.require(:schedule).permit(:term, :name).merge(extras) : {} 
+			params[:schedule].present? ? params.require(:schedule).permit(:term, :name, :is_active).merge(extras) : {} 
 		end 
 
 
