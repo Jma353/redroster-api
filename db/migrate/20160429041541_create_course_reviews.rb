@@ -8,7 +8,8 @@ class CreateCourseReviews < ActiveRecord::Migration
     	t.integer :office_hours_score
     	t.integer :difficulty_score
     	t.integer :material_score
-
+        t.string :feedback 
+        
     	t.timestamps null: false
     end
   end

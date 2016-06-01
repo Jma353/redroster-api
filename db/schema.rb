@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160528221607) do
+ActiveRecord::Schema.define(version: 20160507204819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(version: 20160528221607) do
     t.integer  "office_hours_score"
     t.integer  "difficulty_score"
     t.integer  "material_score"
+    t.string   "feedback"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.string   "feedback"
   end
 
   add_index "course_reviews", ["master_course_id"], name: "index_course_reviews_on_master_course_id", using: :btree
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 20160528221607) do
     t.integer  "user_id"
     t.string   "term"
     t.string   "name"
+    t.boolean  "is_active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
