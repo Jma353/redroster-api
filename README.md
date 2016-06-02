@@ -22,7 +22,7 @@ POST `/api/v1/schedules/create` : Create a schedule for a specific term
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16", name: "My crazzzaay schedule", is_active: true } } 
 
-POST `/api/v1/schedules/make_active/:id` : Make this schedule for active for the term it corresponds to 
+POST `/api/v1/schedules/make_active/:id` : Make this schedule active for the term it corresponds to 
 ##### HTTP Request Body 
 	{ api_key: "XYZ", id_token: "ABC" }
 

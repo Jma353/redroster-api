@@ -52,6 +52,8 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 		make_schedule_active(@schedule)
 		render json: { success: true, data: ScheduleSerializer.new(@schedule).as_json }
 	end 
+
+	
 	
 
 	# Clear the schedule of all schedule_elements 

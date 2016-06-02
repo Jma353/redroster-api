@@ -59,7 +59,7 @@ module SchedulesHelper
 		# Update all other schedules of this user 
 		# to indicate that they are no longer active 
 		if schedule_json["schedule"][:is_active] 
-			make_schedule_active(s)
+			deactivate_other_schedules(s)
 		end 
 
 		return schedule_json
@@ -67,6 +67,12 @@ module SchedulesHelper
 
 	# Make this schedule active and make all other schedules of the same term / user inactive 
 	def make_schedule_active(s)
+		deactivate_other_schedules(s)
+		s.update_attributes({ is_active: true })
+	end 
+
+	# Deactivate other schedules 
+	def deactivate_other_schedules(s)
 		other_schedules = Schedule.where("user_id = ? AND term = ? AND id != ?", s.user_id, s.term, s.id)
 		other_schedules.each do |sched| 
 			sched.update_attributes({ is_active: false })
