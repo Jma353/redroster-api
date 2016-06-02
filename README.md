@@ -14,13 +14,17 @@ POST `/api/v1/sign_in` : Sign in validation
 
 ## Schedules
 
-GET `api/v1/schedules/index` : Show logged in user's schedules 
+GET `/api/v1/schedules/index` : Show logged in user's schedules 
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC" }
 
 POST `/api/v1/schedules/create` : Create a schedule for a specific term 
 ##### HTTP Request Body
 	{ api_key: "XYZ", id_token: "ABC" schedule: { term: "FA16", name: "My crazzzaay schedule", is_active: true } } 
+
+POST `/api/v1/schedules/make_active/:id` : Make this schedule for active for the term it corresponds to 
+##### HTTP Request Body 
+	{ api_key: "XYZ", id_token: "ABC" }
 
 GET `/api/v1/schedules/show/:id` : Returns a formatted schedule ready for easy parsing.  
 ##### HTTP Request Body
@@ -159,28 +163,17 @@ POST `api/v1/following_requests/react_to_request/:accept(true or false)` : Accep
 ## Followings 
 
 
-GET `api/v1/followings/fetch_followers` : Get a list of your follows 
+GET `/api/v1/followings/fetch_followers` : Get a list of your follows 
 ##### HTTP Request Body
-	{
-		api_key: "XYZ",
-		id_token: "ABC" 
-	}
+	{ api_key: "XYZ", id_token: "ABC" }
 
-
-GET `api/v1/followings/fetch_followees` : Get a list of the people you follow 
+GET `/api/v1/followings/fetch_followees` : Get a list of the people you follow 
 ##### HTTP Request Body
-	{
-		api_key: "XYZ", 
-		id_token: "ABC"
-	}
+	{ api_key: "XYZ", id_token: "ABC" }
 
-
-GET `api/v1/followings/fetch_followings` : Get a list of the relationships you have 
+GET `/api/v1/followings/fetch_followings` : Get a list of the relationships you have 
 ##### HTTP Request Body 
-	{
-		api_key: "XYZ", 
-		id_token: "ABC"
-	}
+	{ api_key: "XYZ", id_token: "ABC" }
 
 
 

@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
       get "schedules/show/:id" => "schedules#show", :as => 'schedules_show'
 
+      post "schedules/make_active/:id" => "schedules#make_active", :as => "schedules_make_active"
+
       delete "schedules/delete/:id" => "schedules#destroy", :as => 'schedules_destroy'
 
 

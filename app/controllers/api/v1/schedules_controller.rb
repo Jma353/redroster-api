@@ -14,7 +14,7 @@
 include SchedulesHelper
 class Api::V1::SchedulesController < Api::V1::AuthsController 
 
-	before_action :schedule_belongs_to_user, only: [:show, :clear, :destroy] # in ApplicationController 
+	before_action :schedule_belongs_to_user, only: [:show, :make_active, :clear, :destroy] # in ApplicationController 
 
 
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
@@ -46,6 +46,13 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 		render json: { success: true, data: schedule_json(@schedule) } 
 	end 
 
+	# Make active 
+	def make_active	
+		# Call helper on this schedule 
+		make_schedule_active(@schedule)
+		render json: { success: true, data: ScheduleSerializer.new(@schedule).as_json }
+	end 
+	
 
 	# Clear the schedule of all schedule_elements 
 	def clear 
@@ -63,7 +70,6 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 		@schedule.destroy
 		render json: { success: !@schedule.blank? }
 	end 
-
 
 
 
