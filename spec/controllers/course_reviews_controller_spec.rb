@@ -23,8 +23,6 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 		@master_course = FactoryGirl.create(:master_course, subject: "CS", number: 1110)
 	end 
 
-	
-
 
 	# CREATING COURSE 
 

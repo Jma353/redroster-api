@@ -96,7 +96,7 @@ include SchedulesHelper
 				se.update_attributes(collision: se.collisions?)
 			end 
 		end 
-		render json: { success: !@schedule_element.blank? }
+		render json: { success: !@schedule_element.blank?, data: schedule_json(@schedule) }
 	end 
 
 
