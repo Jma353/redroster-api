@@ -17,8 +17,33 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 	before_action :google_creds, only: [:google_sign_in]
 	
-
+	
 	# Google sign in and user creation on new user sign in 
+	api :POST, "/v1/sign_in", "Sign into Red Roster via Google Sign In"
+	formats [ 'JSON' ]
+	param_group :auth_params, Api::V1::ApplicationController
+	example "
+	{ 
+		'success': true, 
+		'data': {
+			'new_user': true, 
+			'user': {
+				'id': 1, 
+				'fname': 'Joe',
+				'lname': 'Antonakakis',
+				'email': 'jma353@cornell.edu',
+				'picture_url': 'https://goo.gl/npBHNI'
+			}
+		}
+	}"
+	example "
+	{
+		'success': false, 
+		'data': {
+			'errors': [ 'An error occurred.  Please try logging in again.' ]
+		}
+	}"
+
 	def google_sign_in 	
 		@google_id = @google_creds["sub"]
 		# @user passed by google_auth() method if the method succeeds 
@@ -33,8 +58,12 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 			}
 			@user = User.create(user_json)
 		end 
-		render json: { success: @user.valid?, data: { new_user: @user.blank? } }
+		data = user_json(@user).merge({ new_user: @user.blank? })
+		render json: { success: @user.valid?, data: data }
 	end 
+
+
+
 
 
 	# Creation method for testing purposes, w/o Google sign in 
@@ -46,12 +75,13 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 
 
+
+
 	private 
 
 		def user_params(extras={})	
 			params[:user].present? ? params.require(:user).permit(:id, :google_id) : {} 
 		end 
-
 
 
 end

@@ -14,7 +14,6 @@
 include CoursesHelper 
 class Api::V1::CoursesController < Api::V1::AuthsController 
 
-	##### GET ENDPOINTS BASED ON THE CORNELL COURSE API ##### 
 
 	# List of terms 
 	def list_of_terms
@@ -77,17 +76,13 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&classLevels[]=#{course_level}")
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
-			result_json = { 
-				success: true, 
-				data: {
-					errors: [""]
-				}
-			}
+			result_json = { success: true, data: { errors: [""] }}
 			# Format the course JSON; index i (properly search through the response)
 			i = find_course_index(res_json, number)
 			if (i == -1) 
-				render json: { success: false, data: { errors: ["Course not found."]}} and return 
+				render json: { success: false, data: { errors: ["Course not found."] }} and return 
 			end 
+			
 			# Create pointer 
 			found_json = res_json["data"]["classes"][i]
 			# Append the term info 

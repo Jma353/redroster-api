@@ -58,3 +58,48 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+
+# Helper methods 
+
+
+# Common credentials 
+def common_creds(extra={})
+  { api_key: ENV["API_KEY"]}.merge(extra)
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

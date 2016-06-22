@@ -1,32 +1,29 @@
 Rails.application.routes.draw do
 
 
+  apipie
   namespace :api do 
     namespace :v1 do 
 
-      # Sign In // work 
+      # Sign In 
 
-      post "sign_in" => "users#google_sign_in"
+      post "sign_in" => "users#google_sign_in", :as => 'sign_in'
 
-      post "users/create" => "users#create"
+      # Schedules 
 
-
-
-      # Schedules // work 
-
-      get "schedules/index" => "schedules#index", :as => "schedules_index"
+      get "schedules/index" => "schedules#index", :as => 'schedules_index'
 
       post "schedules/create" => "schedules#create", :as => 'schedules_create'
 
       get "schedules/show/:id" => "schedules#show", :as => 'schedules_show'
 
-      post "schedules/make_active/:id" => "schedules#make_active", :as => "schedules_make_active"
+      post "schedules/make_active/:id" => "schedules#make_active", :as => 'schedules_make_active'
 
       delete "schedules/delete/:id" => "schedules#destroy", :as => 'schedules_destroy'
 
 
 
-      # Schedule Elements // work 
+      # Schedule Elements 
 
       post "schedule_elements/create" => "schedule_elements#create", :as => 'schedule_elements_create'
 
@@ -34,7 +31,7 @@ Rails.application.routes.draw do
 
 
 
-      # All search stuff/fetching of terms, subjects, and courses // work  
+      # All search stuff/fetching of terms, subjects, and courses 
 
       get "search/:term/:query" => "courses#search_courses", :as => 'search_by_term'
 
@@ -50,7 +47,7 @@ Rails.application.routes.draw do
 
 
 
-      # Course reviews // work
+      # Course reviews 
 
       post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
 
@@ -62,14 +59,14 @@ Rails.application.routes.draw do
 
 
 
-      # Following requests // work
+      # Following requests 
 
       post "following_requests/create" => "following_requests#create", :as => "create_following_request"
 
       post "following_requests/react_to_request/:accept" => "following_requests#react_to_request", :as => "react_to_following_request"
 
       
-      # Followings // work 
+      # Followings 
 
       get "followings/fetch_followers" => "followings#fetch_followers", :as => "fetch_followers"
 

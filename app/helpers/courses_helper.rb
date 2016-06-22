@@ -20,9 +20,7 @@ module CoursesHelper
   	# Course JSON necessary to build the course 
 		course_json = { 
 			crse_id: course_info["crseId"], 
-			term: term, 
-			subject: course_info["subject"], 
-			number: course_info["catalogNbr"], 
+			term: term,
 			credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
 			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"]
 		}
@@ -102,7 +100,7 @@ module CoursesHelper
 		course_json = format_course_less(c)
 
 		# Course JSON 
-		course_json.extend({ 
+		course_json.merge!({ 
 			term: c["term"],
 			prerequisites: c["catalogPrereqCoreq"], # Prereqs 
 			credits_minimum: c["enrollGroups"][0]["unitsMinimum"], # minimum units of this course 
@@ -114,15 +112,15 @@ module CoursesHelper
 			cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
 		})
 
+
 		# Get db course info or create course
-		@course = get_or_create_course(c, term)
+		@course = get_or_create_course(c, c["term"])
 
 		# Append this course to the cross-listing list 
 		course_json[:cross_listings] << { "subject" => c["subject"], "catalogNbr" => c["catalogNbr"] }
 		
 		# Create a field for users in this course 
-		users_in_course = users_in_course.map {|u| UserSerializer.new(u).as_json["user"] }
-		course_json[:people_in_course] = users_in_course
+		course_json[:people_in_course] = @course.users.map {|u| UserSerializer.new(u).as_json["user"] }
 		
 		# Return the course info 
 		course_json
@@ -194,6 +192,8 @@ module CoursesHelper
 		end 
 		return -1 
 	end 
+
+
 
 
 

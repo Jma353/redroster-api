@@ -18,7 +18,7 @@
 include CourseReviewsHelper
 class Api::V1::CourseReviewsController < Api::V1::AuthsController
 
-
+	
 	def create
 		@review = @user.course_reviews.create(course_review_params)
 		data = @review.valid? ? course_review_json(@review)  : { errors: [@review.errors.full_messages] }
@@ -29,7 +29,7 @@ class Api::V1::CourseReviewsController < Api::V1::AuthsController
 	def reviews_by_course 
 		@crse_id = course_review_params[:crse_id]
 		@course_reviews = CourseReviews.find_by_crse_id(crse_id)
-		render json: { success: true, data: reviews_by_course_json (@crse_id, @course_reviews) }
+		render json: { success: true, data: reviews_by_course_json(@crse_id, @course_reviews) }
 	end 
 
 

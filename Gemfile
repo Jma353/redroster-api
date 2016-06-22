@@ -39,6 +39,9 @@ gem 'puma'
 gem 'active_model_serializers'
 # Gem for API doc generation 
 gem 'apipie-rails'
+# Maruku for markdown for API docs 
+gem 'maruku'
+
 # Gem to show DB queries in logs 
 # gem 'rails_12factor'
 

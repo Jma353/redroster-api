@@ -11,12 +11,6 @@ class Api::V1::ApplicationController < ActionController::Base
   skip_before_filter :verify_authenticity_token # Add own custom API key for iOS frontend 
   before_action :check_api_key 
 
-	# HTTP Request Body includes: 
-  # { api_key: API_KEY,
-  #   id_token: ABC,
-  #   // Everything else 
-  # }
-
 
   # Checks the request to see if it's coming from the proper frontend 
   def check_api_key 
@@ -69,9 +63,6 @@ class Api::V1::ApplicationController < ActionController::Base
   end 
 
 
-
-
-
   # BUILT FOR THE PURPOSES OF TESTING ENDPOINTS FOR SCHEDULE CREATION AND SUCH 
   def grab_test_user 
     google_id = params[:id_token]
@@ -80,9 +71,30 @@ class Api::V1::ApplicationController < ActionController::Base
 
 
 
+  # PARAM GROUPS FOR DOCUMENTATION 
+
+  # HTTP Request Body includes: 
+  # { api_key: API_KEY,
+  #   id_token: ABC,
+  #   // Everything else 
+  # }
+
+  # Required for every request 
+  def_param_group :auth_params do 
+    param :api_key, String, :desc => "API Key specific to Red Roster", :required => true 
+    param :id_token, String, :desc => "ID token received from Google Sign In for session authentication", :required => true
+  end 
+
+
 
 
 
 
 
 end
+
+
+
+
+
+

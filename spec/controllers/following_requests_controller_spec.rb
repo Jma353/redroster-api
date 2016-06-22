@@ -16,10 +16,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::FollowingRequestsController, type: :controller do
 
-	# Common credentials 
-	def common_creds(extra={})
-		{ api_key: ENV["API_KEY"]}.merge(extra)
-	end 
+
 
 	# Check the JSON response of each endpoint 
 	def check_json_response(response, success=true, print=true)
