@@ -2,17 +2,14 @@
 #
 # Table name: courses
 #
-#  course_id        :integer          not null, primary key
-#  master_course_id :integer
-#  term             :string
-#  subject          :string
-#  number           :integer
-#  credits_maximum  :integer
-#  credits_minimum  :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id              :integer          not null, primary key
+#  crse_id         :integer
+#  term            :string
+#  credits_maximum :integer
+#  credits_minimum :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
-
 
 include CoursesHelper 
 class Api::V1::CoursesController < Api::V1::AuthsController 
@@ -53,13 +50,14 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
 			result_json = { 
-											success: true, 
-											data: {
-												courses: []
-											}
-										}
+				success: true, 
+				data: {
+					courses: []
+				}
+			}
 			res_json["data"]["classes"].each do |c| 
-				course_json = format_course(c, term)
+				c["term"] = term 
+				course_json = format_course(c)
 				result_json[:data][:courses].push(course_json)
 			end 
 			render json: result_json and return 
@@ -80,15 +78,22 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
 			result_json = { 
-											success: true, 
-											# Data is to go here 
-										}
+				success: true, 
+				data: {
+					errors: [""]
+				}
+			}
 			# Format the course JSON; index i (properly search through the response)
 			i = find_course_index(res_json, number)
 			if (i == -1) 
 				render json: { success: false, data: { errors: ["Course not found."]}} and return 
 			end 
-			course_json = format_course(res_json["data"]["classes"][i], term)
+			# Create pointer 
+			found_json = res_json["data"]["classes"][i]
+			# Append the term info 
+			found_json["term"] = term 
+			# Format the course JSON 
+			course_json = format_course(found_json)
 			course_json[:class_sections] = res_json["data"]["classes"][i]["enrollGroups"][0]["classSections"]
 			result_json[:data] = course_json
 

@@ -1,7 +1,7 @@
 class CreateCourseReviews < ActiveRecord::Migration
   def change
     create_table :course_reviews do |t|
-    	t.references :master_course, index: true
+    	t.integer :crse_id
     	t.references :user, index: true 
     	t.string :term 
     	t.integer :lecture_score

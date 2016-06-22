@@ -4,7 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  schedule_id :integer
-#  section_num :integer
+#  section_id  :integer
 #  collision   :boolean
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

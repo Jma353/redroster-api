@@ -50,8 +50,10 @@ describe "Full Schedule Creation", :type => :request do
 		json_res
 	end
 
-
+	# Checks general schedule creation 
 	it "schedule creation + adding valid sections to the schedule" do 
+
+		pp "STARTING TEST 1"
 
 		# Create the schedule 
 		create_schedule(@u, "FA15", "my sched", true)
@@ -121,13 +123,15 @@ describe "Full Schedule Creation", :type => :request do
 		se = ScheduleElement.where(schedule_id: schedule_id)
 		expect(se.length).to eq(0)
 
-
 	end 	
 
 
 
 
+	# Checks schedule creation and listing of people in courses 
 	it  "Schedule creation + calling course endpoints to see users in them" do 
+
+		pp "STARTING TEST 2"
 
 		# The courses we're returning information for 
 		# Networks 
@@ -145,8 +149,6 @@ describe "Full Schedule Creation", :type => :request do
 			:course_num => 1110,
 			:section_num => [11829]
 		}
-
-
 
 		# Create u schedule + sched_id
 		create_schedule(@u, "FA15", "u sched", true)
@@ -166,6 +168,8 @@ describe "Full Schedule Creation", :type => :request do
 		# Add networks and python to u schedule 
 		add_section_to_schedule(@u, networks.clone.merge({ schedule_id: u_sched_id }))
 		add_section_to_schedule(@u, python_class.clone.merge({ schedule_id: u_sched_id }))
+
+
 
 		# Now that u has added these to their schedule, we should see them on requesting
 		# both courses from the course endpoints 
@@ -215,6 +219,91 @@ describe "Full Schedule Creation", :type => :request do
 		res_json = check_json_response(response, false)
 		pp "People in Python"
 		pp res_json["data"]["people_in_course"]
+
+	end 
+
+
+
+
+
+
+
+	# More in-depth checking of students in courses (based on semester + active schedule)
+	it "Ensures that only students of the course for the viewed semester appear (who have an active schedule w/that course)" do 
+
+		pp "STARTING TEST 3"
+
+		# Networks for FA15 
+		networks_fa15 = { 
+			:term => "FA15", 
+			:subject => "CS", 
+			:course_num => 2850, 
+			:section_num => [12447]
+		}
+
+		# Networks for FA16 
+		networks_fa16 = {
+			:term => "FA16",
+			:subject => "CS", 
+			:course_num => 2850, 
+			:section_num => [11749]
+		}
+
+
+
+		# Create u schedule for FA15 + sched_id
+		create_schedule(@u, "FA15", "u sched for FA15", true)
+		res_json = check_json_response(response, false)
+		u_sched_id_fa15 = res_json["data"]["schedule"]["id"]
+
+
+
+		# Create u2 schedule for FA15 + sched_id 
+		create_schedule(@u2, "FA15", "u2 sched for FA15", true)
+		res_json = check_json_response(response, false)
+		u2_sched_id_fa15 = res_json["data"]["schedule"]["id"]
+
+
+
+		# Create u schedule for FA16 + sched_id 
+		create_schedule(@u, "FA16", "u sched for FA16", true)
+		res_json = check_json_response(response, false)
+		u_sched_id_fa16 = res_json["data"]["schedule"]["id"]
+
+
+
+		# Add Networks (FA15) to u FA15 schedule 
+		add_section_to_schedule(@u, networks_fa15.clone.merge({ schedule_id: u_sched_id_fa15 }))
+		res_json = check_json_response(response, false)
+
+		# Add Networks (FA15) to u2 FA15 schedule
+		add_section_to_schedule(@u2, networks_fa15.clone.merge({ schedule_id: u2_sched_id_fa15 }))
+		res_json = check_json_response(response, false)
+
+
+
+		# Pull the people in Networks for FA15 
+		get "/api/v1/courses/FA15/CS/2850", common_creds
+		res_json = check_json_response(response, false)
+		pp "People in Networks for FA15"
+		pp res_json["data"]["people_in_course"] # Should be u and u2 
+
+
+
+		# Add Networks (FA16) to u FA16 schedule 
+		add_section_to_schedule(@u, networks_fa16.clone.merge({ schedule_id: u_sched_id_fa16 }))
+		res_json = check_json_response(response, true)
+
+
+
+		# Pull the people in Networks for FA16 
+		get "/api/v1/courses/FA16/CS/2850", common_creds
+		res_json = check_json_response(response, false)
+		pp "People in Networks for FA16"
+		pp res_json["data"]["people_in_course"] # Should be u only 
+
+
+
 
 
 

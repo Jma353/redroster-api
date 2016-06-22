@@ -2,7 +2,8 @@
 #
 # Table name: sections
 #
-#  section_num   :integer          not null, primary key
+#  id            :integer          not null, primary key
+#  section_num   :integer
 #  course_id     :integer
 #  section_type  :string
 #  start_time    :string
@@ -14,9 +15,36 @@
 #  updated_at    :datetime         not null
 #
 
-
 module SectionsHelper
 	require 'date'
+
+	# Build the sections for a course, given the classSections 
+	# array returned by the Cornell Courses API 
+	# 	c: classSections array 
+	def build_sections(c, course)
+		@sections = c.map { |s| build_section(s, course) }
+	end 
+
+
+	# Helper method, build a section, given the single classSection
+	# element of the classSections array returned by the Cornell 
+	# Courses API
+	# 	c: classSection element 
+	def build_section(c, course) 
+		# JSON needed to build the section 
+		build_json = {
+			section_num: c["classNbr"], 
+			section_type: c["ssrComponent"], 
+			start_time: c["meetings"][0]["timeStart"], 
+			end_time: c["meetings"][0]["timeEnd"], 
+			day_pattern: c["meetings"][0]["pattern"], 
+			class_number: c["section"], 
+			long_location: c["meetings"][0]["facilityDescr"]
+		}
+		# Find or create these sections 
+		course.sections.find_or_create_by(build_json)
+	end 
+
 
 	# From a string time in the format "HH:MM(AM/PM)", obtain minute integer 
 	def min_int(time_string)
@@ -34,7 +62,7 @@ module SectionsHelper
 		((hour_string[0] == "0" ? hour_string[1] : hour_string).to_i % 12) + (am_or_pm.upcase == "PM" ? 12 : 0)
 	end
 
-
+	# Time between two sections 
 	def time_between?(h, m, s)	
 		s1_time = Time.local(2016, 1, 1, h, m, 0)
 		s2_start = Time.local(2016, 1, 1, s.start_hour, s.start_mins, 0)
@@ -44,11 +72,10 @@ module SectionsHelper
 	end 
 
 
+	# Make section JSON 
 	def section_json(s) 
 		SectionSerializer.new(s).as_json
 	end 
-
-
 
 
 end

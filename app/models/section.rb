@@ -2,7 +2,8 @@
 #
 # Table name: sections
 #
-#  section_num   :integer          not null, primary key
+#  id            :integer          not null, primary key
+#  section_num   :integer
 #  course_id     :integer
 #  section_type  :string
 #  start_time    :string
@@ -31,7 +32,7 @@ class Section < ActiveRecord::Base
 	validate :course_exists, :on => :create 
 
 	def course_exists 
-		errors[:base] << ("This course does not exist.") unless !Course.find_by_course_id(self.course_id).blank? 
+		errors[:base] << ("This course does not exist.") unless !Course.find_by_id(self.course_id).blank? 
 	end 	
 
 	# Section time information 
@@ -75,8 +76,7 @@ class Section < ActiveRecord::Base
 
 	end 
 
-
-	# For accessing Course info 
+	# Course info 
 
 	def course 
 		Course.find_by_course_id(self.course_id)
@@ -85,17 +85,6 @@ class Section < ActiveRecord::Base
 	def course_term
 		course.term
 	end 
-
-	def course_subject
-		course.subject
-	end 
-	
-	def course_num
-		course.number 
-	end 
-
-
-
 
 
 end

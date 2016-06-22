@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20160507204819) do
   enable_extension "plpgsql"
 
   create_table "course_reviews", force: :cascade do |t|
-    t.integer  "master_course_id"
+    t.integer  "crse_id"
     t.integer  "user_id"
     t.string   "term"
     t.integer  "lecture_score"
@@ -29,21 +29,16 @@ ActiveRecord::Schema.define(version: 20160507204819) do
     t.datetime "updated_at",         null: false
   end
 
-  add_index "course_reviews", ["master_course_id"], name: "index_course_reviews_on_master_course_id", using: :btree
   add_index "course_reviews", ["user_id"], name: "index_course_reviews_on_user_id", using: :btree
 
-  create_table "courses", primary_key: "course_id", force: :cascade do |t|
-    t.integer  "master_course_id"
+  create_table "courses", force: :cascade do |t|
+    t.integer  "crse_id"
     t.string   "term"
-    t.string   "subject"
-    t.integer  "number"
     t.integer  "credits_maximum"
     t.integer  "credits_minimum"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
-
-  add_index "courses", ["master_course_id"], name: "index_courses_on_master_course_id", using: :btree
 
   create_table "following_requests", force: :cascade do |t|
     t.integer  "user1_id"
@@ -74,23 +69,16 @@ ActiveRecord::Schema.define(version: 20160507204819) do
   add_index "followings", ["user1_id"], name: "index_followings_on_user1_id", using: :btree
   add_index "followings", ["user2_id"], name: "index_followings_on_user2_id", using: :btree
 
-  create_table "master_courses", force: :cascade do |t|
-    t.string   "subject"
-    t.integer  "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "schedule_elements", force: :cascade do |t|
     t.integer  "schedule_id"
-    t.integer  "section_num"
+    t.integer  "section_id"
     t.boolean  "collision"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
   add_index "schedule_elements", ["schedule_id"], name: "index_schedule_elements_on_schedule_id", using: :btree
-  add_index "schedule_elements", ["section_num"], name: "index_schedule_elements_on_section_num", using: :btree
+  add_index "schedule_elements", ["section_id"], name: "index_schedule_elements_on_section_id", using: :btree
 
   create_table "schedules", force: :cascade do |t|
     t.integer  "user_id"
@@ -103,7 +91,8 @@ ActiveRecord::Schema.define(version: 20160507204819) do
 
   add_index "schedules", ["user_id"], name: "index_schedules_on_user_id", using: :btree
 
-  create_table "sections", primary_key: "section_num", force: :cascade do |t|
+  create_table "sections", force: :cascade do |t|
+    t.integer  "section_num"
     t.integer  "course_id"
     t.string   "section_type"
     t.string   "start_time"

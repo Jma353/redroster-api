@@ -2,32 +2,108 @@
 #
 # Table name: courses
 #
-#  course_id        :integer          not null, primary key
-#  master_course_id :integer
-#  term             :string
-#  subject          :string
-#  number           :integer
-#  credits_maximum  :integer
-#  credits_minimum  :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id              :integer          not null, primary key
+#  crse_id         :integer
+#  term            :string
+#  credits_maximum :integer
+#  credits_minimum :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
+include SectionsHelper 
 module CoursesHelper
-	include ApplicationHelper 
-	require 'net/http'
-  require 'json'
 
 
-	def format_course(c, term)
-
+  # Helper method, constructs the course given the Cornell Courses API response + term 
+  def build_course(course_info, term)
+  	# Course JSON necessary to build the course 
 		course_json = { 
-			id: c["crseId"], # 123456, unique
+			crse_id: course_info["crseId"], 
+			term: term, 
+			subject: course_info["subject"], 
+			number: course_info["catalogNbr"], 
+			credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
+			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"]
+		}
+		# Create the course
+		@course = Course.create(course_json)
+  end 
+
+
+  # Helper method, constructs the course given the Cornell Courses API response + term
+  # and builds all sections corresponding to that course 
+  def build_course_and_sections(course_info, term)
+  	@course = build_course(course_info, term)
+  	@sections = build_sections(course_info, @course) 
+  	return @course 
+  end 
+
+
+ 	# Helper method, queries the Cornell Courses API given term, subject, and number 
+ 	def get_course_info(term, subject, number)
+ 		# Get the level we care about 
+ 		course_level = (number / 1000) * 1000 
+		# Format them into a URL string + make a request to Cornell API 
+		url_string = "https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&classLevels[]=#{course_level}"
+		uri = URI(url_string)
+		res_json = JSON.parse(Net::HTTP.get(uri))
+		# Check to see if the request was successful and that the course actually exists amongst the response
+		if res_json["status"] != "success" && (find_course_index(res_json, course_num) == -1)
+			render json: { success: false, data: { errors: ["Your requested credentials match no courses"] }} and return 
+		else 
+			# Find the course's index in the response
+			c_index = find_course_index(res_json, course_num)
+			# If we couldn't find the course 
+			if c_index == -1 
+				render json: { success: false, data: { errors: ["A course with these credentials was not found"] }} and return 
+			end 
+			return res_json["data"]["classes"][c_index]
+		end 
+ 	end 
+
+
+	# Get or create a course
+	# Requires the response from the Cornell Courses API in the form of 
+	# `course_info`
+	def get_or_create_course(course_info, term)
+
+		# Attempts to find the course 
+		@course = Course.find_by(crse_id: course_info["crseId"], term: course_info["term"])
+
+		# If the course was not found in the DB
+		if @course.blank? 
+			@course = build_course(course_info, term)
+		end 
+
+		course_info[""]
+
+		@course
+	end
+
+
+	# Less course information
+	def format_course_less(c)
+		course_json = {
+			crse_id: c["crseId"], # 123456, unique
 			subject: c["subject"], # CS, ORIE, etc. 
 			catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
 			title_short: c["titleShort"], # Shorter title 
 			title_long: c["titleLong"], # Longer title 
 			description: c["description"], # Description of course 
+		}
+	end 
+
+
+
+	# More course information 
+	# Prereq: need term info 
+	def format_course(c)
+		course_json = format_course_less(c)
+
+		# Course JSON 
+		course_json.extend({ 
+			term: c["term"],
 			prerequisites: c["catalogPrereqCoreq"], # Prereqs 
 			credits_minimum: c["enrollGroups"][0]["unitsMinimum"], # minimum units of this course 
 			credits_maximum: c["enrollGroups"][0]["unitsMaximum"], # maximum units of this course 
@@ -36,13 +112,16 @@ module CoursesHelper
 			end_date: c["enrollGroups"][0]["sessionEndDt"], # end data 
 			grading_basis: c["enrollGroups"][0]["gradingBasis"], # OPT or SUS
 			cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
-		}
+		})
 
-		# Get db course info here (logic in ScheduleElementsHelper)
-		@course = get_or_create_course(c, term, course_json[:subject], course_json[:catalog_number])
+		# Get db course info or create course
+		@course = get_or_create_course(c, term)
 
+		# Append this course to the cross-listing list 
+		course_json[:cross_listings] << { "subject" => c["subject"], "catalogNbr" => c["catalogNbr"] }
+		
 		# Create a field for users in this course 
-		users_in_course = @course.users.map {|u| UserSerializer.new(u).as_json["user"] }
+		users_in_course = users_in_course.map {|u| UserSerializer.new(u).as_json["user"] }
 		course_json[:people_in_course] = users_in_course
 		
 		# Return the course info 
@@ -50,19 +129,6 @@ module CoursesHelper
 		
 	end 
 
-
-	def format_course_less(c)
-
-		course_json = {
-			id: c["crseId"], # 123456, unique
-			subject: c["subject"], # CS, ORIE, etc. 
-			catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
-			title_short: c["titleShort"], # Shorter title 
-			title_long: c["titleLong"], # Longer title 
-			description: c["description"], # Description of course 
-		}
-
-	end 
 
 
 	# Get a list of subjects 
@@ -97,6 +163,7 @@ module CoursesHelper
 	end 
 
 
+
 	def query_courses(term, subjects, q_num)
 		courses = []
 		subjects.each do |s| 
@@ -117,7 +184,6 @@ module CoursesHelper
 
 
 
-
 	# Check a full list of queried courses for the course we're looking for 
 	def find_course_index(cl_json, num)
 		classes = cl_json["data"]["classes"]
@@ -131,4 +197,8 @@ module CoursesHelper
 
 
 
+
+
+
 end
+

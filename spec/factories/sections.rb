@@ -2,7 +2,8 @@
 #
 # Table name: sections
 #
-#  section_num   :integer          not null, primary key
+#  id            :integer          not null, primary key
+#  section_num   :integer
 #  course_id     :integer
 #  section_type  :string
 #  start_time    :string

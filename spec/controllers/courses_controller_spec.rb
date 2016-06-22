@@ -2,15 +2,13 @@
 #
 # Table name: courses
 #
-#  course_id        :integer          not null, primary key
-#  master_course_id :integer
-#  term             :string
-#  subject          :string
-#  number           :integer
-#  credits_maximum  :integer
-#  credits_minimum  :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id              :integer          not null, primary key
+#  crse_id         :integer
+#  term            :string
+#  credits_maximum :integer
+#  credits_minimum :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 require 'rails_helper'

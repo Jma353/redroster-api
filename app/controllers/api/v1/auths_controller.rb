@@ -2,8 +2,8 @@
 class Api::V1::AuthsController < Api::V1::ApplicationController
 
 
-	# before_action :grab_test_user 
-	before_action :google_auth
+	before_action :grab_test_user 
+	# before_action :google_auth
 
 end 
 

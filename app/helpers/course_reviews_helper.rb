@@ -3,16 +3,16 @@
 # Table name: course_reviews
 #
 #  id                 :integer          not null, primary key
-#  master_course_id   :integer
+#  crse_id            :integer
 #  user_id            :integer
 #  term               :string
 #  lecture_score      :integer
 #  office_hours_score :integer
 #  difficulty_score   :integer
 #  material_score     :integer
+#  feedback           :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  feedback           :string
 #
 
 module CourseReviewsHelper
@@ -21,7 +21,6 @@ module CourseReviewsHelper
 	# This is relying on these attr's to be present, which could be bad practice, but
 	# I don't expect these values to change 
 	def review_statistics(reviews) 
-		p reviews
 		lecture = 0; office_hours = 0; difficulty = 0; material = 0
 		reviews.each do |r| 
 			lecture += r.lecture_score || 0; office_hours += r.office_hours_score || 0; difficulty += r.difficulty_score || 0; material += r.material_score || 0
@@ -30,32 +29,25 @@ module CourseReviewsHelper
 		return { lecture_score: lecture/total, office_hours_score: office_hours/total, difficulty_score: difficulty/total, material_score: material/total }
 	end 
 
-	def instructor_name(json) 
-		"#{json['firstName']} #{json['lastName']}"
-	end
 
-
-	def get_prof(term, subject, number)
-		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&q=#{number}")
-		result_json = JSON.parse(Net::HTTP.get(uri))
-		instructors = result_json["data"]["classes"][0]["enrollGroups"][0]["classSections"][0]["meetings"][0]["instructors"]
-		result = ""
-		instructors.each do |i|
-			result += instructor_name(i)
-			if i != instructors.last 
-				result += " & "
-			end
-		end 
-		result 
+	# Reviews by course JSON (not too much info, but enough)
+	def reviews_by_course_json(crse_id, reviews)
+		result = {}
+		result[:crse_id] = crse_id
+		result[:review_statistics] = review_statistics(reviews)
+		result[:reviews] = reviews.map { |r| course_review_json(r) }
+		return result 
 	end 
 
 
+	# JSON for the course review we want 
 	def course_review_json(review)
 		CourseReviewSerializer.new(review).as_json
 	end 
 
 
 end
+
 
 
 

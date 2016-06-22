@@ -4,7 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  schedule_id :integer
-#  section_num :integer
+#  section_id  :integer
 #  collision   :boolean
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -42,31 +42,44 @@ include SchedulesHelper
   end 
 
 
+
+
   # Create a schedule element and load the DB accordingly 
 	def create 	
 		# List of sections
 		sections = schedule_element_params[:section_num]
 		# schedule_elements 
 		schedule_elmts = [] 
+		# Attempt to find the course 
+		@course = Course.find_by(crse_id: schedule_element_params[:crse_id], 
+			term: schedule_element_params[:term])
+
+		# If the course is blank, make the course + all sections 
+		if @course.blank? 
+			# Grab required creds to retrieve course_info fom Cornell Courses API 
+			term = schedule_element_params[:term]
+			subject = schedule_element_params[:subject]
+			number = schedule_element_params[:number]
+			course_info = get_course_info(term, subject, number)
+			@course = build_course_and_sections(course_info, term)
+		end 
+
 		# [CS1110_LEC, CS1110_DIS].each do .. 
 		sections.each do |sn| 
-
-			# `response` b/c could return an error json 
-			section_response = get_or_create_section(schedule_element_params.merge({ section_num: sn }))
-
-			# Will only be true if the response is an error hash
-			if section_response[:success] == false
-				render json: section_response and return 
-			end
+			# Pulls the desired section from the 
+			@section = Section.find_by(course_id: @course.id, section_num: sn)
+			
+			# If this section doesn't exist, the number is wrong b/c it should exist if the @course exists 
+			if @section.blank? 
+				render json: { success: false, data: { errors: ["This section does not exist within this course"] }} and return 
+			end 
 
 			# Else, we know section is valid, unless collision or something 
-			@se = @schedule.schedule_elements.create(section_num: section_response.section_num)
+			@se = @schedule.schedule_elements.create(section_id: @section.id)
 
 			# If this is valid and saves, we need to update all attributes to reflect this
 			if @se.valid? 
-				@schedule.schedule_elements.each do |se|
-					se.update_attributes(collision: se.collisions?)
-				end 
+				update_se_collisions(@schedule)
 			end
 
 			# Create our data 
@@ -78,6 +91,7 @@ include SchedulesHelper
 			else # If not an issue, add to the list 
 				schedule_elmts << data["schedule_element"]
 			end 
+
 		end 
 
 		# Render our JSON (at this point, it would be true)
@@ -85,22 +99,16 @@ include SchedulesHelper
 
 	end 
 
-	## END CREATION 
-	
+
 
 	# Delete a schedule element from a specific schedule 
 	def destroy
 		@schedule_element = ScheduleElement.destroy_all(schedule_id: @schedule.id, id: schedule_element_params[:id])
 		if !@schedule_element.blank?
-			@schedule.schedule_elements.each do |se|
-				se.update_attributes(collision: se.collisions?)
-			end 
+			update_se_collisions(@schedule)
 		end 
 		render json: { success: !@schedule_element.blank?, data: schedule_json(@schedule) }
 	end 
-
-
-
 
 
 	private 
@@ -109,7 +117,7 @@ include SchedulesHelper
 		def schedule_element_params(extra={})
 			if params[:schedule_element].present? 
 				params[:schedule_element][:section_num] ||= [] # To ensure array structure
-				params.require(:schedule_element).permit(:id, :schedule_id, :term, :subject, :course_num, section_num: []).merge(extra) 
+				params.require(:schedule_element).permit(:id, :schedule_id, :term, :crse_id, :subject, :number, section_num: []).merge(extra) 
 			else 
 				{} 
 			end 

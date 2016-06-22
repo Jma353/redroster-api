@@ -2,15 +2,13 @@
 #
 # Table name: courses
 #
-#  course_id        :integer          not null, primary key
-#  master_course_id :integer
-#  term             :string
-#  subject          :string
-#  number           :integer
-#  credits_maximum  :integer
-#  credits_minimum  :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id              :integer          not null, primary key
+#  crse_id         :integer
+#  term            :string
+#  credits_maximum :integer
+#  credits_minimum :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 
 class Course < ActiveRecord::Base
@@ -19,28 +17,24 @@ class Course < ActiveRecord::Base
 	has_many :sections, class_name: "Section"
 	has_many :schedule_elements, through: :sections
 
-
 	has_many :schedule_elements, through: :sections, foreign_key: "section_num"
 	has_many :schedules, through: :schedule_elements
 
 
 	# Validations 
-	validates :course_id, presence: true 
-	validates :master_course_id, presence: true 
+	validates :crse_id, presence: true 
 	validates :term, presence: true, length: { minimum: 4, maximum: 4 }
-	validates :subject, presence: true, length: { minimum: 2 }
-	validates :number, presence: true, numericality: { greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999 }
 	validate :unique_class, :on => :create 
 
+
 	def unique_class 
-		errors[:base] << ("This course exists already") unless Course.find_by(term: self.term, subject: self.subject, number: self.number).blank?
+		errors[:base] << ("This course exists already") unless Course.find_by(term: self.term, crse_id: self.crse_id).blank?
 	end 
 
 
 	def sections 
 		Section.where(course_id: self.id)
 	end 
-
 
 
 	# All the users with active schedules that include this class 
@@ -57,7 +51,6 @@ class Course < ActiveRecord::Base
 		end
 		users_set 
 	end
-
 
 
 
