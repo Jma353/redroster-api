@@ -11,7 +11,6 @@
 #
 
 class ScheduleElementSerializer < ActiveModel::Serializer 
-	# has_one :schedule 
 	has_one :section 
 	attributes :id, :schedule_id, :collision, :created_at
 end 

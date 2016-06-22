@@ -12,6 +12,5 @@
 #
 
 class CourseSerializer < ActiveModel::Serializer 
-	# has_one :master_course
-	attributes :course_id, :term, :subject, :number, :created_at, :credits_maximum, :credits_minimum
+	attributes :id, :crse_id, :term, :credits_maximum, :credits_minimum, :created_at
 end 

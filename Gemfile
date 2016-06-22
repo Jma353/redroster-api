@@ -37,8 +37,13 @@ gem 'json'
 gem 'puma'
 # For modular serialization of models 
 gem 'active_model_serializers'
-
+# Gem for API doc generation 
+gem 'apipie-rails'
+# Gem to show DB queries in logs 
 # gem 'rails_12factor'
+
+
+
 
 
 # Use Capistrano for deployment
