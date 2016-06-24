@@ -33,17 +33,17 @@ Rails.application.routes.draw do
 
       # All search stuff/fetching of terms, subjects, and courses 
 
-      get "search/:term/:query" => "courses#search_courses", :as => 'search_by_term'
+      get "search/:term/:query" => "courses#search_courses", :as => 'search_courses_by_term' # Documented 
 
-      get "search_by_subject/:term/:query" => "courses#search_subjects", :as => 'search_by_term_and_subject'
+      get "search_by_subject/:term/:query" => "courses#search_subjects", :as => 'search_for_subjects' # Documented
 
-      get "courses/" => "courses#list_of_terms", :as => 'courses_terms'
+      get "courses/" => "courses#list_of_terms", :as => 'courses_terms' # Documented 
 
-      get "courses/:term" => "courses#subjects_by_term", :as => 'courses_by_term'
+      get "courses/:term" => "courses#subjects_by_term", :as => 'courses_by_term' # Documented
 
-      get "courses/:term/:subject" => "courses#courses_by_subject", :as => 'courses_by_term__subject'
+      get "courses/:term/:subject" => "courses#courses_by_subject", :as => 'courses_by_term_subject' # Documented 
 
-      get "courses/:term/:subject/:number" => "courses#course_info", :as => 'courses_by_term_subject_number'
+      get "courses/:term/:subject/:number" => "courses#course_info", :as => 'courses_by_term_subject_number' # Documented 
 
 
 

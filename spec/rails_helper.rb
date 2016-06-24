@@ -69,7 +69,15 @@ def common_creds(extra={})
 end 
 
 
-
+# Helper function to check JSON responses from the API 
+def check_response(a)
+  json = JSON.parse(a[:response].body)
+  if a[:print] 
+    pp json
+  end 
+  expect(json["success"]).to be(a[:success])
+  return json 
+end 
 
 
 
