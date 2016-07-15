@@ -13,8 +13,9 @@
 
 FactoryGirl.define do
   factory :course do
-    term "MyString"
-    subject "MyString"
-    number 1
+    term "FA16"
+    crse_id 11176
+    credits_minimum 4
+    credits_maximum 4
   end
 end

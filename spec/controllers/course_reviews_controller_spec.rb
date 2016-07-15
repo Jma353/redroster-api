@@ -16,71 +16,67 @@
 #
 
 require 'rails_helper'
+
 RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 
 	before(:each) do 
 		@user = FactoryGirl.create(:user, google_id: "hello_world")
-		@master_course = FactoryGirl.create(:master_course, subject: "CS", number: 1110)
+		@course = FactoryGirl.create(:course, crse_id: 11176, term: "FA16", credits_minimum: 4, credits_maximum: 4)
+	end 
+
+	def create_course_review(user, review, success=true)
+		post :create, common_creds({ id_token: user.google_id, course_review: review }) 
+		a = { response: response, print: true, success: success }
+		check_response(a)
+	end 
+
+	def delete_course_review(user, id, success=true)
+		delete :destroy, common_creds({ id_token: user.google_id, course_review_id: id })
+		a = { response: response, print: true, success: success }
+		check_response(a)
+	end
+
+
+	it "Test review creation for CS 1110 in FA16" do
+		review = { 
+			crse_id: 11176, 
+			term: "FA16",
+			lecture_score: 5, 
+			office_hours_score: 5, 
+			difficulty_score: 3, 
+			material_score: 5,
+			feedback: "This course is unreal"
+		}
+		create_course_review(@user, review)
 	end 
 
 
-	# CREATING COURSE 
-
-	def create_course(user, master_course)
-		post :create, { api_key: ENV["API_KEY"], id_token: user.google_id, 
-						course_review: { subject: "CS", number: 1110, feedback: "This course rocks" }}
-
-		expect(response).to be_success
-		json = JSON.parse(response.body)
-		expect(json["success"]).to be(true)
-		expect(json["data"]["course_review"]["feedback"]).to eq("This course rocks")
+	it "Test inability to review a course a second time" do 
+		review = { 
+			crse_id: 11176, 
+			term: "FA16",
+			lecture_score: 5, 
+			office_hours_score: 5, 
+			difficulty_score: 3, 
+			material_score: 5
+		}
+		create_course_review(@user, review)
+		create_course_review(@user, review, false) # should fail 
 	end 
 
 
-	it "Test review creation" do
-		create_course(@user, @master_course)
-	end 
-
-
-
-
-
-
-	# DELETING COURSE 
-
-	def delete_course(user, master_course)
-		create_course(user, master_course)
-
-		delete :destroy, { api_key: ENV["API_KEY"], id_token: user.google_id, 
-											 course_review: { master_course_id: master_course.id }}
-		expect(response).to be_success
-	end 
-
-
-	it "test review deletion" do 
-		delete_course(@user, @master_course)
-	end 
-
-
-
-
-
-
-	# OBTAINING FULL COURSE REVIEW STATS 
-
-	def create_course_review(user, term, subject, number, scores={}, feedback)
-		post :create, { api_key: ENV["API_KEY"], id_token: user.google_id,
-					course_review: { 
-										term: term, 
-										subject: subject, 
-										number: number, 
-										lecture_score: scores[:lecture],
-										office_hours_score: scores[:office_hours],
-										difficulty_score: scores[:difficulty],
-										material_score: scores[:material],
-										feedback: feedback
-									 }
-								  }
+	it "Test deleting a course review" do 
+		review = { 
+			crse_id: 11176, 
+			term: "FA16",
+			lecture_score: 5, 
+			office_hours_score: 5, 
+			difficulty_score: 3, 
+			material_score: 5
+		}
+		course_review_id = create_course_review(@user, review)["data"]["course_review"]["id"]
+		delete_course_review(@user, course_review_id)
+		expect(CourseReview.find_by(id: course_review_id)).to eq(nil)
 	end 
 
 

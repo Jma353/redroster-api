@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
 
-  apipie
+  # apipie
+
+  
   namespace :api do 
     namespace :v1 do 
 
@@ -33,9 +35,9 @@ Rails.application.routes.draw do
 
       # All search stuff/fetching of terms, subjects, and courses 
 
-      get "search/:term/:query" => "courses#search_courses", :as => 'search_courses_by_term' # Documented 
+      get "courses/search/:term/:query" => "courses#search_courses", :as => 'search_courses_by_term' # Documented 
 
-      get "search_by_subject/:term/:query" => "courses#search_subjects", :as => 'search_for_subjects' # Documented
+      get "courses/search_by_subject/:term/:query" => "courses#search_subjects", :as => 'search_for_subjects' # Documented
 
       get "courses/" => "courses#list_of_terms", :as => 'courses_terms' # Documented 
 
@@ -55,7 +57,7 @@ Rails.application.routes.draw do
 
       get "course_reviews/specific_review" => "course_reviews#specific_review", :as => 'course_review_for_course'
 
-      delete "course_reviews/delete" => "course_reviews#destroy", :as => 'course_reviews_destroy'
+      delete "course_reviews/delete/:course_review_id" => "course_reviews#destroy", :as => 'course_reviews_destroy'
 
 
 

@@ -15,7 +15,6 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::CoursesController, type: :controller do
 
-
 	before(:each) do 
 		@user = FactoryGirl.create(:user, google_id: "hello_world")
 	end 

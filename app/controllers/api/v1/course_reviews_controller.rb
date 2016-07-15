@@ -18,7 +18,7 @@
 include CourseReviewsHelper
 class Api::V1::CourseReviewsController < Api::V1::AuthsController
 
-	
+	# Create a course review 
 	def create
 		@review = @user.course_reviews.create(course_review_params)
 		data = @review.valid? ? course_review_json(@review)  : { errors: [@review.errors.full_messages] }
@@ -45,6 +45,7 @@ class Api::V1::CourseReviewsController < Api::V1::AuthsController
 		if @review.blank? 
 			render json: { success: false, data: { errors: ["This review either doesn't exist or does not belong to you"] } } and return false
 		else 
+			@review.destroy
 			render json: { success: true }
 		end
 	end 

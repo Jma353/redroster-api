@@ -71,21 +71,6 @@ class Api::V1::ApplicationController < ActionController::Base
 
 
 
-  # PARAM GROUPS FOR DOCUMENTATION 
-
-  # HTTP Request Body includes: 
-  # { api_key: API_KEY,
-  #   id_token: ABC,
-  #   // Everything else 
-  # }
-
-  # Required for every request 
-  def_param_group :auth_params do 
-    param :api_key, String, :desc => "API Key specific to Red Roster", :required => true 
-    param :id_token, String, :desc => "ID token received from Google Sign In for session authentication", :required => true
-  end 
-
-
 
 
 
