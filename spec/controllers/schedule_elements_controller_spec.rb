@@ -89,10 +89,32 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 
 		# No conflict for this one 
 		post :create, common_creds({ id_token: @u.google_id, schedule_element: python_class.merge(schedule_id: @sched.id) })
-		a = { response: response, print: true, success: true }
+		a = { response: response, print: false, success: true }
 		check_response(a)
 
 	end 
+
+
+	it "Test adding and then deleting a schedule element with array structure" do 
+
+		# Adding Networks 
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: networks.merge(schedule_id: @sched.id) })
+		a = { response: response, print: false, success: true }
+		check_response(a)
+
+		# Adding Diff Eq ( ^ creates a conflict with the above)
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: diff_eq.merge(schedule_id: @sched.id) })
+		a = { response: response, print: false, success: true }
+		check_response(a)
+
+		# Schedule should only contain diff eq
+		schedule_element_id = ScheduleElement.where(schedule_id: @sched.id).first 
+		delete :destroy, common_creds({ id_token: @u.google_id, schedule_element: { id: [schedule_element_id], schedule_id: @sched.id }})
+		a = { response: response, print: false, success: true }
+		check_response(a)
+
+	end 
+
 
 
 

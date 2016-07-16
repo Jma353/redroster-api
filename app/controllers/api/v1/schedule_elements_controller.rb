@@ -47,11 +47,8 @@ include CoursesHelper
 
   # Create a schedule element and load the DB accordingly 
 	def create 	
-		# List of sections
 		sections = schedule_element_params[:section_num]
-		# schedule_elements 
 		schedule_elmts = [] 
-		# Attempt to find the course 
 		@course = Course.find_by(crse_id: schedule_element_params[:crse_id], 
 			term: schedule_element_params[:term])
 
@@ -90,11 +87,18 @@ include CoursesHelper
 
 	# Delete a schedule element from a specific schedule 
 	def destroy
-		@schedule_element = ScheduleElement.destroy_all(schedule_id: @schedule.id, id: schedule_element_params[:id])
-		if !@schedule_element.blank?
-			update_se_collisions(@schedule)
+		schedule_element_ids = schedule_element_params[:id]
+		p schedule_element_ids
+		success = true 
+		schedule_element_ids.each do |se_id|
+			@schedule_element = ScheduleElement.find(schedule_id: @schedule.id, id: se_id)
+			@schedule_element.destroy
+			if !@schedule_element.blank?
+				update_se_collisions(@schedule)
+			end 
+			success = success && !@schedule_element.blank?
 		end 
-		render json: { success: !@schedule_element.blank?, data: schedule_json(@schedule) }
+		render json: { success: success, data: schedule_json(@schedule) }
 	end 
 
 
@@ -103,8 +107,9 @@ include CoursesHelper
 		# Schedule Element Safe Params 
 		def schedule_element_params(extra={})
 			if params[:schedule_element].present? 
+				params[:schedule_element][:id] ||= [] # To ensure array structure
 				params[:schedule_element][:section_num] ||= [] # To ensure array structure
-				params.require(:schedule_element).permit(:id, :schedule_id, :term, :crse_id, :subject, :number, section_num: []).merge(extra) 
+				params.require(:schedule_element).permit(:schedule_id, :term, :crse_id, :subject, :number, id: [], section_num: []).merge(extra) 
 			else 
 				{} 
 			end 
