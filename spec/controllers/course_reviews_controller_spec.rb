@@ -20,7 +20,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 
 	before(:each) do 
-		@user = FactoryGirl.create(:user, google_id: "hello_world")
+		@user1 = FactoryGirl.create(:user, google_id: "hello_world")
+		@user2 = FactoryGirl.create(:user, google_id: "hello_world2")
 		@course = FactoryGirl.create(:course, crse_id: 11176, term: "FA16", credits_minimum: 4, credits_maximum: 4)
 	end 
 
@@ -47,7 +48,7 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 			material_score: 5,
 			feedback: "This course is unreal"
 		}
-		create_course_review(@user, review)
+		create_course_review(@user1, review)
 	end 
 
 
@@ -60,8 +61,8 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 			difficulty_score: 3, 
 			material_score: 5
 		}
-		create_course_review(@user, review)
-		create_course_review(@user, review, false) # should fail 
+		create_course_review(@user1, review)
+		create_course_review(@user1, review, false) # should fail 
 	end 
 
 
@@ -74,46 +75,88 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 			difficulty_score: 3, 
 			material_score: 5
 		}
-		course_review_id = create_course_review(@user, review)["data"]["course_review"]["id"]
-		delete_course_review(@user, course_review_id)
+		course_review_id = create_course_review(@user1, review)["data"]["course_review"]["id"]
+		delete_course_review(@user1, course_review_id)
 		expect(CourseReview.find_by(id: course_review_id)).to eq(nil)
 	end 
 
 
-	it "test obtaining full set of reviews for a course" do 
+	it "Test that deleting fails if not authorized" do
+		review = { 
+			crse_id: 11176, 
+			term: "FA16",
+			lecture_score: 5, 
+			office_hours_score: 5, 
+			difficulty_score: 3, 
+			material_score: 5
+		}
+		course_review_id = create_course_review(@user1, review)["data"]["course_review"]["id"]
+		delete_course_review(@user2, course_review_id, false) # should fail 
+		expect(CourseReview.find_by(id: course_review_id)).to_not eq(nil)
+	end 
+
+
+	it "Test obtaining full set of reviews for a course" do 
 		# Create several reviews
 		(1..10).each do |i| 
 			u = FactoryGirl.create(:user, google_id: "#{i}")
-			create_course_review(u, "FA15","CS", 1110, { lecture: rand(1..10),
-										office_hours: rand(1..10),
-										difficulty: rand(1..10),
-										material: rand(1..10)
-										}, "This is review number #{i}")
+			create_course_review(u, { 
+				crse_id: 11176,
+				term: "FA16",
+				lecture_score: rand(1..5),
+				office_hours_score: rand(1..5),
+				difficulty_score: rand(1..5),
+				material_score: rand(1..5),
+				feedback: "This is review number #{i}" })
 		end 
 
+		get :reviews_by_course, common_creds({ id_token: @user1.google_id, crse_id: 11176 })
 
-
-		get :reviews_by_course, { api_key: ENV["API_KEY"], id_token: @user.google_id, 
-			course_review: { subject: "CS", number: 1110 }
-		}
-
-		expect(response).to be_success
-		json = JSON.parse(response.body)
-		expect(json["success"]).to be(true)
-		random_review_id = json["data"]["master_course"]["course_reviews"][0]["id"]
-		pp random_review_id
-
-
-
-		get :specific_review, { api_key: ENV["API_KEY"], id_token: @user.google_id,
-					course_review: { subject: "CS", number: 1110, course_review_id: random_review_id } }
-
-		expect(response).to be_success 
-		json = JSON.parse(response.body)
-		p json
+		a = { response: response, print: true, success: true }
+		check_response(a)
 
 	end
+
+	it "View specific course review via course_review_id" do 
+		# Create several reviews
+		(1..10).each do |i| 
+			u = FactoryGirl.create(:user, google_id: "#{i}")
+			create_course_review(u, { 
+				crse_id: 11176,
+				term: "FA16",
+				lecture_score: rand(1..5),
+				office_hours_score: rand(1..5),
+				difficulty_score: rand(1..5),
+				material_score: rand(1..5),
+				feedback: "This is review number #{i}" })
+		end 
+
+		get :reviews_by_course, common_creds({ id_token: @user1.google_id, crse_id: 11176 })
+		a = { response: response, print: false, success: true }
+		course_review_id = check_response(a)["data"]["reviews"][0]["course_review"]["id"]
+
+		get :specific_review, common_creds({ id_token: @user2.google_id, course_review_id: course_review_id })
+		a = { response: response, print: true, success: true }
+		check_response(a)
+
+	end 
 
 
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

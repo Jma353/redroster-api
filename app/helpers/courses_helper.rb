@@ -33,7 +33,7 @@ module CoursesHelper
   # and builds all sections corresponding to that course 
   def build_course_and_sections(course_info, term)
   	@course = build_course(course_info, term)
-  	@sections = build_sections(course_info, @course) 
+  	@sections = build_sections(course_info["enrollGroups"][0]["classSections"], @course) 
   	return @course 
   end 
 
@@ -51,7 +51,7 @@ module CoursesHelper
 			render json: { success: false, data: { errors: ["Your requested credentials match no courses"] }} and return 
 		else 
 			# Find the course's index in the response
-			c_index = find_course_index(res_json, course_num)
+			c_index = find_course_index(res_json, number)
 			# If we couldn't find the course 
 			if c_index == -1 
 				render json: { success: false, data: { errors: ["A course with these credentials was not found"] }} and return 
@@ -65,17 +65,10 @@ module CoursesHelper
 	# Requires the response from the Cornell Courses API in the form of 
 	# `course_info`
 	def get_or_create_course(course_info, term)
-
-		# Attempts to find the course 
 		@course = Course.find_by(crse_id: course_info["crseId"], term: course_info["term"])
-
-		# If the course was not found in the DB
 		if @course.blank? 
 			@course = build_course(course_info, term)
 		end 
-
-		course_info[""]
-
 		@course
 	end
 

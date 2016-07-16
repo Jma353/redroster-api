@@ -21,26 +21,21 @@ module SchedulesHelper
 		schedule_conflict = false
 		# Tracking courses by course_id 
 		element_ag = {} 
-		course_ids = [] 
-		# Go through schedule_elements 
+		crse_ids = []  
 		s.schedule_elements.each do |se| 
-			# Update the bool 
 			schedule_conflict = se.collision || schedule_conflict 
-			# Obtain the course_id in string form
-			course_id = se.section.course.course_id.to_s
-			# Add se to namespace of the course_id and to the course_ids list 
-			element_ag[course_id] = element_ag[course_id].blank? ? [] : element_ag[course_id] 
-			course_ids = course_ids | [course_id]
-			element_ag[course_id] << se 
+			crse_id = se.section.course.crse_id.to_s
+			element_ag[crse_id] = element_ag[crse_id].blank? ? [] : element_ag[crse_id] 
+			crse_ids = crse_ids | [crse_id]
+			element_ag[crse_id] << se 
 		end 
 
 		# Build list of courses covered by this schedule 
 		courses = { "courses" => [] }
 		max_creds = 0
 		min_creds = 0 
-		course_ids.each do |ci| 
-			# Get the course_json 
-			course_json = CourseSerializer.new(Course.find_by_course_id(ci.to_i)).as_json
+		crse_ids.each do |ci| 
+			course_json = CourseSerializer.new(Course.find_by({ crse_id: ci.to_i })).as_json
 			schedule_elements = element_ag[ci]
 			s_e_jsons = schedule_elements.map { |se| ScheduleElementSerializer.new(se).as_json }
 			course_json["schedule_elements"] = s_e_jsons

@@ -14,95 +14,86 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 
-	# Common credentials 
-	def common_creds(extra={})
-		{ api_key: ENV["API_KEY"]}.merge(extra)
-	end 
-
-
   # Establish a user and schedule 
 	before(:each) do
 		@u = FactoryGirl.create(:user, google_id: 1)
-		@sched = FactoryGirl.create(:schedule, user_id: @u.id, term: "FA15")
+		@sched = FactoryGirl.create(:schedule, user_id: @u.id, term: "FA15", is_active: true)
+	end 
+
+	# Networks Creds 
+	networks = { 
+		:term => "FA15", 
+		:subject => "CS", 
+		:number => 2850, 
+		:crse_id => 359378,
+		:section_num => [12447]
+	}
+
+	# Differential Equation Creds
+	diff_eq = { 
+		:term => "FA15",
+		:subject => "MATH",
+		:number => 2930,
+		:crse_id => 352295,
+		:section_num => [6059]
+	}
+
+	# Python Creds 
+	python_class = {
+		:term => "FA15",
+		:subject => "CS",
+		:number => 1110,
+		:section_num => [11829]
+	}
+
+
+	it "Test add course to a schedule" do 
+
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: networks.merge(schedule_id: @sched.id) })
+		a = { response: response, print: false, success: true }
+		check_response(a)
+
 	end 
 
 
+	it "Test course conflict recognition" do 
 
+		# Adding Networks 
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: networks.merge(schedule_id: @sched.id) })
+		a = { response: response, print: false, success: true }
+		check_response(a)
 
-	it "test add + deletes to FA15 schedule" do 
-
-		# The credentials of FA15 Networks (CS 2850), 11:15 - 12:05
-		networks = { 
-			:schedule_id => @sched.id, 
-			:term => "FA15", 
-			:subject => "CS", 
-			:course_num => 2850, 
-			:section_num => [12447]
-		}
-
-		post :create, common_creds({ id_token: @u.google_id, schedule_element: networks })
-		expect(response).to be_success
-		res_json = JSON.parse(response.body)
-
-		# Sanity check 
-		pp res_json
-
-
-		# The credentials of FA15 MATH2930, 11:15 - 12:05 (testing collision detection)
-		diff_eq = { 
-			:schedule_id => @sched.id, 
-			:term => "FA15",
-			:subject => "MATH",
-			:course_num => 2930,
-			:section_num => [6059]
-		}
-
-		post :create, common_creds({ id_token: @u.google_id, schedule_element: diff_eq })
-		expect(response).to be_success
-		res_json = JSON.parse(response.body)
-
-		# Santiy check 
-		pp res_json
-
-		section_num = Section.find_by(section_num: diff_eq[:section_num][0]).section_num
-		diff_eq_id = ScheduleElement.find_by_section_num(section_num)
-
-
-		# Now, we expect networks to also have a collision associated with it 
-		networks_se = ScheduleElement.find_by(schedule_id: @sched.id, section_num: networks[:section_num])
-		expect(networks_se.collision).to eq(true)
-
-
-		# The credentials of FA15 CS1110, 11:15 - 12:05 (testing collision detection)
-		python_class = {
-			:schedule_id => @sched.id,
-			:term => "FA15",
-			:subject => "CS",
-			:course_num => 1110,
-			:section_num => [11829]
-		}
-
+		# Adding Diff Eq ( ^ creates a conflict with the above)
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: diff_eq.merge(schedule_id: @sched.id) })
+		a = { response: response, print: false, success: true }
+		check_response(a)
 
 		post :create, common_creds({ id_token: @u.google_id, schedule_element: python_class })
 		expect(response).to be_success
 		res_json = JSON.parse(response.body)
 
-		# Sanity check 
-		pp res_json
+	end 
 
 
-		delete :destroy, common_creds({ id_token: @u.google_id, schedule_element: { schedule_id: @sched.id, id: diff_eq_id }})
-		expect(response).to be_success
+	it "Test adding several courses, conflicts only for conflicting ones" do 
 
+		# Adding Networks 
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: networks.merge(schedule_id: @sched.id) })
+		a = { response: response, print: false, success: true }
+		check_response(a)
 
+		# Adding Diff Eq ( ^ creates a conflict with the above)
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: diff_eq.merge(schedule_id: @sched.id) })
+		a = { response: response, print: false, success: true }
+		check_response(a)
 
-		# NOW, since, diff_eq is removed, no longer collision present 
-		networks_se = ScheduleElement.find_by(schedule_id: @sched.id, section_num: networks[:section_num])
-		expect(networks_se.collision).to eq(false)
-
-
+		# No conflict for this one 
+		post :create, common_creds({ id_token: @u.google_id, schedule_element: python_class.merge(schedule_id: @sched.id) })
+		a = { response: response, print: true, success: true }
+		check_response(a)
 
 	end 
+
 
 
 

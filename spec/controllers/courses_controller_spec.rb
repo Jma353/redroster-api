@@ -73,7 +73,7 @@ RSpec.describe Api::V1::CoursesController, type: :controller do
 		# To check response 
 		expect(response).to be_success
 		a = { response: response, print: true, success: true }
-		resp_json = check_response(a)
+		check_response(a)
 	end 
 	
 

@@ -27,8 +27,8 @@ class Api::V1::CourseReviewsController < Api::V1::AuthsController
 
 
 	def reviews_by_course 
-		@crse_id = course_review_params[:crse_id]
-		@course_reviews = CourseReviews.find_by_crse_id(crse_id)
+		@crse_id = params[:crse_id]
+		@course_reviews = CourseReview.where(crse_id: @crse_id)
 		render json: { success: true, data: reviews_by_course_json(@crse_id, @course_reviews) }
 	end 
 

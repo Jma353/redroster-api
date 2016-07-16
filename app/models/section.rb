@@ -79,7 +79,7 @@ class Section < ActiveRecord::Base
 	# Course info 
 
 	def course 
-		Course.find_by_course_id(self.course_id)
+		Course.find_by_id(self.course_id)
 	end
 
 	def course_term

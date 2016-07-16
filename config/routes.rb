@@ -7,9 +7,13 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
 
+
+
       # Sign In 
 
-      post "sign_in" => "users#google_sign_in", :as => 'sign_in'
+      post "sign_in" => "users#google_sign_in", :as => 'sign_in' 
+
+
 
       # Schedules 
 
@@ -35,17 +39,17 @@ Rails.application.routes.draw do
 
       # All search stuff/fetching of terms, subjects, and courses 
 
-      get "courses/search/:term/:query" => "courses#search_courses", :as => 'search_courses_by_term' # Documented 
+      get "courses/search/:term/:query" => "courses#search_courses", :as => 'search_courses_by_term' 
 
-      get "courses/search_by_subject/:term/:query" => "courses#search_subjects", :as => 'search_for_subjects' # Documented
+      get "courses/search_by_subject/:term/:query" => "courses#search_subjects", :as => 'search_for_subjects' 
 
-      get "courses/" => "courses#list_of_terms", :as => 'courses_terms' # Documented 
+      get "courses/" => "courses#list_of_terms", :as => 'courses_terms'
 
-      get "courses/:term" => "courses#subjects_by_term", :as => 'courses_by_term' # Documented
+      get "courses/:term" => "courses#subjects_by_term", :as => 'courses_by_term' 
 
-      get "courses/:term/:subject" => "courses#courses_by_subject", :as => 'courses_by_term_subject' # Documented 
+      get "courses/:term/:subject" => "courses#courses_by_subject", :as => 'courses_by_term_subject' 
 
-      get "courses/:term/:subject/:number" => "courses#course_info", :as => 'courses_by_term_subject_number' # Documented 
+      get "courses/:term/:subject/:number" => "courses#course_info", :as => 'courses_by_term_subject_number' 
 
 
 
@@ -53,9 +57,9 @@ Rails.application.routes.draw do
 
       post "course_reviews/create" => "course_reviews#create", :as => 'course_reviews_create'
 
-      get "course_reviews/by_course" => "course_reviews#reviews_by_course", :as => 'course_reviews_by_course'
+      get "course_reviews/:crse_id" => "course_reviews#reviews_by_course", :as => 'course_reviews_by_course'
 
-      get "course_reviews/specific_review" => "course_reviews#specific_review", :as => 'course_review_for_course'
+      get "course_reviews/specific_review/:course_review_id" => "course_reviews#specific_review", :as => 'course_review_for_course'
 
       delete "course_reviews/delete/:course_review_id" => "course_reviews#destroy", :as => 'course_reviews_destroy'
 
@@ -68,6 +72,7 @@ Rails.application.routes.draw do
       post "following_requests/react_to_request/:accept" => "following_requests#react_to_request", :as => "react_to_following_request"
 
       
+
       # Followings 
 
       get "followings/fetch_followers" => "followings#fetch_followers", :as => "fetch_followers"
@@ -75,6 +80,7 @@ Rails.application.routes.draw do
       get "followings/fetch_followees" => "followings#fetch_followees", :as => "fetch_followees"
 
       get "followings/fetch_followings" => "followings#fetch_followings", :as => "fetch_followings"
+
 
 
     end 

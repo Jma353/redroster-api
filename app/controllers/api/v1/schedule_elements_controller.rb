@@ -13,6 +13,7 @@
 class Api::V1::ScheduleElementsController < Api::V1::AuthsController
 include ScheduleElementsHelper 
 include SchedulesHelper
+include CoursesHelper
 
 
 	## BEGIN CREATION 
@@ -59,42 +60,28 @@ include SchedulesHelper
 			# Grab required creds to retrieve course_info fom Cornell Courses API 
 			term = schedule_element_params[:term]
 			subject = schedule_element_params[:subject]
-			number = schedule_element_params[:number]
+			number = schedule_element_params[:number].to_i
 			course_info = get_course_info(term, subject, number)
 			@course = build_course_and_sections(course_info, term)
 		end 
 
 		# [CS1110_LEC, CS1110_DIS].each do .. 
 		sections.each do |sn| 
-			# Pulls the desired section from the 
 			@section = Section.find_by(course_id: @course.id, section_num: sn)
-			
-			# If this section doesn't exist, the number is wrong b/c it should exist if the @course exists 
 			if @section.blank? 
 				render json: { success: false, data: { errors: ["This section does not exist within this course"] }} and return 
 			end 
-
-			# Else, we know section is valid, unless collision or something 
 			@se = @schedule.schedule_elements.create(section_id: @section.id)
-
-			# If this is valid and saves, we need to update all attributes to reflect this
 			if @se.valid? 
 				update_se_collisions(@schedule)
 			end
-
-			# Create our data 
 			data = @se.valid? ? schedule_element_json(@se) : { errors: @se.errors.full_messages }
-
-			# If invalid, render the issue 
 			if !@se.valid?  
 				render json: { success: false, data: data } and return 
-			else # If not an issue, add to the list 
+			else
 				schedule_elmts << data["schedule_element"]
 			end 
-
 		end 
-
-		# Render our JSON (at this point, it would be true)
 		render json: { success: true, data: schedule_json(@schedule) }
 
 	end 
