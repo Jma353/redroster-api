@@ -6,12 +6,6 @@ require 'rails_helper'
 
 describe "Full Schedule Creation", :type => :request do 
 
-	# Common credentials
-	def common_creds(extra={})
-		{ api_key: ENV["API_KEY"] }.merge(extra)
-	end 
-
-
 	# Establish users
 	before(:each) do	
 		@u = FactoryGirl.create(:user, google_id: 1, fname: "Joe", lname: "Antonakakis")
@@ -39,16 +33,6 @@ describe "Full Schedule Creation", :type => :request do
 	def destroy_schedule(u, schedule_id)
 		delete "/api/v1/schedules/delete/#{schedule_id}", common_creds({ id_token: u.google_id })
 	end 
-	
-	def check_json_response(response, print=true, success=true)
-		expect(response).to be_success
-		json_res = JSON.parse(response.body)
-		if print 
-			pp json_res
-		end 
-		expect(json_res["success"]).to eq(success)
-		json_res
-	end
 
 	# Checks general schedule creation 
 	it "schedule creation + adding valid sections to the schedule" do 

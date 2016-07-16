@@ -88,8 +88,7 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 			found_json["term"] = term 
 			# Format the course JSON 
 			course_json = format_course(found_json)
-			course_json[:class_sections] = res_json["data"]["classes"][i]["enrollGroups"][0]["classSections"]
-			result_json[:data] = course_json
+			result_json[:data] = { course: course_json } 
 
 			render json: result_json and return 
 		else 

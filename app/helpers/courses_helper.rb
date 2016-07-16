@@ -67,7 +67,7 @@ module CoursesHelper
 	def get_or_create_course(course_info, term)
 		@course = Course.find_by(crse_id: course_info["crseId"], term: course_info["term"])
 		if @course.blank? 
-			@course = build_course(course_info, term)
+			@course = build_course_and_sections(course_info, term)
 		end 
 		@course
 	end
@@ -105,17 +105,10 @@ module CoursesHelper
 			cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
 		})
 
-
-		# Get db course info or create course
 		@course = get_or_create_course(c, c["term"])
-
-		# Append this course to the cross-listing list 
 		course_json[:cross_listings] << { "subject" => c["subject"], "catalogNbr" => c["catalogNbr"] }
-		
-		# Create a field for users in this course 
 		course_json[:people_in_course] = @course.users.map {|u| UserSerializer.new(u).as_json["user"] }
-		
-		# Return the course info 
+		course_json[:sections] = @course.sections.map { |s| SectionSerializer.new(s).as_json["section"] }
 		course_json
 		
 	end 

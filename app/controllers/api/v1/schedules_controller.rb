@@ -39,12 +39,13 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 	def index 
 		render json: { success: true, data: user_schedules(@user) }
 	end 
-
+	
 
 	# Schedule + all sections that are in it 
 	def show 
 		render json: { success: true, data: schedule_json(@schedule) } 
 	end 
+
 
 	# Make active 
 	def make_active	
@@ -53,8 +54,6 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 		render json: { success: true, data: ScheduleSerializer.new(@schedule).as_json }
 	end 
 
-	
-	
 
 	# Clear the schedule of all schedule_elements 
 	def clear 

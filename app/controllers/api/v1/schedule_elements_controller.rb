@@ -43,8 +43,6 @@ include CoursesHelper
   end 
 
 
-
-
   # Create a schedule element and load the DB accordingly 
 	def create 	
 		sections = schedule_element_params[:section_num]
@@ -82,7 +80,6 @@ include CoursesHelper
 		render json: { success: true, data: schedule_json(@schedule) }
 
 	end 
-
 
 
 	# Delete a schedule element from a specific schedule 

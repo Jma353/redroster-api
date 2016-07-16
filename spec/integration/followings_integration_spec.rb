@@ -5,13 +5,6 @@ require 'rails_helper'
 
 describe "Followings Integration Tests", :type => :request do 
 
-
-	# Common creds 
-	def common_creds(extra={})
-		{ api_key: ENV["API_KEY"] }.merge(extra)
-	end 
-
-
 	# Establish users 
 	before(:each) do 
 		@u1 = FactoryGirl.create(:user, google_id: 1, fname: "Joe", lname: "Antonakakis") 
