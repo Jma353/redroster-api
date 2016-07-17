@@ -85,10 +85,9 @@ include CoursesHelper
 	# Delete a schedule element from a specific schedule 
 	def destroy
 		schedule_element_ids = schedule_element_params[:id]
-		p schedule_element_ids
 		success = true 
 		schedule_element_ids.each do |se_id|
-			@schedule_element = ScheduleElement.find(schedule_id: @schedule.id, id: se_id)
+			@schedule_element = @schedule.schedule_elements.find_by(id: se_id)
 			@schedule_element.destroy
 			if !@schedule_element.blank?
 				update_se_collisions(@schedule)

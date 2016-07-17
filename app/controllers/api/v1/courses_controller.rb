@@ -103,11 +103,8 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 		term = params[:term]
 		query = params[:query]
 		query.gsub! " ", ""
-
 		subjects = query_subjects(term, query)
-
 		render json: { success: true, data: { subjects: subjects } }
-
 	end 
 
 

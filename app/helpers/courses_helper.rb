@@ -47,7 +47,7 @@ module CoursesHelper
 		uri = URI(url_string)
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		# Check to see if the request was successful and that the course actually exists amongst the response
-		if res_json["status"] != "success" && (find_course_index(res_json, course_num) == -1)
+		if res_json["status"] != "success" && (find_course_index(res_json, number) == -1)
 			render json: { success: false, data: { errors: ["Your requested credentials match no courses"] }} and return 
 		else 
 			# Find the course's index in the response
