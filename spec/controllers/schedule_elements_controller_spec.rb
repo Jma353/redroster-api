@@ -70,8 +70,8 @@ RSpec.describe Api::V1::ScheduleElementsController, type: :controller do
 		check_response(a)
 
 		post :create, common_creds({ id_token: @u.google_id, schedule_element: python_class })
-		expect(response).to be_success
-		res_json = JSON.parse(response.body)
+		a = { response: response, print: true, success: true }
+		check_response(a)
 
 	end 
 

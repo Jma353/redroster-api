@@ -14,7 +14,7 @@
 include SchedulesHelper
 class Api::V1::SchedulesController < Api::V1::AuthsController 
 
-	before_action :schedule_belongs_to_user, only: [:show, :make_active, :clear, :destroy] # in ApplicationController 
+	before_action :schedule_belongs_to_user, only: [:make_active, :clear, :destroy] # in ApplicationController 
 
 
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)
@@ -37,12 +37,14 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 
 
 	def index 
-		render json: { success: true, data: user_schedules(@user) }
+		@referenced_user = User.find_by_id(params[:user_id])
+		render json: { success: true, data: user_schedules(@referenced_user) }
 	end 
 	
 
 	# Schedule + all sections that are in it 
 	def show 
+		@schedule = Schedule.find_by_id(params[:id])
 		render json: { success: true, data: schedule_json(@schedule) } 
 	end 
 
@@ -61,7 +63,7 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 		@schedule_elements.each do |se|
 			se.destroy 
 		end 
-		render json: { success: true }
+		render json: { success: true, data: schedule_json(@schedule) }
 	end 
 
 

@@ -17,13 +17,15 @@ Rails.application.routes.draw do
 
       # Schedules 
 
-      get "schedules/index" => "schedules#index", :as => 'schedules_index'
+      get "schedules/index/:user_id" => "schedules#index", :as => 'schedules_index'
 
       post "schedules/create" => "schedules#create", :as => 'schedules_create'
 
       get "schedules/show/:id" => "schedules#show", :as => 'schedules_show'
 
       post "schedules/make_active/:id" => "schedules#make_active", :as => 'schedules_make_active'
+
+      post "schedules/clear/:id" => "schedules#clear", :as => 'schedules_clear'
 
       delete "schedules/delete/:id" => "schedules#destroy", :as => 'schedules_destroy'
 

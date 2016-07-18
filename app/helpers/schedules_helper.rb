@@ -77,7 +77,7 @@ module SchedulesHelper
 
 	# Get all the schedules own by a user 
 	def user_schedules(u)
-		schedules = { "schedules" => [] } 
+		schedules = { "user" => UserSerializer.new(u).as_json["user"], "schedules" => [] } 
 		u.schedules.each { |s| schedules["schedules"] << schedule_json(s) }
 		schedules 
 	end 
