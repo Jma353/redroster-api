@@ -37,6 +37,9 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 		check_response(a)
 	end
 
+	def can_review_course(user, id, success=true)
+		get :can_review, common_creds({ id_token: user.google_id, crse_id: id })
+	end 
 
 	it "Test review creation for CS 1110 in FA16" do
 		review = { 
@@ -62,6 +65,12 @@ RSpec.describe Api::V1::CourseReviewsController, type: :controller do
 			material_score: 5
 		}
 		create_course_review(@user1, review)
+
+		can_review_course(@user1, 11176)
+		a = { response: response, print: false, success: true }
+		res_json = check_response(a)
+		expect(res_json["data"]["can_review"]).to eq(false)
+
 		create_course_review(@user1, review, false) # should fail 
 	end 
 

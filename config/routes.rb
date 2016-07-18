@@ -61,6 +61,8 @@ Rails.application.routes.draw do
 
       get "course_reviews/:crse_id" => "course_reviews#reviews_by_course", :as => 'course_reviews_by_course'
 
+      get "course_reviews/can_review/:crse_id" => "course_reviews#can_review", :as => 'course_reviews_can_review'
+
       get "course_reviews/specific_review/:course_review_id" => "course_reviews#specific_review", :as => 'course_review_for_course'
 
       delete "course_reviews/delete/:course_review_id" => "course_reviews#destroy", :as => 'course_reviews_destroy'

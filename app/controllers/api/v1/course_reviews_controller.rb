@@ -40,6 +40,12 @@ class Api::V1::CourseReviewsController < Api::V1::AuthsController
 	end 
 
 
+	def can_review
+		@review = CourseReview.find_by({ crse_id: params[:crse_id], user_id: @user.id })
+		render json: { success: true, data: { can_review: @review.blank? }}
+	end 
+
+
 	def destroy
 		@review = CourseReview.where(user_id: @user.id).find_by_id(params[:course_review_id])
 		if @review.blank? 
