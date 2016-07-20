@@ -25,9 +25,9 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		if @user.blank? 
 			user_json = { 
 				google_id: @google_id, 
-				email: @google_creds["email"],
-				fname: @google_creds["given_name"],
-				lname: @google_creds["family_name"],
+				email: @google_creds["email"].downcase,
+				fname: @google_creds["given_name"].downcase,
+				lname: @google_creds["family_name"].downcase,
 				picture_url: @google_creds["picture"]
 			}
 			@user = User.create(user_json)
@@ -37,18 +37,25 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end 
 
 
-
-
-
-	# Creation method for testing purposes, w/o Google sign in 
-	def create 
-		@user = User.create(user_params)
-		data = @user.valid? ? user_json(@user) : { errors:  @user.errors.full_messages } 
-		render json: { success: @user.valid?, data: data }
+	def people_search
+		# Grab query string 
+		queries = params[:query].downcase.split("+")
+		# Check for equality anywhere  
+		people = queries.length < 2 ? User.where("email = ?", queries[0]) : []
+		people = people | (queries.length < 2 ? User.where("lname = ?", queries[0]) : User.where("fname = ?", 
+			queries[0]).where("lname like ?", "%#{queries[1]}%"))
+		people = people | (queries.length < 2 ? User.where("fname = ?", queries[0]) : [])
+		# Check for matches based on contained strings if none from equality 
+		if people.length == 0 
+			people = people | (queries.length < 2 ? User.where("email like ?", "%#{queries[0]}%") : []) 
+			people = people | (queries.length < 2 ? User.where("lname like ?", "%#{queries[0]}%") : User.where("fname like ?", 
+				"%#{queries[0]}%").where("lname like ?", "%#{queries[1]}%"))
+			people = people | (queries.length < 2 ? User.where("fname like ?", "%#{queries[0]}%") : [])
+		end 
+		# Compose student json + return 
+		people = people.map { |p| user_json(p)["user"] }
+		render json: { success: true, data: people }
 	end 
-
-
-
 
 
 	private 
@@ -59,3 +66,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
 
 end
+
+
+
+

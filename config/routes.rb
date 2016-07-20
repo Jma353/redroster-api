@@ -13,7 +13,9 @@ Rails.application.routes.draw do
 
       post "sign_in" => "users#google_sign_in", :as => 'sign_in' 
 
+      get "users/search/:query" => "users#people_search", :as => 'users_search'
 
+      
 
       # Schedules 
 

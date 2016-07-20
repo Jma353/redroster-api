@@ -36,6 +36,7 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 	end 
 
 
+	# Schedules based on user id 
 	def index 
 		@referenced_user = User.find_by_id(params[:user_id])
 		render json: { success: true, data: user_schedules(@referenced_user) }
