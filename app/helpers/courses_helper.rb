@@ -45,7 +45,7 @@ module CoursesHelper
  	# Helper method, queries the Cornell Courses API given term, subject, and number 
  	def get_course_info(term, subject, number)
  		# Get the level we care about 
- 		course_level = (number / 1000) * 1000 
+ 		course_level = (number.to_i / 1000) * 1000 
 		# Format them into a URL string + make a request to Cornell API 
 		url_string = "https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&classLevels[]=#{course_level}"
 		uri = URI(url_string)

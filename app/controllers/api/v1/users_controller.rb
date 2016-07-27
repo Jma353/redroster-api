@@ -42,15 +42,13 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		queries = params[:query].downcase.split("+")
 		# Check for equality anywhere  
 		people = queries.length < 2 ? User.where("email = ?", queries[0]) : []
-		people = people | (queries.length < 2 ? User.where("lname = ?", queries[0]) : User.where("fname = ?", 
-			queries[0]).where("lname like ?", "%#{queries[1]}%"))
+		people = people | (queries.length < 2 ? User.where("lname = ?", queries[0]) : 
+			User.where("fname = ?", queries[0]).where("lname like ?", "#{queries[1]}%"))
 		people = people | (queries.length < 2 ? User.where("fname = ?", queries[0]) : [])
 		# Check for matches based on contained strings if none from equality 
 		if people.length == 0 
-			people = people | (queries.length < 2 ? User.where("email like ?", "%#{queries[0]}%") : []) 
-			people = people | (queries.length < 2 ? User.where("lname like ?", "%#{queries[0]}%") : User.where("fname like ?", 
-				"%#{queries[0]}%").where("lname like ?", "%#{queries[1]}%"))
-			people = people | (queries.length < 2 ? User.where("fname like ?", "%#{queries[0]}%") : [])
+			people = people | (queries.length < 2 ? User.where("email like ?", "#{queries[0]}%") : []) 
+			people = people | (queries.length < 2 ? User.where("lname like ?", "#{queries[0]}%") : [])
 		end 
 		# Compose student json + return 
 		people = people.map { |p| user_json(p)["user"] }
