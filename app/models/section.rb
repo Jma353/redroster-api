@@ -23,9 +23,9 @@ class Section < ActiveRecord::Base
 	has_many :schedule_elements, class_name: "ScheduleElement", foreign_key: "section_id"
 
 	# Validations 
-	validates :section_num, presence: true, uniqueness: true 
+	validates :section_num, presence: true
 	validates :course_id, presence: true 
-	validates :section_type, presence: true, length: { minimum: 3, maximum: 4 }
+	validates :section_type, presence: true
 	# validates :start_time, presence: true 
 	# validates :end_time, presence: true 
 	# validates :day_pattern, presence: true 

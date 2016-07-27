@@ -58,6 +58,14 @@ RSpec.describe Api::V1::CoursesController, type: :controller do
 
 
 
+	it "fetches coureses of a FA16 term under MATH" do 
+		get :courses_by_subject, common_creds({ id_token: @user.google_id, term: "FA16", subject: "MATH" })
+		a = { response: response, print: true, success: true }
+		resp_json = check_response(a)
+	end 
+
+
+
 	it "searches for subjects" do 
 		get :search_subjects, common_creds({ id_token: @user.google_id, term: "FA16", query: "PS" })
 		# To check response 
