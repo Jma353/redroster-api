@@ -71,7 +71,7 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 		found_json = get_course_info(term, subject, number)
 		found_json["term"] = term 
 		course_json = format_course(found_json)
-		render json: result_json and return 
+		render json: { success: true, data: { course: course_json }} and return 
 	end 
 
 
