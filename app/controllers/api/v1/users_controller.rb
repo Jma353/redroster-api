@@ -48,6 +48,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		# Check for matches based on contained strings if none from equality 
 		if people.length == 0 
 			people = people | (queries.length < 2 ? User.where("email like ?", "#{queries[0]}%") : []) 
+			people = people | (queries.length < 2 ? User.where("fname like ?", "#{queries[0]}%") : [])
 			people = people | (queries.length < 2 ? User.where("lname like ?", "#{queries[0]}%") : [])
 		end 
 		# Compose student json + return 
