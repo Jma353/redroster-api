@@ -3,8 +3,10 @@ class CreateCourses < ActiveRecord::Migration
     create_table :courses do |t|
     	t.integer :crse_id
     	t.string :term 
-        t.integer :credits_maximum
-        t.integer :credits_minimum  
+    	t.string :subject 
+    	t.integer :catalog_number
+    	t.integer :credits_maximum
+    	t.integer :credits_minimum  
 
     	t.timestamps null: false
     end

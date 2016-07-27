@@ -21,7 +21,7 @@ class Api::V1::CourseReviewsController < Api::V1::AuthsController
 	# Create a course review 
 	def create
 		@review = @user.course_reviews.create(course_review_params)
-		data = @review.valid? ? course_review_json(@review)  : { errors: [@review.errors.full_messages] }
+		data = @review.valid? ? course_review_json(@review)  : { errors: @review.errors.full_messages }
 		render json: { success: @review.valid?, data: data }  
 	end 
 

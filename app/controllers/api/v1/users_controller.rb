@@ -54,7 +54,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 		end 
 		# Compose student json + return 
 		people = people.map { |p| user_json(p)["user"] }
-		render json: { success: true, data: people }
+		render json: { success: true, data: { users: people } } 
 	end 
 
 

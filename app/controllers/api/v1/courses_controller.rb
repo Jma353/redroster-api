@@ -5,6 +5,8 @@
 #  id              :integer          not null, primary key
 #  crse_id         :integer
 #  term            :string
+#  subject         :string
+#  catalog_number  :integer
 #  credits_maximum :integer
 #  credits_minimum :integer
 #  created_at      :datetime         not null
@@ -47,12 +49,7 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}") 
 		res_json = JSON.parse(Net::HTTP.get(uri))
 		if res_json["status"] != "error"
-			result_json = { 
-				success: true, 
-				data: {
-					courses: []
-				}
-			}
+			result_json = { success: true, data: { courses: [] }}
 			res_json["data"]["classes"].each do |c| 
 				c["term"] = term 
 				course_json = format_course(c)
@@ -71,30 +68,10 @@ class Api::V1::CoursesController < Api::V1::AuthsController
 		term = params[:term]
 		subject = params[:subject]
 		number = params[:number]
-		course_level = (number.to_i / 1000) * 1000 # To truncate the num + get the 1000-level of it 
-		uri = URI("https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&classLevels[]=#{course_level}")
-		res_json = JSON.parse(Net::HTTP.get(uri))
-		if res_json["status"] != "error"
-			result_json = { success: true, data: { errors: [""] }}
-			# Format the course JSON; index i (properly search through the response)
-			i = find_course_index(res_json, number)
-			if (i == -1) 
-				render json: { success: false, data: { errors: ["Course not found."] }} and return 
-			end 
-
-			# Create pointer 
-			found_json = res_json["data"]["classes"][i]
-			# Append the term info 
-			found_json["term"] = term 
-			# Format the course JSON 
-			course_json = format_course(found_json)
-			result_json[:data] = { course: course_json } 
-
-			render json: result_json and return 
-		else 
-			render json: { success: false } and return 
-		end 
-
+		found_json = get_course_info(term, subject, number)
+		found_json["term"] = term 
+		course_json = format_course(found_json)
+		render json: result_json and return 
 	end 
 
 

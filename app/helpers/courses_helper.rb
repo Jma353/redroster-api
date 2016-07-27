@@ -5,6 +5,8 @@
 #  id              :integer          not null, primary key
 #  crse_id         :integer
 #  term            :string
+#  subject         :string
+#  catalog_number  :integer
 #  credits_maximum :integer
 #  credits_minimum :integer
 #  created_at      :datetime         not null
@@ -21,6 +23,8 @@ module CoursesHelper
 		course_json = { 
 			crse_id: course_info["crseId"], 
 			term: term,
+			subject: course_info["subject"],
+			catalog_number: course_info["catalogNbr"].to_i,
 			credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
 			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"]
 		}
@@ -75,6 +79,7 @@ module CoursesHelper
 
 	# Less course information
 	def format_course_less(c)
+		@course = get_or_create_course(c, c["term"])
 		course_json = {
 			crse_id: c["crseId"], # 123456, unique
 			subject: c["subject"], # CS, ORIE, etc. 
@@ -84,7 +89,6 @@ module CoursesHelper
 			description: c["description"], # Description of course 
 		}
 	end 
-
 
 
 	# More course information 
@@ -105,14 +109,12 @@ module CoursesHelper
 			cross_listings: c["enrollGroups"][0]["simpleCombinations"] # Crosslistings 
 		})
 
-		@course = get_or_create_course(c, c["term"])
 		course_json[:cross_listings] << { "subject" => c["subject"], "catalogNbr" => c["catalogNbr"] }
 		course_json[:people_in_course] = @course.users.map {|u| UserSerializer.new(u).as_json["user"] }
 		course_json[:sections] = @course.sections.map { |s| SectionSerializer.new(s).as_json["section"] }
 		course_json
 		
 	end 
-
 
 
 	# Get a list of subjects 
@@ -131,7 +133,6 @@ module CoursesHelper
 	end 
 
 
-
 	# Method to curate courses based upon the number that has been given in the query 
 	def num_compare(num, c)
 		return true if num == nil # if no number was provided 
@@ -147,7 +148,6 @@ module CoursesHelper
 	end 
 
 
-
 	def query_courses(term, subjects, q_num)
 		courses = []
 		subjects.each do |s| 
@@ -157,6 +157,7 @@ module CoursesHelper
 				courses_info = course_json["data"]["classes"]
 				courses_info.each do |ci|
 					if num_compare(q_num, ci)
+						ci["term"] = term 
 						result_json = format_course_less(ci)
 						courses.push(result_json)
 					end
@@ -165,7 +166,6 @@ module CoursesHelper
 		end 
 		courses
 	end 
-
 
 
 	# Check a full list of queried courses for the course we're looking for 
