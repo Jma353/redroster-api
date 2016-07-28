@@ -32,15 +32,16 @@ module SectionsHelper
 	# 	c: classSection element 
 	def build_section(c, course) 
 		# JSON needed to build the section 
+		meetings_info = c["meetings"].length > 0 ? ({ start_time: c["meetings"][0]["timeStart"], 
+			end_time: c["meetings"][0]["timeEnd"], 
+			day_pattern: c["meetings"][0]["pattern"], 
+			long_location: c["meetings"][0]["facilityDescr"]
+		}) : ({})
 		build_json = {
 			section_num: c["classNbr"], 
 			section_type: c["ssrComponent"], 
-			start_time: c["meetings"][0]["timeStart"], 
-			end_time: c["meetings"][0]["timeEnd"], 
-			day_pattern: c["meetings"][0]["pattern"], 
-			class_number: c["section"], 
-			long_location: c["meetings"][0]["facilityDescr"]
-		}
+			class_number: c["section"]
+		}.merge(meetings_info)
 		# Find or create these sections 
 		course.sections.find_or_create_by(build_json)
 	end 
