@@ -22,6 +22,6 @@ test:
 
 production:
   <<: *default
-  database: redroster_backend
-  username: redroster_backend 
-  password: <%= ENV["REDROSTER_BACKEND_DATABASE"] %>
+  database: redroster_backend_db
+  username: <%= ENV["REDROSTER_DB_USERNAME"] %>
+  password: <%= ENV["REDROSTER_DB_PASSWORD"] %>
