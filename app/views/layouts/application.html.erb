@@ -9,9 +9,15 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+	
+<!-- Wrapper -->
+	<div id="wrapper">
 
-<%= yield %>
+		<%= yield %>
+		
+		<%= render partial: 'layouts/footer' %> 
 
+	</div> 
 
 </body>
 </html>

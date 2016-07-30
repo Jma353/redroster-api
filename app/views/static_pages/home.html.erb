@@ -1,107 +1,83 @@
+<!-- Header -->
+	<header id="header" class="alt">
+		<span class="logo"><%= image_tag "RRLogo.png", alt: "" %> </span>
+		<h1>Red Roster</h1>
+		<p>Cornell's Courses, Socially</p>
+	</header>
 
-<!-- Wrapper -->
-	<div id="wrapper">
+<!-- Nav -->
+	<nav id="nav">
+		<ul>
+			<li><a href="#intro" class="active">Introduction</a></li>
+			<li><a href="#first">Features</a></li>
+			<li><a href="#cta">Try It</a></li>
+		</ul>
+	</nav>
 
-		<!-- Header -->
-			<header id="header" class="alt">
-				<span class="logo"><%= image_tag "RRLogo.png", alt: "" %> </span>
-				<h1>Red Roster</h1>
-				<p>Cornell's Courses, Socially</p>
-			</header>
+<!-- Main -->
+	<div id="main">
 
-		<!-- Nav -->
-			<nav id="nav">
-				<ul>
-					<li><a href="#intro" class="active">Introduction</a></li>
-					<li><a href="#first">Features</a></li>
-					<li><a href="#cta">Try It</a></li>
-				</ul>
-			</nav>
-
-		<!-- Main -->
-			<div id="main">
-
-				<!-- Introduction -->
-					<section id="intro" class="main">
-						<div class="spotlight" style="opacity: 0;">
-							<div class="content">
-								<header class="major">
-									<h2>Redefining Cornell's Roster</h2>
-								</header>
-								<p>
-									Red Roster places Cornell's entire course suite on a mobile platform, with social features to boot. See what courses your friends are taking, read / write reviews, and build your schedule on the platform that gives you as much Cornell course as information as possible in the palm of your hand.
-								</p>
-							</div>
-							<span class="image"><%= image_tag "RROnTable.jpg", alt: "" %></span>
-						</div>
-					</section>
-
-
-				<!-- First Section -->
-					<section id="first" class="main special">
+		<!-- Introduction -->
+			<section id="intro" class="main">
+				<div class="spotlight" style="opacity: 0;">
+					<div class="content">
 						<header class="major">
-							<h2>There's a lot to see...</h2>
+							<h2>Redefining Cornell's Roster</h2>
 						</header>
-						<ul class="features">
-							<li class="one" style="opacity: 0;">
-								<h3>Find Your Friends</h3>
-								<%= image_tag "people_portrait.png", class: "mockup", alt: "" %> 
-								<p>Avoid texting everyone you know with a pulse to see who's going to be in Human Bonding with you</p>
-							</li>
-							<li class="two" style="opacity: 0;">
-								<h3>Plan Your Life</h3>
-								<%= image_tag "schedules_portrait.png", class: "mockup", alt: "" %> 
-								<p>Make several schedules per semester, to better plan your time commitments at Cornell</p>
-							</li>
-							<li class="three" style="opacity: 0;">
-								<h3>Read and Provide Insight</h3>
-								<%= image_tag "reviews_portrait.png", class: "mockup", alt: "" %> 
-								<p>The first Cornell course review system on a mobile platform, with reviews from all semesters available</p>
-							</li>
+						<p>
+							Red Roster places Cornell's entire course suite on a mobile platform, with social features to boot. See what courses your friends are taking, read / write reviews, and build your schedule on the platform that gives you as much Cornell course information as possible in the palm of your hand.
+						</p>
+					</div>
+					<span class="image"><%= image_tag "RROnTable.jpg", alt: "" %></span>
+				</div>
+			</section>
+
+
+		<!-- First Section -->
+			<section id="first" class="main special">
+				<header class="major">
+					<h2>There's a lot to see...</h2>
+				</header>
+				<ul class="features">
+					<li class="one" style="opacity: 0;">
+						<h3>Find Your Friends</h3>
+						<%= image_tag "people_portrait.png", class: "mockup", alt: "" %> 
+						<p>Avoid texting everyone you know with a pulse to see who's going to be in Human Bonding with you</p>
+					</li>
+					<li class="two" style="opacity: 0;">
+						<h3>Plan Your Life</h3>
+						<%= image_tag "schedules_portrait.png", class: "mockup", alt: "" %> 
+						<p>Make several schedules per semester to better plan your time commitments at Cornell</p>
+					</li>
+					<li class="three" style="opacity: 0;">
+						<h3>Read and Provide Insight</h3>
+						<%= image_tag "reviews_portrait.png", class: "mockup", alt: "" %> 
+						<p>The first Cornell course review system on a mobile platform, with reviews from all semesters available</p>
+					</li>
+				</ul>
+			</section>
+
+
+		<!-- Get Started -->
+			<section id="cta" class="main special">
+				<div class="beta-section" style="opacity: 0;">
+					<header class="major">
+						<h2>Wanna Try It?</h2>
+					</header>
+					<p>Red Roster is currently in Beta, but we are always looking for new people to try it.  Send us your email for a download!</p>
+					<footer class="major">
+						<ul class="actions">
+							<li><a><input type="email" name="email" class="email-field" placeholder="email" /></a></li>
+							<li><a class="submit-email button">Request Beta</a></li>
 						</ul>
-					</section>
-
-
-				<!-- Get Started -->
-					<section id="cta" class="main special">
-						<div class="beta-section" style="opacity: 0;">
-							<header class="major">
-								<h2>Wanna Try It?</h2>
-							</header>
-							<p>Red Roster is currently in Beta, but we are always looking for new people to try it.  Send us your email for a download!</p>
-							<footer class="major">
-								<ul class="actions">
-									<li><a><input type="email" name="email" class="email-field" placeholder="email" /></a></li>
-									<li><a class="submit-email button">Request Beta</a></li>
-								</ul>
-							</footer>
-						</div> 
-					</section>
-
-			</div>
-
-		<!-- Footer -->
-			<footer id="footer">
-				<section>
-					<h2>We're Open Source!</h2> 
-					<p>Wanna see how we did it?  Check out or <a>iOS</a> and <a>backend</a> repositories on Github!
-				</section>
-				<section>
-					<h2>Contact Info</h2>
-					<p>Questions?  Comments?  Feature requests?  We'd love to hear them!</p> 
-					<dl class="alt">
-						<dt>Email</dt>
-						<dd><a href="#">redroster@gmail.com</a></dd>
-					</dl>
-				</section>
-			</footer>
-
-		<!-- Footer  Links --> 
-			<div class="footer-links">
-				<p class="footer-link"><a>Privacy Policy</a> | <a>Acknowledgements</a> | <a>Hire Us</a></p> 
-				<p class="footer-link">&copy; Red Roster. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-			<div>
+					</footer>
+				</div> 
+			</section>
 
 	</div>
+
+
+
+
 
 			
