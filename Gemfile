@@ -37,10 +37,6 @@ gem 'json'
 gem 'puma'
 # For modular serialization of models 
 gem 'active_model_serializers'
-# Gem for API doc generation 
-gem 'apipie-rails'
-# Maruku for markdown for API docs 
-gem 'maruku'
 
 
 # Gem to show DB queries in logs 
