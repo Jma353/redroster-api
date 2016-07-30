@@ -1,3 +1,5 @@
+/* REFACTORING HTML5UP */
+
 /* Body Styling */
 body {
 	background-color: rgb(231, 76, 60); 
@@ -10,16 +12,28 @@ body {
 	background-image: none; 
 }
 
+/* The header section (modded to reduce space consumption) */
+#header.alt {
+	padding: 2em 4em 2em 4em;
+}
+
+/* Reset border radius for top img */
+.spotlight .image img {
+	border-radius: 8px; 
+}
+
+/* Reset border radius for top container */
+.spotlight .image {
+	border-radius: 8px;
+}
+
+/* CUSTOM CSS */
+
 /* Mockup screen */
 .mockup {
 	width: 90%;
 	margin-top: 20px;
 	margin-bottom: 20px; 
-}
-
-/* The header section (modded to reduce space consumption) */
-#header.alt {
-	padding: 2em 4em 2em 4em;
 }
 
 /* Links in the footer */
