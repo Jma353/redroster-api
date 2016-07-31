@@ -1,6 +1,4 @@
-# Red Roster Backend 
-
-## Backend for Red Roster iOS app 
+# RedRoster Web (API + Web Frontend)
 
 API documented [here](http://docs.redroster.apiary.io/)
 
@@ -21,7 +19,8 @@ Routes are attached to:
 ```
 
 
-
+## License 
+RedRoster is licensed under the Apache License 2.0.
 
 
 
