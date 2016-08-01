@@ -2,15 +2,16 @@
 #
 # Table name: courses
 #
-#  id              :integer          not null, primary key
-#  crse_id         :integer
-#  term            :string
-#  subject         :string
-#  catalog_number  :integer
-#  credits_maximum :integer
-#  credits_minimum :integer
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                  :integer          not null, primary key
+#  crse_id             :integer
+#  term                :string
+#  subject             :string
+#  catalog_number      :integer
+#  course_offer_number :integer
+#  credits_maximum     :integer
+#  credits_minimum     :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
 include SectionsHelper 
@@ -86,6 +87,7 @@ module CoursesHelper
 			subject: c["subject"], # CS, ORIE, etc. 
 			catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
 			title_short: c["titleShort"], # Shorter title 
+			course_offer_number: course_info["crseOfferNbr"],
 			title_long: c["titleLong"], # Longer title 
 			description: c["description"], # Description of course 
 		}

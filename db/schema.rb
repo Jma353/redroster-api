@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507204819) do
+ActiveRecord::Schema.define(version: 20160801033918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "beta_testers", force: :cascade do |t|
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "course_reviews", force: :cascade do |t|
     t.integer  "crse_id"
@@ -36,10 +42,11 @@ ActiveRecord::Schema.define(version: 20160507204819) do
     t.string   "term"
     t.string   "subject"
     t.integer  "catalog_number"
+    t.integer  "course_offer_number"
     t.integer  "credits_maximum"
     t.integer  "credits_minimum"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "following_requests", force: :cascade do |t|

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get "about" => "static_pages#about", :as => "about"
   get "privacy" => "static_pages#privacy", :as => "privacy"
   get "acknowledgements" => "static_pages#acknowledgements", :as => "acknowledgments"
+  # Lol 
+  match "beta" => "static_pages#beta", :as => "beta", :via => [:get, :post]
   
   namespace :api do 
     namespace :v1 do 

@@ -40,14 +40,38 @@ $(document).ready(function () {
 			dataType: "JSON",
 		}).success(function (json) {
 			// If error 
-			console.log(json); 
 			if (!json.success) {
-				
-			} 
+				$(".email-result").html(json.data.error); 
+			} else {
+				$(".email-result").html("Thanks for signing up for the beta!  We'll send you a beta key extremely soon.");
+			}
 			
-			$(".email-result").html("Fuck me"); 
+		}); 
+		return false; 
+
+	}); 
 
 
+	// AJAX request for adding email 
+	$(".submit-pass").on("click", function () {
+		var data = { "pass" : $(".pass-field").val().trim() } 
+		$.ajax({
+			type: "POST", 
+			url: "/beta",
+			data: data, 
+			dataType: "JSON",
+		}).success(function (json) {
+			// If error 
+			if (!json.success) {
+				$(".beta-testers").html("You are not authorized to see these"); 
+			} else { 
+				var listOfTesters = ""; 
+				json.data.forEach(function (d) {
+					listOfTesters += d.email + "</br>"; 
+				}); 
+				$(".beta-testers").html(listOfTesters); 
+			}
+			
 		}); 
 		return false; 
 
@@ -56,3 +80,11 @@ $(document).ready(function () {
 
 
 }); 
+
+
+
+
+
+
+
+
