@@ -30,6 +30,29 @@ $(document).ready(function () {
 
 	});
 
+	// AJAX request for adding email 
+	$(".submit-email").on("click", function () {
+		var data = { "email" : $(".email-field").val().trim() } 
+		$.ajax({
+			type: "POST", 
+			url: "/home",
+			data: data, 
+			dataType: "JSON",
+		}).success(function (json) {
+			// If error 
+			console.log(json); 
+			if (!json.success) {
+				
+			} 
+			
+			$(".email-result").html("Fuck me"); 
+
+
+		}); 
+		return false; 
+
+	}); 
+
 
 
 }); 

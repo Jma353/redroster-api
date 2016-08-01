@@ -35,7 +35,7 @@ module SchedulesHelper
 		max_creds = 0
 		min_creds = 0 
 		crse_ids.each do |ci| 
-			course_json = CourseSerializer.new(Course.find_by({ crse_id: ci.to_i })).as_json
+			course_json = CourseSerializer.new(Course.find_by({ crse_id: ci.to_i, term: s.term })).as_json
 			schedule_elements = element_ag[ci]
 			s_e_jsons = schedule_elements.map { |se| ScheduleElementSerializer.new(se).as_json }
 			course_json["schedule_elements"] = s_e_jsons

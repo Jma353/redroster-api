@@ -94,6 +94,8 @@ include CoursesHelper
 			end 
 			success = success && !@schedule_element.blank?
 		end 
+		# Re-request for the sake of data consistency 
+		@schedule = Schedule.find_by(id: schedule_element_params[:schedule_id], user_id: @user.id) 
 		render json: { success: success, data: schedule_json(@schedule) }
 	end 
 

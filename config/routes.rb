@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   root to: 'static_pages#home'
+  post "home" => "static_pages#home", :as => "home"
   get "about" => "static_pages#about", :as => "about"
   get "privacy" => "static_pages#privacy", :as => "privacy"
   get "acknowledgements" => "static_pages#acknowledgements", :as => "acknowledgments"

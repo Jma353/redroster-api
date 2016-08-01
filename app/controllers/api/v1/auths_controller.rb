@@ -6,9 +6,9 @@ class Api::V1::AuthsController < Api::V1::ApplicationController
 
 
 	def grab_user_by_env
-		if Rails.env == 'production'
+		if (Rails.env == 'production' || Rails.env == 'development')
 			return google_auth
-		else 
+		else
 			return grab_test_user
 		end 
 	end 

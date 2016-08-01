@@ -39,11 +39,8 @@ gem 'puma'
 gem 'active_model_serializers'
 # Font awesome 
 gem "font-awesome-rails"
-
-# Gem to show DB queries in logs 
-# gem 'rails_12factor'
-
-
+# Mailchimp API 
+gem 'mailchimp-api'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -60,22 +57,18 @@ group :development, :test do
   gem 'capybara'
   # Maintenance of db 
   gem 'database_cleaner'
-
 end
 
 group :development do 
-  
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
 end
 
 
 
 group :production do 
-
+  # Shows DB queries 
   gem 'rails_12factor'
-
 end 
 
 
