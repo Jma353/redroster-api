@@ -39,7 +39,8 @@ gem 'puma'
 gem 'active_model_serializers'
 # Font awesome 
 gem "font-awesome-rails"
-
+# Favicon 
+gem "rails_real_favicon"
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
