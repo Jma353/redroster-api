@@ -5,6 +5,7 @@ class CreateCourses < ActiveRecord::Migration
     	t.string :term 
     	t.string :subject 
     	t.integer :catalog_number
+        t.integer :course_offer_number
     	t.integer :credits_maximum
     	t.integer :credits_minimum  
 

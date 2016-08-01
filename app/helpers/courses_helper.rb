@@ -24,6 +24,7 @@ module CoursesHelper
 			crse_id: course_info["crseId"], 
 			term: term,
 			subject: course_info["subject"],
+			course_offer_number: course_info["crseOfferNbr"], 
 			catalog_number: course_info["catalogNbr"].to_i,
 			credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
 			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"]
