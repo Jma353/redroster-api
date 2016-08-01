@@ -87,7 +87,7 @@ module CoursesHelper
 			subject: c["subject"], # CS, ORIE, etc. 
 			catalog_number: c["catalogNbr"], # 1110, 4999, etc. 
 			title_short: c["titleShort"], # Shorter title 
-			course_offer_number: course_info["crseOfferNbr"],
+			course_offer_number: c["crseOfferNbr"],
 			title_long: c["titleLong"], # Longer title 
 			description: c["description"], # Description of course 
 		}
