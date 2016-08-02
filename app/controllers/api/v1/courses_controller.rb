@@ -15,7 +15,9 @@
 #
 
 include CoursesHelper 
-class Api::V1::CoursesController < Api::V1::AuthsController 
+# NOTE: this is an application controller, meaning that login is not required to view 
+# Cornell courses 
+class Api::V1::CoursesController < Api::V1::ApplicationController 
 
 	# List of terms 
 	def list_of_terms
