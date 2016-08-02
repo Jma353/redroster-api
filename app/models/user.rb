@@ -23,7 +23,15 @@ class User < ActiveRecord::Base
 
 	# Validations 
 	validates :google_id, presence: true 
+	validate :has_proper_email, :on => :create 
 
+	def has_proper_email
+		is_cornell_email = self.email.match(/\A[\w+\-.]+@cornell.edu/) 
+		is_apple_reviewer = (self.email == "redrostertester@gmail.com")
+		if !(is_cornell_email || is_apple_reviewer) 
+			errors[:base] << ("This app requires a Cornell email to login")
+		end 
+	end 
 
 	def friends
 		a = Friendship.where(user1_id: self.id)
