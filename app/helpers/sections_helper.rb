@@ -21,8 +21,8 @@ module SectionsHelper
 	# Build the sections for a course, given the classSections 
 	# array returned by the Cornell Courses API 
 	# 	c: classSections array 
-	def build_sections(c, course)
-		@sections = c.map { |s| build_section(s, course) }
+	def build_sections(c, course, i)
+		@sections = c.map { |s| build_section(s, course, i) }
 	end 
 
 
@@ -30,17 +30,19 @@ module SectionsHelper
 	# element of the classSections array returned by the Cornell 
 	# Courses API
 	# 	c: classSection element 
-	def build_section(c, course) 
+	def build_section(c, course, i) 
 		# JSON needed to build the section 
 		meetings_info = c["meetings"].length > 0 ? ({ start_time: c["meetings"][0]["timeStart"], 
 			end_time: c["meetings"][0]["timeEnd"], 
 			day_pattern: c["meetings"][0]["pattern"], 
-			long_location: c["meetings"][0]["facilityDescr"]
+			long_location: c["meetings"][0]["facilityDescr"], 
+			meeting_description: c["meetings"][0]["meetingTopicDescription"]
 		}) : ({})
 		build_json = {
 			section_num: c["classNbr"], 
 			section_type: c["ssrComponent"], 
-			class_number: c["section"]
+			class_number: c["section"],
+			enroll_group: i
 		}.merge(meetings_info)
 		# Find or create these sections 
 		course.sections.find_or_create_by(build_json)

@@ -31,7 +31,7 @@ module CoursesHelper
 			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"]
 		}
 		# Create the course
-		@course = Course.create(course_json)
+		@course = Course.find_or_create_by(course_json)
   end 
 
 
@@ -39,7 +39,10 @@ module CoursesHelper
   # and builds all sections corresponding to that course 
   def build_course_and_sections(course_info, term)
   	@course = build_course(course_info, term)
-  	@sections = build_sections(course_info["enrollGroups"][0]["classSections"], @course) 
+  	# Iterate through all the sections to add these 
+  	(0...course_info["enrollGroups"].length).each do |i|
+  		@sections = build_sections(course_info["enrollGroups"][i]["classSections"], @course, i+1) 
+  	end 
   	return @course 
   end 
 
