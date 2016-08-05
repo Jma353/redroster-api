@@ -66,7 +66,7 @@ end
 
 
 
-group :production do 
+group :production, :staging do 
   # Shows DB queries 
   gem 'rails_12factor'
 end 
