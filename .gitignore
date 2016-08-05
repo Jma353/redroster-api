@@ -16,7 +16,8 @@
 !/log/.keep
 /tmp
 /shared/sockets/*.sock
-/shared/pids/*
-/shared/log/*
+/shared/pids/*.state 
+/shared/pids/*.pid
+/shared/log/*.log
 # Ignore application configuration
 /config/application.yml
