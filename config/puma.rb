@@ -22,6 +22,10 @@ pidfile "#{shared_dir}/pids/puma.pid"
 state_path "#{shared_dir}/pids/puma.state"
 activate_control_app
 
+if ENV['RAILS_ENV'] == 'staging'
+	port ENV['PORT'] || 3000
+end 
+
 on_worker_boot do
   require "active_record"
   ActiveRecord::Base.connection.disconnect! rescue ActiveRecord::ConnectionNotEstablished
