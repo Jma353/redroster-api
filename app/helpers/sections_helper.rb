@@ -36,7 +36,7 @@ module SectionsHelper
 			end_time: c["meetings"][0]["timeEnd"], 
 			day_pattern: c["meetings"][0]["pattern"], 
 			long_location: c["meetings"][0]["facilityDescr"], 
-			meeting_description: c["meetings"][0]["meetingTopicDescription"]
+			topic_description: c["topicDescription"]
 		}) : ({})
 		build_json = {
 			section_num: c["classNbr"], 
