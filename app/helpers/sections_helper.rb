@@ -22,7 +22,7 @@ module SectionsHelper
 	# array returned by the Cornell Courses API 
 	# 	c: classSections array 
 	def build_sections(c, course, i)
-		Section.transaction do 
+		course.with_lock do 
 			@sections = c.map { |s| build_section(s, course, i) }
 		end 
 	end 
