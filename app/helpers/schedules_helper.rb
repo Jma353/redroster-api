@@ -41,8 +41,8 @@ module SchedulesHelper
 			course_json["schedule_elements"] = s_e_jsons
 
 			# Sub in new course name 
-			course_json["subject"] = element_ag[ci][0].subject 
-			course_json["catalog_number"] = element_ag[ci][0].catalog_number
+			course_json["course"]["subject"] = element_ag[ci][0].subject 
+			course_json["course"]["catalog_number"] = element_ag[ci][0].catalog_number
 
 			courses["courses"] << course_json
 
