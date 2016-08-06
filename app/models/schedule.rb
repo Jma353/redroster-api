@@ -42,7 +42,19 @@ class Schedule < ActiveRecord::Base
 		return true 
 	end 
 
+	
+	def change_name(name)
+		self.update_attributes(name: name)
+		return false unless valid? 
+		save! 
+	end 		
+
+
 
 
 
 end
+
+
+
+

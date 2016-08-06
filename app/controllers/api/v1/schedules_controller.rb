@@ -50,6 +50,13 @@ class Api::V1::SchedulesController < Api::V1::AuthsController
 	end 
 
 
+	# Rename a particular schedule 
+	def rename
+		@schedule.change_name(schedule_params[:name])
+		render json: { success: @schedule.valid? }
+	end 
+
+
 	# Make active 
 	def make_active	
 		# Call helper on this schedule 
