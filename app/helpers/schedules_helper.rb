@@ -39,6 +39,11 @@ module SchedulesHelper
 			schedule_elements = element_ag[ci]
 			s_e_jsons = schedule_elements.map { |se| ScheduleElementSerializer.new(se).as_json }
 			course_json["schedule_elements"] = s_e_jsons
+
+			# Sub in new course name 
+			course_json["subject"] = element_ag[ci][0].subject 
+			course_json["catalog_number"] = element_ag[ci][0].catalog_number
+
 			courses["courses"] << course_json
 
 			max_creds += course_json["course"][:credits_maximum]
@@ -60,11 +65,13 @@ module SchedulesHelper
 		return schedule_json
 	end 
 
+
 	# Make this schedule active and make all other schedules of the same term / user inactive 
 	def make_schedule_active(s)
 		deactivate_other_schedules(s)
 		s.update_attributes({ is_active: true })
 	end 
+
 
 	# Deactivate other schedules 
 	def deactivate_other_schedules(s)
@@ -81,7 +88,6 @@ module SchedulesHelper
 		u.schedules.each { |s| schedules["schedules"] << schedule_json(s) }
 		schedules 
 	end 
-
 
 
 end

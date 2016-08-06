@@ -66,7 +66,7 @@ include CoursesHelper
 			if @section.blank? 
 				render json: { success: false, data: { errors: ["This section does not exist within this course"] }} and return 
 			end 
-			@se = @schedule.schedule_elements.create(section_id: @section.id)
+			@se = @schedule.schedule_elements.create(section_id: @section.id, subject: subject, catalog_number: number)
 			if @se.valid? 
 				update_se_collisions(@schedule)
 			end

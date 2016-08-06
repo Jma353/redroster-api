@@ -15,5 +15,5 @@
 #
 
 class CourseSerializer < ActiveModel::Serializer 
-	attributes :id, :crse_id, :subject, :catalog_number, :course_offer_number, :term, :credits_maximum, :credits_minimum, :created_at
+	attributes :id, :crse_id, :subject, :catalog_number, :course_offer_number, :title, :term, :credits_maximum, :credits_minimum, :created_at
 end 

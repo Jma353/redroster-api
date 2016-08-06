@@ -82,6 +82,17 @@ RSpec.describe Api::V1::CoursesController, type: :controller do
 		a = { response: response, print: true, success: true }
 		check_response(a)
 	end 
+
+	it "fetches classes with multiple enroll groups" do
+		get :courses_by_subject, common_creds({ id_token: @user.google_id, term: "FA16", subject: "ENGL" })
+		a = { response: response, print: true, success: true }
+		resp_json = check_response(a)
+
+		get :courses_by_subject, common_creds({ id_token: @user.google_id, term: "FA16", subject: "ENGL" })
+		a = { response: response, print: true, success: true }
+		resp_json = check_response(a)
+
+	end 
 	
 
 

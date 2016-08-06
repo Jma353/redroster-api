@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804221837) do
+ActiveRecord::Schema.define(version: 20160806071017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20160804221837) do
     t.integer  "credits_minimum"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "title"
   end
 
   create_table "following_requests", force: :cascade do |t|
@@ -82,8 +83,10 @@ ActiveRecord::Schema.define(version: 20160804221837) do
     t.integer  "schedule_id"
     t.integer  "section_id"
     t.boolean  "collision"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "subject"
+    t.integer  "catalog_number"
   end
 
   add_index "schedule_elements", ["schedule_id"], name: "index_schedule_elements_on_schedule_id", using: :btree
@@ -109,9 +112,9 @@ ActiveRecord::Schema.define(version: 20160804221837) do
     t.string   "day_pattern"
     t.string   "class_number"
     t.string   "long_location"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.string   "meeting_description"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "topic_description"
     t.integer  "enroll_group"
   end
 

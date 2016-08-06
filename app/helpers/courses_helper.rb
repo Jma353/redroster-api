@@ -24,11 +24,13 @@ module CoursesHelper
 		course_json = { 
 			crse_id: course_info["crseId"], 
 			term: term,
+			title: course_info["titleShort"],
 			subject: course_info["subject"],
 			course_offer_number: course_info["crseOfferNbr"], 
 			catalog_number: course_info["catalogNbr"].to_i,
 			credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
-			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"]
+			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"], 
+
 		}
 		# Create the course
 		@course = Course.find_or_create_by(course_json)
