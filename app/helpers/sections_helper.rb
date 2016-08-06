@@ -45,7 +45,11 @@ module SectionsHelper
 			enroll_group: i
 		}.merge(meetings_info)
 		# Find or create these sections 
-		course.sections.find_or_create_by(build_json)
+		s = course.sections.find_by(class_number: build_json["class_number"], enroll_group: i)
+		if s.blank?
+			s = course.sections.create(build_json)
+		end 
+		return s 
 	end 
 
 
