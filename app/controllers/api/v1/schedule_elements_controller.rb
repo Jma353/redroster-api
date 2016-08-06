@@ -50,12 +50,14 @@ include CoursesHelper
 		@course = Course.find_by(crse_id: schedule_element_params[:crse_id], 
 			term: schedule_element_params[:term])
 
+		# Grab required creds
+		term = schedule_element_params[:term]
+		subject = schedule_element_params[:subject]
+		number = schedule_element_params[:number].to_i
+
+
 		# If the course is blank, make the course + all sections 
 		if @course.blank? 
-			# Grab required creds to retrieve course_info fom Cornell Courses API 
-			term = schedule_element_params[:term]
-			subject = schedule_element_params[:subject]
-			number = schedule_element_params[:number].to_i
 			course_info = get_course_info(term, subject, number)
 			@course = build_course_and_sections(course_info, term)
 		end 
