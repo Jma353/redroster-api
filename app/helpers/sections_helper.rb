@@ -22,7 +22,9 @@ module SectionsHelper
 	# array returned by the Cornell Courses API 
 	# 	c: classSections array 
 	def build_sections(c, course, i)
-		@sections = c.map { |s| build_section(s, course, i) }
+		Section.transaction do 
+			@sections = c.map { |s| build_section(s, course, i) }
+		end 
 	end 
 
 
@@ -45,11 +47,7 @@ module SectionsHelper
 			enroll_group: i
 		}.merge(meetings_info)
 		# Find or create these sections 
-		s = course.sections.find_by(class_number: build_json["class_number"], enroll_group: i)
-		if s.blank?
-			s = course.sections.create(build_json)
-		end 
-		return s 
+		course.sections.find_or_create_by(build_json)
 	end 
 
 
