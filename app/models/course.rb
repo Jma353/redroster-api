@@ -25,7 +25,7 @@ class Course < ActiveRecord::Base
 
 
 	# Validations 
-	validates :crse_id, presence: true 
+	validates :crse_id, presence: true, uniqueness: { scope: [:term] }
 	validates :term, presence: true, length: { minimum: 4, maximum: 4 }
 	validate :unique_class, :on => :create 
 

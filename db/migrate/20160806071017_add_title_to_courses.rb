@@ -15,5 +15,6 @@ class AddTitleToCourses < ActiveRecord::Migration
 				end 
 			end 
   	end 
+  end
 
 end

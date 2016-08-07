@@ -47,7 +47,13 @@ module SectionsHelper
 			enroll_group: i
 		}.merge(meetings_info)
 		# Find or create these sections 
-		course.sections.find_or_create_by(build_json)
+
+		section = course.sections.find_by(:section_num => build_json[:section_num])
+		if section.blank? 
+			section = course.sections.create(build_json)
+		end 
+
+		return section 
 	end 
 
 

@@ -24,6 +24,7 @@ class Section < ActiveRecord::Base
 
 	# Validations 
 	validates :section_num, presence: true
+	validates :section_num, uniqueness: { scope: [:course_id] }
 	validates :course_id, presence: true 
 	validates :section_type, presence: true
 	# validates :start_time, presence: true 

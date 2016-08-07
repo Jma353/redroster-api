@@ -31,7 +31,12 @@ module CoursesHelper
 			credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
 			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"], 
 		}
-		@course = Course.find_or_create_by(course_json)
+		
+		@course = Course.find_by(:term => course_json[:term], :crse_id => course_json[:crse_id])
+		if @course.blank? 
+			@course = Course.create(course_json)
+		end 
+		return @course
   end 
 
 
