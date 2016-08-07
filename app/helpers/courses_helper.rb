@@ -78,21 +78,9 @@ module CoursesHelper
  	end 
 
 
-	# Get or create a course
-	# Requires the response from the Cornell Courses API in the form of 
-	# `course_info`
-	def get_or_create_course(course_info, term)
-		@course = Course.find_by(crse_id: course_info["crseId"], term: course_info["term"])
-		if @course.blank? 
-			@course = build_course_and_sections(course_info, term)
-		end 
-		@course
-	end
-
-
 	# Less course information
 	def format_course_less(c)
-		@course = get_or_create_course(c, c["term"])
+		@course = build_course_and_sections(c, c["term"])
 		course_json = {
 			crse_id: c["crseId"], # 123456, unique
 			subject: c["subject"], # CS, ORIE, etc. 
