@@ -14,7 +14,7 @@
 include SchedulesHelper
 class Api::V1::SchedulesController < Api::V1::AuthsController 
 
-	before_action :schedule_belongs_to_user, only: [:make_active, :clear, :destroy] # in ApplicationController 
+	before_action :schedule_belongs_to_user, only: [:make_active, :clear, :rename, :destroy] # in ApplicationController 
 
 
   # Check to see if the schedule exists/belongs to the user  (used in specific subclasses)

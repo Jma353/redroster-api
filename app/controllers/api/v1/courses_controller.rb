@@ -72,9 +72,13 @@ class Api::V1::CoursesController < Api::V1::ApplicationController
 		subject = params[:subject]
 		number = params[:number]
 		found_json = get_course_info(term, subject, number)
-		found_json["term"] = term 
-		course_json = format_course(found_json)
-		render json: { success: true, data: { course: course_json }} and return 
+		if !found_json.blank? 
+			found_json["term"] = term 
+			course_json = format_course(found_json)
+			render json: { success: true, data: { course: course_json }} and return 
+		else 
+			render json: { success: false, data: { errors: ["No course was found"] }} and return 
+		end 
 	end 
 
 

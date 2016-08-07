@@ -30,9 +30,7 @@ module CoursesHelper
 			catalog_number: course_info["catalogNbr"].to_i,
 			credits_maximum: course_info["enrollGroups"][0]["unitsMaximum"], 
 			credits_minimum: course_info["enrollGroups"][0]["unitsMinimum"], 
-
 		}
-		# Create the course
 		@course = Course.find_or_create_by(course_json)
   end 
 
@@ -56,7 +54,15 @@ module CoursesHelper
 		# Format them into a URL string + make a request to Cornell API 
 		url_string = "https://classes.cornell.edu/api/2.0/search/classes.json?roster=#{term}&subject=#{subject}&classLevels[]=#{course_level}"
 		uri = URI(url_string)
-		res_json = JSON.parse(Net::HTTP.get(uri))
+
+		# Handle catching errors on Cornell's end 
+		res_json = nil 
+		begin 
+			res_json = JSON.parse(Net::HTTP.get(uri))
+		rescue => error
+			return nil 
+		end 
+
 		# Check to see if the request was successful and that the course actually exists amongst the response
 		if res_json["status"] != "success" && (find_course_index(res_json, number) == -1)
 			render json: { success: false, data: { errors: ["Your requested credentials match no courses"] }} and return 
@@ -65,7 +71,7 @@ module CoursesHelper
 			c_index = find_course_index(res_json, number)
 			# If we couldn't find the course 
 			if c_index == -1 
-				render json: { success: false, data: { errors: ["A course with these credentials was not found"] }} and return 
+				return nil 
 			end 
 			return res_json["data"]["classes"][c_index]
 		end 
