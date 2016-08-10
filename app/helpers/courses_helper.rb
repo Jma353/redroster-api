@@ -45,10 +45,11 @@ module CoursesHelper
   def build_course_and_sections(course_info, term)
   	@course = build_course(course_info, term)
   	# Iterate through all the sections to add these 
+  	sections = [] 
   	(0...course_info["enrollGroups"].length).each do |i|
-  		@sections = build_sections(course_info["enrollGroups"][i]["classSections"], @course, i+1) 
+  		sections = sections.concat(build_sections(course_info["enrollGroups"][i]["classSections"], @course, i+1)) 
   	end 
-  	return [@course, @sections] 
+  	return [@course, sections] 
   end 
 
 
