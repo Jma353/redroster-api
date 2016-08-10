@@ -57,6 +57,12 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 	end 
 
 
+	# For communicating general info 
+	def message
+		render json: { success: true, data: { message: "" }}
+	end 
+
+
 	private 
 
 		def user_params(extras={})	

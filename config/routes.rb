@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
 
+      # Message
+      get "message" => "users#message", :as => 'message'
+
       # Sign In 
       post "sign_in" => "users#google_sign_in", :as => 'sign_in' 
       get "users/search/:query" => "users#people_search", :as => 'users_search'
