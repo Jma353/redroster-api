@@ -17,7 +17,7 @@
 class Course < ActiveRecord::Base
 	# References 
 	belongs_to :master_course, class_name: "MasterCourse", foreign_key: "master_course_id"
-	has_many :sections, class_name: "Section"
+	has_many :sections, class_name: "Section", :dependent => :delete_all
 	has_many :schedule_elements, through: :sections
 
 	has_many :schedule_elements, through: :sections, foreign_key: "section_num"

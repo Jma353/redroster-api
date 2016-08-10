@@ -48,7 +48,7 @@ module CoursesHelper
   	(0...course_info["enrollGroups"].length).each do |i|
   		@sections = build_sections(course_info["enrollGroups"][i]["classSections"], @course, i+1) 
   	end 
-  	return @course 
+  	return [@course, @sections] 
   end 
 
 
@@ -85,7 +85,9 @@ module CoursesHelper
 
 	# Less course information
 	def format_course_less(c)
-		@course = build_course_and_sections(c, c["term"])
+		course_and_section = build_course_and_sections(c, c["term"])
+		@course = course_and_section[0]
+		sections = course_and_section[1]
 		course_json = {
 			crse_id: c["crseId"], # 123456, unique
 			subject: c["subject"], # CS, ORIE, etc. 
@@ -95,13 +97,18 @@ module CoursesHelper
 			title_long: c["titleLong"], # Longer title 
 			description: c["description"], # Description of course 
 		}
+
+		return [course_json, sections]
 	end 
+
 
 
 	# More course information 
 	# Prereq: need term info 
 	def format_course(c)
-		course_json = format_course_less(c)
+		haha = format_course_less(c)
+		course_json = haha[0]
+		sections = haha[1]
 
 		# Course JSON 
 		course_json.merge!({ 
@@ -118,7 +125,7 @@ module CoursesHelper
 
 		course_json[:cross_listings] << { "subject" => c["subject"], "catalogNbr" => c["catalogNbr"] }
 		course_json[:people_in_course] = @course.users.map {|u| UserSerializer.new(u).as_json["user"] }
-		course_json[:sections] = @course.sections.map { |s| SectionSerializer.new(s).as_json["section"] }
+		course_json[:sections] = sections.map { |s| SectionSerializer.new(s).as_json["section"] }
 		course_json
 		
 	end 
@@ -149,7 +156,7 @@ module CoursesHelper
 			if num == course_num/div
 				return true 
 			end 
-			div = div/10 
+			div = div / 10 
 		end 
 		return false 
 	end 
@@ -165,7 +172,7 @@ module CoursesHelper
 				courses_info.each do |ci|
 					if num_compare(q_num, ci)
 						ci["term"] = term 
-						result_json = format_course_less(ci)
+						result_json = format_course_less(ci)[0]
 						courses.push(result_json)
 					end
 				end 

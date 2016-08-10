@@ -59,7 +59,7 @@ include CoursesHelper
 		# If the course is blank, make the course + all sections 
 		if @course.blank? 
 			course_info = get_course_info(term, subject, number)
-			@course = build_course_and_sections(course_info, term)
+			@course = build_course_and_sections(course_info, term)[0]
 		end 
 
 		# [CS1110_LEC, CS1110_DIS].each do .. 

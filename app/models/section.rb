@@ -20,7 +20,7 @@ class Section < ActiveRecord::Base
 
 	# References 
 	belongs_to :course, class_name: "Course", foreign_key: "course_id"
-	has_many :schedule_elements, class_name: "ScheduleElement", foreign_key: "section_id"
+	has_many :schedule_elements, class_name: "ScheduleElement", foreign_key: "section_id", :dependent => :delete_all
 
 	# Validations 
 	validates :section_num, presence: true
