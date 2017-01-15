@@ -16,5 +16,5 @@
 #
 
 class SectionSerializer < ActiveModel::Serializer
-	attributes :section_num, :section_type, :start_time, :end_time, :day_pattern, :created_at, :class_number, :long_location, :enroll_group, :topic_description
-end 
+  attributes :section_num, :section_type, :start_time, :end_time, :day_pattern, :created_at, :class_number, :long_location, :enroll_group, :topic_description
+end

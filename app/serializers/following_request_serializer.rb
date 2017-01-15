@@ -12,10 +12,8 @@
 #  updated_at  :datetime         not null
 #
 
-class FollowingRequestSerializer < ActiveModel::Serializer 
-	has_one :user1
-	has_one :user2 
-	attributes :id, :is_pending, :is_accepted, :created_at 
-end 
-
-
+class FollowingRequestSerializer < ActiveModel::Serializer
+  has_one :user1
+  has_one :user2
+  attributes :id, :is_pending, :is_accepted, :created_at
+end

@@ -16,6 +16,6 @@
 #
 
 class CourseReviewSerializer < ActiveModel::Serializer
-	has_one :user
-	attributes :id, :term, :lecture_score, :office_hours_score, :difficulty_score, :material_score, :feedback, :created_at
-end 
+  has_one :user
+  attributes :id, :term, :lecture_score, :office_hours_score, :difficulty_score, :material_score, :feedback, :created_at
+end

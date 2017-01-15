@@ -13,5 +13,5 @@
 #
 
 class UserSerializer < ActiveModel::Serializer
-	attributes :id, :fname, :lname, :email, :picture_url
-end 
+  attributes :id, :fname, :lname, :email, :picture_url
+end

@@ -14,9 +14,9 @@
 
 module UsersHelper
 
-	def user_json(u)
-		UserSerializer.new(u).as_json
-	end 
+  def user_json(u)
+    UserSerializer.new(u).as_json
+  end
 
 
 

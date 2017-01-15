@@ -2,8 +2,8 @@
 <html>
 <head>
   <title>RedRoster</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
@@ -24,15 +24,15 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-	
+
 <!-- Wrapper -->
-	<div id="wrapper">
+  <div id="wrapper">
 
-		<%= yield %>
-		
-		<%= render partial: 'layouts/footer' %> 
+    <%= yield %>
 
-	</div> 
+    <%= render partial: 'layouts/footer' %>
+
+  </div>
 
 </body>
 </html>

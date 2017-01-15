@@ -2,67 +2,63 @@
 
 /* Body Styling */
 body {
-	background-color: rgb(231, 76, 60); 
-	background-image: none; 
+  background-color: rgb(231, 76, 60);
+  background-image: none;
 }
 
 /* Underlined accentuation under each title */
 #main header.major h2:after {
-	background-color: rgb(231, 76, 60); 
-	background-image: none; 
+  background-color: rgb(231, 76, 60);
+  background-image: none;
 }
 
 /* The header section (modded to reduce space consumption) */
 #header.alt {
-	padding: 2em 4em 2em 4em;
+  padding: 2em 4em 2em 4em;
 }
 
 /* Reset border radius for top img */
 .spotlight .image img {
-	border-radius: 8px; 
+  border-radius: 8px;
 }
 
 /* Reset border radius for top container */
 .spotlight .image {
-	border-radius: 8px;
+  border-radius: 8px;
 }
 
 /* CUSTOM CSS */
 
 /* Mockup screen */
 .mockup {
-	width: 90%;
-	margin-top: 20px;
-	margin-bottom: 20px; 
+  width: 90%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 /* Links in the footer */
 .footer-link {
-	text-align: center; 
-	font-size: 14px; 
-	margin-top: 10px; 
-	margin-bottom: 10px; 
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 /* Foot links container */
 .footer-links {
-	margin-bottom: 25px; 
+  margin-bottom: 25px;
 }
 
 
 /* Section to enter pass / beta tester showing area */
 .pass-section, .beta-testers {
-	width: 80%; 
-	margin-left: 10%; 
-	margin-right: 10%; 
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 
 /* Submit password */
 .submit-pass {
-	margin-top: 20px; 
+  margin-top: 20px;
 }
-
-
-
-

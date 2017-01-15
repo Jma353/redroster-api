@@ -10,7 +10,7 @@
 #  updated_at  :datetime         not null
 #
 
-class ScheduleElementSerializer < ActiveModel::Serializer 
-	has_one :section 
-	attributes :id, :schedule_id, :collision, :created_at
-end 
+class ScheduleElementSerializer < ActiveModel::Serializer
+  has_one :section
+  attributes :id, :schedule_id, :collision, :created_at
+end

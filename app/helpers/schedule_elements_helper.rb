@@ -12,17 +12,14 @@
 
 module ScheduleElementsHelper
 
-	def update_se_collisions(schedule)
-		schedule.schedule_elements.each do |se|
-			se.update_attributes(collision: se.collisions?)
-		end 
-	end 
+  def update_se_collisions(schedule)
+    schedule.schedule_elements.each do |se|
+      se.update_attributes(collision: se.collisions?)
+    end
+  end
 
-	def schedule_element_json(se) 
-		ScheduleElementSerializer.new(se).as_json
-	end 
+  def schedule_element_json(se)
+    ScheduleElementSerializer.new(se).as_json
+  end
 
 end
-
-
-

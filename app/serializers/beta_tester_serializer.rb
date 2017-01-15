@@ -9,5 +9,5 @@
 #
 
 class BetaTesterSerializer < ActiveModel::Serializer
-	attributes :email
-end 
+  attributes :email
+end

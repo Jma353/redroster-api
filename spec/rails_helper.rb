@@ -22,7 +22,7 @@ require 'pp' # Pretty print
 # require only the support files necessary.
 #
 
-# For requiring supporting docs 
+# For requiring supporting docs
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Checks for pending migration and applies them before tests are run.
@@ -60,54 +60,21 @@ RSpec.configure do |config|
 end
 
 
-# Helper methods 
+# Helper methods
 
 
-# Common credentials 
+# Common credentials
 def common_creds(extra={})
   { api_key: ENV["API_KEY"]}.merge(extra)
-end 
+end
 
 
-# Helper function to check JSON responses from the API 
+# Helper function to check JSON responses from the API
 def check_response(a)
   json = JSON.parse(a[:response].body)
-  if a[:print] 
+  if a[:print]
     pp json
-  end 
+  end
   expect(json["success"]).to be(a[:success])
-  return json 
-end 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return json
+end
